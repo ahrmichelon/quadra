@@ -1,5 +1,12 @@
 # Changelog: Quadra for Windows
 
+## 1.1.0
+
+- Quadra tells you when a new version is out, like Quadra for Mac 1.1. It asks GitHub once a day
+  (you can turn this off in Settings), shows a notification and an item at the top of the menu,
+  and opens the download of the right Quadra.exe for your PC.
+- "Check for Updates…" in the menu and "Check Now" in Settings check right away.
+
 ## 1.0.0
 
 First version for Windows, with the same features as Quadra for Mac 1.0.

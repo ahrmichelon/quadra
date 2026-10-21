@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Threading;
@@ -43,7 +45,13 @@ internal sealed class QuadraApp : IDisposable
     private IntPtr lastWindow;
     private DateTime panelShown = DateTime.MinValue;
     private string registeredHotKeys = "";
-    private DispatcherTimer? focusTimer, checkTimer;
+    private DispatcherTimer? focusTimer, checkTimer, updateTimer;
+
+    private static readonly HttpClient Http = new() { Timeout = TimeSpan.FromSeconds(20) };
+    /// <summary>The newer release found by the last check, if any.</summary>
+    private Release? availableUpdate;
+    /// <summary>The release the last notification was about (null for other notifications).</summary>
+    private Release? notifiedUpdate;
 
     public QuadraApp(Application app) => this.app = app;
 
@@ -97,6 +105,12 @@ internal sealed class QuadraApp : IDisposable
 
         // A display was connected, disconnected or rearranged: the open grid no longer matches.
         SystemEvents.DisplaySettingsChanged += OnDisplaysChanged;
+
+        tray.BalloonClicked += () =>
+        {
+            if (notifiedUpdate is { } release) ShowUpdateDialog(release);
+        };
+        StartUpdateChecks();
 
         StartWithWindows.UpdatePathIfMoved();
         if (!store.Current.Welcomed)
@@ -385,6 +399,14 @@ internal sealed class QuadraApp : IDisposable
         menu.Items.Clear();
         var s = store.Current;
 
+        if (availableUpdate is { } update)
+        {
+            var item = Item(Loc.Format("Menu_UpdateAvailable", update.Version), () => ShowUpdateDialog(update));
+            item.Font = new System.Drawing.Font(item.Font, System.Drawing.FontStyle.Bold);
+            menu.Items.Add(item);
+            menu.Items.Add(new WinForms.ToolStripSeparator());
+        }
+
         if (!panel.IsVisible)
         {
             menu.Items.Add(Item(Loc.Get("Menu_ShowGrid"), () => ToggleGrid(fromTray: true), s.ShowGridHotKey));
@@ -450,6 +472,7 @@ internal sealed class QuadraApp : IDisposable
         menu.Items.Add(Item(Loc.Get("Menu_Settings"), OpenSettings));
         menu.Items.Add(new WinForms.ToolStripSeparator());
 
+        menu.Items.Add(Item(Loc.Get("Menu_CheckForUpdates"), CheckForUpdatesNow));
         menu.Items.Add(Item(Loc.Get("Menu_Support"), () =>
         {
             panel.HidePanel();
@@ -508,7 +531,7 @@ internal sealed class QuadraApp : IDisposable
         panel.HidePanel();
         if (settingsWindow == null)
         {
-            settingsWindow = new SettingsWindow(store);
+            settingsWindow = new SettingsWindow(store, CheckForUpdatesNow);
             settingsWindow.Closed += (_, _) => settingsWindow = null;
         }
         settingsWindow.Show();
@@ -516,6 +539,85 @@ internal sealed class QuadraApp : IDisposable
         WindowMover.BringToFront(new WindowInteropHelper(settingsWindow).Handle);
         settingsWindow.Activate();
     }
+
+    // Updates
+
+    private void StartUpdateChecks()
+    {
+        // First look shortly after launch, then every hour see whether a day has passed.
+        new DispatcherTimer(TimeSpan.FromSeconds(15), DispatcherPriority.Background, (sender, _) =>
+        {
+            ((DispatcherTimer)sender!).Stop();
+            CheckIfDue();
+        }, app.Dispatcher);
+        updateTimer = new DispatcherTimer(TimeSpan.FromHours(1), DispatcherPriority.Background, (_, _) => CheckIfDue(),
+                                          app.Dispatcher);
+    }
+
+    /// <summary>The automatic check: at most once a day, and each new version is announced only once.</summary>
+    private async void CheckIfDue()
+    {
+        if (!store.Current.CheckForUpdates || !Updates.IsDue(store.Current.LastUpdateCheck, DateTimeOffset.Now)) return;
+        try
+        {
+            if (await AskGitHub() is { } release && store.Current.AnnouncedVersion != release.Version)
+            {
+                store.Edit(s => s.AnnouncedVersion = release.Version);
+                notifiedUpdate = release;
+                tray?.ShowBalloon(Loc.Format("Update_Available", release.Version), Loc.Get("Update_BalloonText"));
+            }
+        }
+        catch (Exception e)
+        {
+            Log.Write($"The update check failed: {e.Message}");
+        }
+    }
+
+    /// <summary>"Check for Updates…" in the menu and "Check Now" in Settings.</summary>
+    private async void CheckForUpdatesNow()
+    {
+        try
+        {
+            if (await AskGitHub() is { } release)
+            {
+                store.Edit(s => s.AnnouncedVersion = release.Version);
+                ShowUpdateDialog(release);
+            }
+            else
+            {
+                Message(Loc.Get("Update_UpToDate"), Loc.Format("Update_UpToDateText", Links.Version), MessageBoxImage.Information);
+            }
+        }
+        catch (Exception e)
+        {
+            Log.Write($"The update check failed: {e.Message}");
+            Message(Loc.Get("Update_Error"), e.Message, MessageBoxImage.Warning);
+        }
+    }
+
+    private async Task<Release?> AskGitHub()
+    {
+        var release = await Updates.CheckAsync(Http, Links.Version);
+        store.Edit(s => s.LastUpdateCheck = DateTimeOffset.Now);
+        availableUpdate = release;
+        Log.Write(release != null ? $"Quadra {release.Version} is available" : "Quadra is up to date");
+        return release;
+    }
+
+    /// <summary>Tells the user about a new version and offers to download it.</summary>
+    private void ShowUpdateDialog(Release release)
+    {
+        panel.HidePanel();
+        var answer = MessageBox.Show(
+            Loc.Format("Update_Available", release.Version) + "\n\n" + Loc.Format("Update_Instructions", Links.Version),
+            "Quadra", MessageBoxButton.YesNo, MessageBoxImage.Information);
+        if (answer != MessageBoxResult.Yes) return;
+        string architecture = RuntimeInformation.OSArchitecture == Architecture.Arm64 ? "arm64" : "x64";
+        Links.Open(release.DownloadUrl(architecture));
+    }
+
+    private static void Message(string title, string text, MessageBoxImage image) =>
+        MessageBox.Show(title + "\n\n" + text, "Quadra", MessageBoxButton.OK, image);
 
     private void ShowAbout()
     {
@@ -534,6 +636,7 @@ internal sealed class QuadraApp : IDisposable
     public void Dispose()
     {
         SystemEvents.DisplaySettingsChanged -= OnDisplaysChanged;
+        updateTimer?.Stop();
         tray?.Dispose();
         tray = null;
         hotKeys?.Dispose();

@@ -70,6 +70,7 @@
         <RowDefinition Height="Auto" />
         <RowDefinition Height="Auto" />
         <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
 
       <TextBlock x:Name="ShowGridLabel" Grid.Row="0" Style="{StaticResource Label}" />
@@ -112,6 +113,12 @@
       <ComboBox x:Name="SpacingBox" Grid.Row="6" Grid.Column="1" Margin="0,3" />
 
       <CheckBox x:Name="StartWithWindowsBox" Grid.Row="7" Grid.Column="1" Margin="0,10,0,0" />
+
+      <TextBlock x:Name="UpdatesLabel" Grid.Row="8" Style="{StaticResource Label}" Margin="0,10,12,0" />
+      <StackPanel Grid.Row="8" Grid.Column="1" Orientation="Horizontal" Margin="0,10,0,0">
+        <CheckBox x:Name="CheckDailyBox" VerticalAlignment="Center" />
+        <Button x:Name="CheckNowButton" Margin="16,0,0,0" Padding="12,3" />
+      </StackPanel>
     </Grid>
 
     <Separator Margin="0,16" />

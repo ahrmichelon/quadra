@@ -75,6 +75,13 @@ public sealed class AppSettings
     /// <summary>Whether the first-launch tip was already shown.</summary>
     public bool Welcomed { get; set; }
 
+    /// <summary>Ask GitHub once a day whether a new version is out (can be turned off in Settings).</summary>
+    public bool CheckForUpdates { get; set; } = true;
+    /// <summary>When GitHub was last asked.</summary>
+    public DateTimeOffset? LastUpdateCheck { get; set; }
+    /// <summary>The newest version the user was already told about, so the automatic check doesn't repeat it.</summary>
+    public string? AnnouncedVersion { get; set; }
+
     public static int ClampSize(int v) => Math.Clamp(v, MinSize, MaxSize);
 
     /// <summary>Keeps every value within its limits.</summary>
@@ -121,6 +128,9 @@ public sealed class AppSettings
             ["nextScreenHotKey"] = HotKeyNode(NextScreenHotKey),
             ["previousScreenHotKey"] = HotKeyNode(PreviousScreenHotKey),
             ["welcomed"] = Welcomed,
+            ["checkForUpdates"] = CheckForUpdates,
+            ["lastUpdateCheck"] = LastUpdateCheck?.ToString("O", System.Globalization.CultureInfo.InvariantCulture),
+            ["announcedVersion"] = AnnouncedVersion,
         };
         return o.ToJsonString(Json);
 
@@ -143,6 +153,10 @@ public sealed class AppSettings
         s.PanelSize = Double(o, "panelSize") ?? s.PanelSize;
         s.PanelShape = PanelShapes.Parse(String(o, "panelShape"));
         s.Welcomed = Bool(o, "welcomed") ?? false;
+        s.CheckForUpdates = Bool(o, "checkForUpdates") ?? true;
+        s.LastUpdateCheck = DateTimeOffset.TryParse(String(o, "lastUpdateCheck"), System.Globalization.CultureInfo.InvariantCulture,
+                                                    System.Globalization.DateTimeStyles.RoundtripKind, out var last) ? last : null;
+        s.AnnouncedVersion = String(o, "announcedVersion");
 
         if (o["layouts"] is JsonArray array)
         {
