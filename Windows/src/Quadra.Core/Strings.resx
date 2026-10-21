@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <!-- English (the default). -->
+  <data name="Language_Code" xml:space="preserve"><value>en</value></data>
+  <data name="Panel_Settings" xml:space="preserve"><value>Settings</value></data>
+  <data name="Panel_Close" xml:space="preserve"><value>Close (Esc)</value></data>
+  <data name="Panel_Hint" xml:space="preserve"><value>Enter full screen · Esc closes</value></data>
+  <data name="Panel_GridTip" xml:space="preserve"><value>Drag to choose the area · click another window to switch · ←→↑↓ halves · Enter full screen · Esc closes</value></data>
+  <data name="Panel_Columns" xml:space="preserve"><value>Columns: {0}</value></data>
+  <data name="Panel_Rows" xml:space="preserve"><value>Rows: {0}</value></data>
+  <data name="Panel_FewerColumns" xml:space="preserve"><value>Fewer columns</value></data>
+  <data name="Panel_MoreColumns" xml:space="preserve"><value>More columns</value></data>
+  <data name="Panel_FewerRows" xml:space="preserve"><value>Fewer rows</value></data>
+  <data name="Panel_MoreRows" xml:space="preserve"><value>More rows</value></data>
+  <data name="Panel_Window" xml:space="preserve"><value>Window</value></data>
+  <data name="Display_Number" xml:space="preserve"><value>Display {0}</value></data>
+  <data name="Display_BuiltIn" xml:space="preserve"><value>Built-in display</value></data>
+  <data name="Tray_Tip" xml:space="preserve"><value>Quadra: click for the grid, right-click for the menu</value></data>
+  <data name="Menu_ShowGrid" xml:space="preserve"><value>Show Grid</value></data>
+  <data name="Menu_GridShortcutWarning" xml:space="preserve"><value>⚠ Grid shortcut: {0}</value></data>
+  <data name="Menu_Layouts" xml:space="preserve"><value>Layouts</value></data>
+  <data name="Menu_Untitled" xml:space="preserve"><value>Untitled</value></data>
+  <data name="Menu_Displays" xml:space="preserve"><value>Displays</value></data>
+  <data name="Menu_NextDisplay" xml:space="preserve"><value>Move to Next Display</value></data>
+  <data name="Menu_PreviousDisplay" xml:space="preserve"><value>Move to Previous Display</value></data>
+  <data name="Menu_GridSize" xml:space="preserve"><value>Grid Size</value></data>
+  <data name="Menu_ColumnsRows" xml:space="preserve"><value>Columns × rows</value></data>
+  <data name="Menu_CustomSize" xml:space="preserve"><value>{0} × {1} (custom)</value></data>
+  <data name="Menu_FineTune" xml:space="preserve"><value>Fine-tune with the controls on the grid</value></data>
+  <data name="Menu_Spacing" xml:space="preserve"><value>Window Spacing</value></data>
+  <data name="Menu_SpacingNone" xml:space="preserve"><value>None</value></data>
+  <data name="Menu_SpacingPixels" xml:space="preserve"><value>{0} pixels</value></data>
+  <data name="Menu_StartWithWindows" xml:space="preserve"><value>Start with Windows</value></data>
+  <data name="Menu_Settings" xml:space="preserve"><value>Settings and Layouts…</value></data>
+  <data name="Menu_Support" xml:space="preserve"><value>Support Quadra…</value></data>
+  <data name="Menu_About" xml:space="preserve"><value>About Quadra</value></data>
+  <data name="Menu_Quit" xml:space="preserve"><value>Quit Quadra</value></data>
+  <data name="About_Text" xml:space="preserve"><value>Quadra for Windows {0}
+
+Arrange your windows on a grid.
+Free and open source, MIT license.
+
+{1}</value></data>
+  <data name="Welcome_Title" xml:space="preserve"><value>Quadra is running</value></data>
+  <data name="Welcome_Text" xml:space="preserve"><value>Press {0} or click the Quadra icon next to the clock to open the grid. If you don't see the icon, click the ^ arrow.</value></data>
+  <data name="Error_StartWithWindows" xml:space="preserve"><value>Couldn't change Start with Windows: {0}</value></data>
+  <data name="Layout_LeftHalf" xml:space="preserve"><value>Left half</value></data>
+  <data name="Layout_RightHalf" xml:space="preserve"><value>Right half</value></data>
+  <data name="Layout_TopHalf" xml:space="preserve"><value>Top half</value></data>
+  <data name="Layout_BottomHalf" xml:space="preserve"><value>Bottom half</value></data>
+  <data name="Layout_FullScreen" xml:space="preserve"><value>Full screen</value></data>
+  <data name="Layout_Center" xml:space="preserve"><value>Center</value></data>
+  <data name="Warn_Duplicate" xml:space="preserve"><value>Duplicate shortcut</value></data>
+  <data name="Warn_InUse" xml:space="preserve"><value>Used by another app</value></data>
+  <data name="Key_Space" xml:space="preserve"><value>Space</value></data>
+  <data name="Shape_Square" xml:space="preserve"><value>Square</value></data>
+  <data name="Shape_Display" xml:space="preserve"><value>Like the display</value></data>
+  <data name="Settings_Title" xml:space="preserve"><value>Quadra Settings</value></data>
+  <data name="Settings_Tagline" xml:space="preserve"><value>Arrange your windows on a grid · version {0}</value></data>
+  <data name="Settings_Support" xml:space="preserve"><value>Support Quadra</value></data>
+  <data name="Settings_ShowGrid" xml:space="preserve"><value>Show the grid</value></data>
+  <data name="Settings_NextDisplay" xml:space="preserve"><value>Move to the next display</value></data>
+  <data name="Settings_PreviousDisplay" xml:space="preserve"><value>Move to the previous display</value></data>
+  <data name="Settings_Shape" xml:space="preserve"><value>Grid shape</value></data>
+  <data name="Settings_Width" xml:space="preserve"><value>Grid width</value></data>
+  <data name="Settings_Pixels" xml:space="preserve"><value>{0} px</value></data>
+  <data name="Settings_Opacity" xml:space="preserve"><value>Grid opacity</value></data>
+  <data name="Settings_OpacityHint" xml:space="preserve"><value>Lower lets you see the apps behind it.</value></data>
+  <data name="Settings_Spacing" xml:space="preserve"><value>Window spacing</value></data>
+  <data name="Settings_StartWithWindows" xml:space="preserve"><value>Open Quadra when Windows starts</value></data>
+  <data name="Settings_Layouts" xml:space="preserve"><value>Layouts</value></data>
+  <data name="Settings_LayoutsHint" xml:space="preserve"><value>Each layout moves the focused window to an area of the screen, with its own shortcut.</value></data>
+  <data name="Settings_NewLayout" xml:space="preserve"><value>New layout</value></data>
+  <data name="Settings_DeleteLayout" xml:space="preserve"><value>Delete the selected layout</value></data>
+  <data name="Settings_MoveUp" xml:space="preserve"><value>Move up</value></data>
+  <data name="Settings_MoveDown" xml:space="preserve"><value>Move down</value></data>
+  <data name="Settings_ChooseLayout" xml:space="preserve"><value>Choose a layout from the list or click + to create one.</value></data>
+  <data name="Settings_Name" xml:space="preserve"><value>Name</value></data>
+  <data name="Settings_Shortcut" xml:space="preserve"><value>Shortcut</value></data>
+  <data name="Settings_Area" xml:space="preserve"><value>Area</value></data>
+  <data name="Settings_AreaHint" xml:space="preserve"><value>Drag on the grid to choose the area.</value></data>
+  <data name="HotKey_Press" xml:space="preserve"><value>Press the shortcut…</value></data>
+  <data name="HotKey_Record" xml:space="preserve"><value>Record shortcut</value></data>
+  <data name="HotKey_Remove" xml:space="preserve"><value>Remove shortcut</value></data>
+  <data name="HotKey_RecordTip" xml:space="preserve"><value>Click, then press the keys. Esc cancels.</value></data>
+  <data name="HotKey_NeedsModifier" xml:space="preserve"><value>Use Ctrl, Alt or Win with the key</value></data>
+</root>

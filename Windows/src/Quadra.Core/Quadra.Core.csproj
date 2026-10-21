@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Everything that doesn't need Windows: geometry, layouts, shortcuts, settings and texts.
+       Plain .NET, so the tests run on any system. -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>Quadra</RootNamespace>
+    <AssemblyName>Quadra.Core</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Quadra.Core.Tests" />
+  </ItemGroup>
+</Project>

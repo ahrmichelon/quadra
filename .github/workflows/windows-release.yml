@@ -1,0 +1,78 @@
+name: Windows release
+
+# Pushing a tag such as windows-v1.0.0:
+#   1. runs the tests,
+#   2. builds Quadra-x64.exe and Quadra-arm64.exe with that version,
+#   3. runs the self-test on Windows,
+#   4. publishes them as a GitHub release, with notes from Windows/CHANGELOG.md.
+# Windows releases are never marked as the repository's "latest" release: the Mac app's update
+# check reads the latest release, so it must stay the Mac one.
+# Running it by hand ("Run workflow") is a rehearsal: steps 1 to 3 only, nothing is published.
+on:
+  push:
+    tags: ["windows-v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: pwsh
+        working-directory: Windows
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: Windows/global.json
+
+      - name: Version
+        run: |
+          $version = if ($env:GITHUB_REF_TYPE -eq "tag") { $env:GITHUB_REF_NAME -replace '^windows-v', '' } else { "0.0.0" }
+          if ($version -notmatch '^\d+\.\d+\.\d+$') { throw "The tag must look like windows-v1.2.3" }
+          "VERSION=$version" | Out-File -Append $env:GITHUB_ENV
+          Write-Output "Version $version"
+
+      - name: Run the tests
+        run: dotnet test tests/Quadra.Core.Tests/Quadra.Core.Tests.csproj -c Release
+
+      - name: Build Quadra.exe
+        run: |
+          dotnet publish src/Quadra/Quadra.csproj -c Release -r win-x64 -o publish/x64 -p:Version=$env:VERSION
+          dotnet publish src/Quadra/Quadra.csproj -c Release -r win-arm64 -o publish/arm64 -p:Version=$env:VERSION
+          New-Item -ItemType Directory -Force dist | Out-Null
+          Copy-Item publish/x64/Quadra.exe dist/Quadra-x64.exe
+          Copy-Item publish/arm64/Quadra.exe dist/Quadra-arm64.exe
+
+      - name: Self-test on Windows
+        run: |
+          $exe = Resolve-Path publish/x64/Quadra.exe
+          $out = Join-Path $PWD self-test
+          $process = Start-Process -FilePath $exe -ArgumentList "--self-test", "`"$out`"" -PassThru
+          $null = $process.Handle
+          if (-not $process.WaitForExit(300000)) { Stop-Process $process -Force; throw "The self-test took too long" }
+          Get-Content (Join-Path $out report.txt)
+          if ($process.ExitCode -ne 0) { throw "The self-test failed ($($process.ExitCode) check(s))" }
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Quadra-Windows-${{ env.VERSION }}
+          path: |
+            Windows/dist
+            Windows/self-test
+
+      - name: Publish the release
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $notes = Join-Path $env:RUNNER_TEMP notes.md
+          ./Tools/release-notes.ps1 $env:VERSION dist | Out-File -Encoding utf8 $notes
+          gh release create $env:GITHUB_REF_NAME dist/Quadra-x64.exe dist/Quadra-arm64.exe `
+            --title "Quadra for Windows $env:VERSION" --notes-file $notes --latest=false

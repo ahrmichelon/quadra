@@ -5,3 +5,8 @@ updates:
     directory: /
     schedule:
       interval: monthly
+  # Quadra for Windows: the test packages (xUnit).
+  - package-ecosystem: nuget
+    directory: /Windows
+    schedule:
+      interval: monthly
