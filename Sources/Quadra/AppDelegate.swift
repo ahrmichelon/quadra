@@ -319,6 +319,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.addItem(settings)
         menu.addItem(.separator())
 
+        menu.addItem(item(String(localized: "Support Quadra…"), #selector(openSupport)))
         menu.addItem(item(String(localized: "About Quadra"), #selector(showAbout)))
         menu.addItem(NSMenuItem(title: String(localized: "Quit Quadra"),
                                 action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
@@ -412,6 +413,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             NSApp.activate()
             alert.runModal()
         }
+    }
+
+    @objc private func openSupport() {
+        if panel.isVisible { panel.orderOut(nil) }
+        NSWorkspace.shared.open(Links.support)
     }
 
     @objc private func showAbout() {

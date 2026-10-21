@@ -71,6 +71,22 @@ Para mexer no código, abra o `Package.swift` no Xcode.
 Relatos de problemas, ideias e pull requests são bem-vindos, em português ou inglês.
 Veja o [CONTRIBUTING.md](CONTRIBUTING.md).
 
+## Apoie o Quadra
+
+O Quadra é grátis. Se ele te ajuda, você pode apoiar o projeto com qualquer valor. A primeira
+meta é pagar o Developer ID da Apple (US$ 99 por ano), para o macOS parar de bloquear o download.
+
+**Pix:** aponte a câmera do app do banco para o QR code, ou use a chave aleatória
+`8483959a-77da-4767-ba1b-dde7eb4e1bd1`.
+
+<img src="docs/images/pix-qr.png" width="200" alt="QR code do Pix para apoiar o Quadra">
+
+Pix copia e cola:
+
+```
+00020126580014br.gov.bcb.pix01368483959a-77da-4767-ba1b-dde7eb4e1bd15204000053039865802BR5914ALANHRMICHELON6009Sao Paulo62070503***63049B10
+```
+
 ## Licença
 
 [MIT](LICENSE)

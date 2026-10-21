@@ -86,6 +86,16 @@ Open `Package.swift` in Xcode to work on the code.
 Bug reports, ideas and pull requests are welcome, in English or Portuguese.
 See [CONTRIBUTING.md](CONTRIBUTING.md).
 
+## Support Quadra
+
+Quadra is free. If it helps you, you can support it. The first goal is to pay for Apple's
+Developer ID (US$ 99 per year), so macOS stops blocking the download.
+
+**Pix** (Brazil): scan the code with your bank app, or use the key
+`8483959a-77da-4767-ba1b-dde7eb4e1bd1`.
+
+<img src="docs/images/pix-qr.png" width="200" alt="Pix QR code to support Quadra">
+
 ## License
 
 [MIT](LICENSE)

@@ -26,6 +26,10 @@ struct SettingsView: View {
                         .font(.callout)
                         .foregroundStyle(.secondary)
                 }
+                Spacer()
+                Link(destination: Links.support) {
+                    Label("Support Quadra", systemImage: "heart")
+                }
             }
 
             Divider()

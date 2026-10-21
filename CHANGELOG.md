@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.1
+
+- "Support Quadra…" in the menu and a support link in Settings.
+- Support section with Pix in the README, and a Sponsor button on GitHub.
+
 ## 1.0.0
 
 First public version.
