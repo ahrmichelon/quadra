@@ -1,9 +1,14 @@
 #!/bin/bash
-# Builds Quadra and assembles build/Quadra.app (universal: Apple silicon + Intel).
+# Builds Quadra and assembles Quadra.app (universal: Apple silicon + Intel).
 #
 #   ./build.sh            build only
 #   ./build.sh --install  build, copy to /Applications and open
-#   ./build.sh --zip      build and create build/Quadra.zip (for a release)
+#   ./build.sh --zip      build and create Quadra.zip (for a release)
+#   ./build.sh --test     run the tests only
+#
+# The app lands in build/, except when the project is on an exFAT (or other non-Mac) drive:
+# there macOS writes a hidden "._" file next to every file the compiler creates, which breaks
+# the build, so everything is built in ~/Library/Caches/Quadra instead. The code stays put.
 #
 # Signing: uses the first "Developer ID Application" or "Apple Development" certificate
 # found in the keychain, or QUADRA_SIGN_IDENTITY if set. Without one, the app is signed
@@ -11,12 +16,28 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-APP="build/Quadra.app"
+OUT="build"
+SCRATCH=()
+if mount | grep -Eq "^/dev/$(stat -f %Sd .) .*\((exfat|msdos|ntfs)"; then
+  OUT="$HOME/Library/Caches/Quadra"
+  SCRATCH=(--scratch-path "$OUT/.build")
+  # Remove the "._" files macOS left next to the sources, or Swift tries to compile them.
+  find . -name '._*' -type f -not -path './.git/*' -delete
+  rm -rf .build
+fi
+swift_() { swift "$@" ${SCRATCH[@]+"${SCRATCH[@]}"}; }
+
+if [[ "${1:-}" == "--test" ]]; then
+  swift_ test
+  exit
+fi
+
+APP="$OUT/Quadra.app"
 BUNDLE_ID="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' App/Info.plist)"
 ARCHS=(--arch arm64 --arch x86_64)
 
-swift build -c release "${ARCHS[@]}"
-BIN_DIR="$(swift build -c release "${ARCHS[@]}" --show-bin-path)"
+swift_ build -c release "${ARCHS[@]}"
+BIN_DIR="$(swift_ build -c release "${ARCHS[@]}" --show-bin-path)"
 
 rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
@@ -42,8 +63,8 @@ case "${1:-}" in
     echo "Installed /Applications/Quadra.app"
     ;;
   --zip)
-    rm -f build/Quadra.zip
-    ditto -c -k --keepParent "$APP" build/Quadra.zip
-    echo "Created build/Quadra.zip"
+    rm -f "$OUT/Quadra.zip"
+    ditto -c -k --keepParent "$APP" "$OUT/Quadra.zip"
+    echo "Created $OUT/Quadra.zip"
     ;;
 esac

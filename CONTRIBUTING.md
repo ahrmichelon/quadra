@@ -14,8 +14,13 @@ Open an issue with:
 
 ```bash
 ./build.sh --install   # build, copy to /Applications and open
-swift test             # run the tests
+./build.sh --test      # run the tests (or plain `swift test`)
 ```
+
+If the project is on an exFAT drive, macOS creates hidden `._` files next to every file, which
+breaks Swift builds. `build.sh` notices this, removes those files and builds in
+`~/Library/Caches/Quadra` instead, so use `./build.sh --test` rather than `swift test` there.
+Keeping the project on an APFS drive avoids the problem entirely.
 
 Open `Package.swift` in Xcode to edit and debug. Quadra needs the Accessibility permission. If
 your builds are signed locally (no developer certificate), macOS treats every build as a new app
