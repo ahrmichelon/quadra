@@ -41,8 +41,10 @@ final class LayoutTests: XCTestCase {
     // MARK: Shortcuts
 
     func testShortcutText() {
-        XCTAssertEqual(HotKeyCombo.showGridDefault.display, "⌃⌥G")
+        // Keys whose names don't depend on the keyboard layout, so this passes on any Mac.
         XCTAssertEqual(HotKeyCombo.nextScreenDefault.display, "⌃⌥⌘→")
+        XCTAssertEqual(HotKeyCombo(keyCode: kVK_F5, modifiers: controlKey | shiftKey).display, "⌃⇧F5")
+        XCTAssertTrue(HotKeyCombo.showGridDefault.display.hasPrefix("⌃⌥"))
     }
 
     func testShortcutsNeedAModifierOrAnFKey() {
