@@ -230,20 +230,37 @@ internal static class SelfTest
             Check("Notepad is a window Quadra can move", WindowMover.IsManageable(notepad));
             Note($"Notepad's title: {WindowMover.Title(notepad)}");
 
-            using var watcher = new ForegroundWatcher();
-            var seen = new List<IntPtr>();
-            watcher.Changed += hwnd => seen.Add(WindowMover.Root(hwnd));
-            WindowMover.BringToFront(notepad);
-            await Wait(600);
-            Check("Notices when another app's window comes to the front", seen.Contains(notepad),
-                  $"{seen.Count} event(s)");
-
             var rightHalf = WindowGeometry.Frame(new RectD(0.5, 0, 0.5, 1), area, 0);
             WindowMover.Move(notepad, rightHalf, area);
             await Wait(500);
             Check("Moves another app's window (Notepad)", Near(WindowMover.VisibleFrame(notepad), rightHalf),
                   $"wanted {rightHalf}, got {WindowMover.VisibleFrame(notepad)}");
             Screenshot("notepad-right-half.png", area);
+
+            // Like the user clicking another window while the grid is open: one of Quadra's windows is in
+            // front, then a click on Notepad brings it to the front, and Quadra must notice.
+            var helper = new Window
+            {
+                Title = "Quadra self-test (helper)",
+                Width = 300,
+                Height = 200,
+                Left = 40,
+                Top = 40,
+                WindowStartupLocation = WindowStartupLocation.Manual,
+            };
+            helper.Show();
+            await Wait(300);
+            WindowMover.BringToFront(new WindowInteropHelper(helper).Handle);
+            await Wait(300);
+
+            using var watcher = new ForegroundWatcher();
+            var seen = new List<IntPtr>();
+            watcher.Changed += hwnd => seen.Add(WindowMover.Root(hwnd));
+            Click(rightHalf.CenterX, rightHalf.CenterY);
+            await Wait(600);
+            Check("Notices a click on another app's window", seen.Contains(notepad),
+                  $"{seen.Count} event(s), foreground is {(Native.GetForegroundWindow() == notepad ? "Notepad" : "another window")}");
+            helper.Close();
         }
         finally
         {
@@ -365,6 +382,27 @@ internal static class SelfTest
             });
         uint sent = Native.SendInput((uint)inputs.Count, inputs.ToArray(), Marshal.SizeOf<Native.INPUT>());
         if (sent != inputs.Count) Note($"SendInput sent {sent} of {inputs.Count} key events");
+    }
+
+    /// <summary>Clicks at a point of the primary display (screen pixels).</summary>
+    private static void Click(double x, double y)
+    {
+        // Absolute mouse coordinates go from 0 to 65535 across the primary display.
+        int width = Math.Max(2, Native.GetSystemMetrics(Native.SM_CXSCREEN));
+        int height = Math.Max(2, Native.GetSystemMetrics(Native.SM_CYSCREEN));
+        int ax = (int)Math.Round(x * 65535 / (width - 1)), ay = (int)Math.Round(y * 65535 / (height - 1));
+        Native.INPUT Mouse(uint flags) => new()
+        {
+            type = Native.INPUT_MOUSE,
+            u = new Native.INPUTUNION { mi = new Native.MOUSEINPUT { dx = ax, dy = ay, dwFlags = flags } },
+        };
+        var inputs = new[]
+        {
+            Mouse(Native.MOUSEEVENTF_MOVE | Native.MOUSEEVENTF_ABSOLUTE),
+            Mouse(Native.MOUSEEVENTF_LEFTDOWN | Native.MOUSEEVENTF_ABSOLUTE),
+            Mouse(Native.MOUSEEVENTF_LEFTUP | Native.MOUSEEVENTF_ABSOLUTE),
+        };
+        Native.SendInput((uint)inputs.Length, inputs, Marshal.SizeOf<Native.INPUT>());
     }
 
     private static void Screenshot(string name, RectD area)

@@ -237,6 +237,12 @@ internal static class Native
     // which is what allows it to bring the grid to the front.
 
     public const uint INPUT_MOUSE = 0, INPUT_KEYBOARD = 1, KEYEVENTF_KEYUP = 2;
+    public const uint MOUSEEVENTF_MOVE = 0x1, MOUSEEVENTF_LEFTDOWN = 0x2, MOUSEEVENTF_LEFTUP = 0x4,
+                      MOUSEEVENTF_ABSOLUTE = 0x8000;
+    public const int SM_CXSCREEN = 0, SM_CYSCREEN = 1;
+
+    [DllImport("user32.dll")]
+    public static extern int GetSystemMetrics(int index);
 
     [StructLayout(LayoutKind.Sequential)]
     public struct MOUSEINPUT
