@@ -1,5 +1,11 @@
 # Changelog: Quadra for Windows
 
+## 1.2.2
+
+- Clicking the icon next to the clock opens the grid even before you used any window since Quadra
+  opened (for example right after Windows starts): it picks the window in front. With no window
+  open at all, it opens the settings instead of the menu. The menu stays on the right click.
+
 ## 1.2.1
 
 - Installing now says so: after opening the downloaded Quadra.exe, a window tells you Quadra is

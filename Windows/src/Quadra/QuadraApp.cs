@@ -115,7 +115,7 @@ internal sealed class QuadraApp : IDisposable
         foreground = new ForegroundWatcher();
         foreground.Changed += ForegroundChanged;
         var current = WindowMover.Root(Native.GetForegroundWindow());
-        if (WindowMover.IsManageable(current)) lastWindow = current;
+        lastWindow = WindowMover.IsManageable(current) ? current : WindowMover.FrontmostWindow();
 
         // A display was connected, disconnected or rearranged: the open grid no longer matches.
         SystemEvents.DisplaySettingsChanged += OnDisplaysChanged;
@@ -200,7 +200,13 @@ internal sealed class QuadraApp : IDisposable
     }
 
     /// <summary>The window the user last worked in (used from the tray icon, which takes the focus).</summary>
-    private IntPtr RememberedWindow() => WindowMover.IsManageable(lastWindow) ? lastWindow : FocusedWindow();
+    private IntPtr RememberedWindow()
+    {
+        if (WindowMover.IsManageable(lastWindow)) return lastWindow;
+        var focused = FocusedWindow();
+        // No window used yet since Quadra opened (for example right after Windows starts): the one in front.
+        return focused != IntPtr.Zero ? focused : WindowMover.FrontmostWindow();
+    }
 
     private void ToggleGrid(bool fromTray)
     {
@@ -211,8 +217,10 @@ internal sealed class QuadraApp : IDisposable
         }
         var hwnd = fromTray ? RememberedWindow() : FocusedWindow();
         if (hwnd != IntPtr.Zero && PresentGrid(hwnd, null)) return;
-        // No window to move: from the icon, show the menu; from the shortcut, just beep.
-        if (fromTray) tray?.ShowMenuAtIcon();
+        // No window to move: from the icon, open the settings (clicking a tray icon usually opens its app);
+        // from the shortcut, just beep. The menu is always on the right click.
+        Log.Write($"No window to move (from the {(fromTray ? "icon" : "shortcut")})");
+        if (fromTray) OpenSettings();
         else WindowMover.Beep();
     }
 
