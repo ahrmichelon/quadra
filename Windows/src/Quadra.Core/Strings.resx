@@ -46,7 +46,7 @@ Free and open source, MIT license.
 
 {1}</value></data>
   <data name="Welcome_Title" xml:space="preserve"><value>Quadra is running</value></data>
-  <data name="Welcome_Text" xml:space="preserve"><value>Press {0} or click the Quadra icon next to the clock to open the grid. If you don't see the icon, click the ^ arrow.</value></data>
+  <data name="Welcome_Text" xml:space="preserve"><value>Quadra is installed and opens by itself when Windows starts. Press {0} or click its icon next to the clock to open the grid. If you don't see the icon, click the ^ arrow.</value></data>
   <data name="Error_StartWithWindows" xml:space="preserve"><value>Couldn't change Start with Windows: {0}</value></data>
   <data name="Layout_LeftHalf" xml:space="preserve"><value>Left half</value></data>
   <data name="Layout_RightHalf" xml:space="preserve"><value>Right half</value></data>
@@ -91,9 +91,9 @@ Free and open source, MIT license.
   <data name="Menu_CheckForUpdates" xml:space="preserve"><value>Check for Updates…</value></data>
   <data name="Menu_UpdateAvailable" xml:space="preserve"><value>Update Available: Quadra {0}…</value></data>
   <data name="Update_Available" xml:space="preserve"><value>Quadra {0} is available</value></data>
-  <data name="Update_Instructions" xml:space="preserve"><value>You have version {0}. Download the new Quadra.exe, then quit Quadra and put the new file in place of the old one.
+  <data name="Update_Instructions" xml:space="preserve"><value>You have version {0}. Quadra will download the new version, then close and open again by itself.
 
-Download it now?</value></data>
+Update now?</value></data>
   <data name="Update_BalloonText" xml:space="preserve"><value>Click here to download it.</value></data>
   <data name="Update_UpToDate" xml:space="preserve"><value>You're up to date</value></data>
   <data name="Update_UpToDateText" xml:space="preserve"><value>Quadra {0} is the latest version.</value></data>
@@ -101,4 +101,17 @@ Download it now?</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Updates</value></data>
   <data name="Settings_CheckDaily" xml:space="preserve"><value>Check for updates once a day</value></data>
   <data name="Settings_CheckNow" xml:space="preserve"><value>Check Now</value></data>
+  <data name="Welcome_TextPortable" xml:space="preserve"><value>Press {0} or click the Quadra icon next to the clock to open the grid. If you don't see the icon, click the ^ arrow.</value></data>
+  <data name="Updated_Title" xml:space="preserve"><value>Quadra was updated to {0}</value></data>
+  <data name="Updated_Text" xml:space="preserve"><value>Your settings and layouts are as they were.</value></data>
+  <data name="Update_Downloading" xml:space="preserve"><value>Downloading Quadra {0}…</value></data>
+  <data name="Update_DownloadingText" xml:space="preserve"><value>Quadra will close and open again when it's ready.</value></data>
+  <data name="Update_DownloadFailed" xml:space="preserve"><value>Couldn't download the update</value></data>
+  <data name="Update_OpenPage" xml:space="preserve"><value>The download page will open instead.</value></data>
+  <data name="Uninstall_Confirm" xml:space="preserve"><value>Remove Quadra from this PC?
+
+Quadra, its Start menu shortcut, and its settings and layouts will be deleted.</value></data>
+  <data name="Uninstall_Done" xml:space="preserve"><value>Quadra was removed from this PC.</value></data>
+  <data name="Uninstall_Failed" xml:space="preserve"><value>Couldn't remove Quadra completely: {0}</value></data>
+  <data name="Shortcut_Description" xml:space="preserve"><value>Arrange your windows on a grid</value></data>
 </root>

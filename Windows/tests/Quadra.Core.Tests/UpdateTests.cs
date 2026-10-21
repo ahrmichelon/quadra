@@ -1,4 +1,10 @@
 using System;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Security.Cryptography;
+using System.Threading;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Quadra.Tests;
@@ -29,7 +35,8 @@ public class UpdateTests
           {"tag_name": "windows-v1.1.0", "draft": false, "prerelease": false,
            "html_url": "https://github.com/ahrmichelon/quadra/releases/tag/windows-v1.1.0",
            "assets": [
-             {"name": "Quadra-x64.exe", "browser_download_url": "https://github.com/ahrmichelon/quadra/releases/download/windows-v1.1.0/Quadra-x64.exe"},
+             {"name": "Quadra-x64.exe", "browser_download_url": "https://github.com/ahrmichelon/quadra/releases/download/windows-v1.1.0/Quadra-x64.exe",
+              "digest": "sha256:062ECE52D51F0B3A5357D86D7C6F254C3EE170CDF4D5A5751D774949FE2BF113"},
              {"name": "Quadra-arm64.exe", "browser_download_url": "https://github.com/ahrmichelon/quadra/releases/download/windows-v1.1.0/Quadra-arm64.exe"}
            ]},
           {"tag_name": "windows-v1.0.0", "draft": false, "prerelease": false, "html_url": "https://example.com/1.0.0", "assets": []}
@@ -47,6 +54,54 @@ public class UpdateTests
                      release.DownloadUrl("arm64"));
         // A processor without its own file gets the release page.
         Assert.Equal(release.PageUrl, release.DownloadUrl("x86"));
+        // GitHub's checksum, when there is one.
+        Assert.Equal("062ece52d51f0b3a5357d86d7c6f254c3ee170cdf4d5a5751d774949fe2bf113", release.ExeFor("x64")!.Sha256);
+        Assert.Null(release.ExeFor("arm64")!.Sha256);
+    }
+
+    /// <summary>Answers every request with the same bytes, like GitHub serving a file.</summary>
+    private sealed class FakeServer(byte[] body) : HttpMessageHandler
+    {
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancel) =>
+            Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent(body) });
+    }
+
+    private static async Task<(bool Saved, Exception? Error)> Download(byte[] served, string? sha256)
+    {
+        string path = Path.Combine(Path.GetTempPath(), $"QuadraTest-{Guid.NewGuid():N}.exe");
+        try
+        {
+            using var http = new HttpClient(new FakeServer(served));
+            var error = await Record.ExceptionAsync(() => Updates.DownloadAsync(http, new Asset("https://example.com/Quadra-x64.exe", sha256), path));
+            Assert.False(File.Exists(path + ".part"), "the partial download must be cleaned up");
+            return (File.Exists(path), error);
+        }
+        finally
+        {
+            File.Delete(path);
+        }
+    }
+
+    [Fact]
+    public async Task ADownloadIsSavedOnlyWhenItMatchesGitHubsChecksum()
+    {
+        byte[] program = [(byte)'M', (byte)'Z', 1, 2, 3, 4];
+        string good = Convert.ToHexStringLower(SHA256.HashData(program));
+
+        var ok = await Download(program, good);
+        Assert.True(ok.Saved);
+        Assert.Null(ok.Error);
+
+        var withoutChecksum = await Download(program, null);
+        Assert.True(withoutChecksum.Saved);
+
+        var tampered = await Download([(byte)'M', (byte)'Z', 9, 9, 9], good);
+        Assert.False(tampered.Saved);
+        Assert.IsType<InvalidDataException>(tampered.Error);
+
+        var notAProgram = await Download("<html>Not found</html>"u8.ToArray(), null);
+        Assert.False(notAProgram.Saved);
+        Assert.IsType<InvalidDataException>(notAProgram.Error);
     }
 
     [Fact]

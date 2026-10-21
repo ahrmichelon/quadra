@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
+using Microsoft.Win32;
 
 namespace Quadra;
 
@@ -105,6 +106,8 @@ internal static class SelfTest
             await Wait(300);
             Check("Shows the tray icon", true);
         }
+
+        await InstallUpdateUninstall();
     }
 
     private static async Task UpdateCheck()
@@ -116,6 +119,26 @@ internal static class SelfTest
             var release = await Updates.CheckAsync(http, "0.0.1");
             Check("Finds the newest Windows release on GitHub", release != null,
                   release == null ? "none found" : $"{release.Version}, {release.DownloadUrl("x64")}");
+
+            if (release?.ExeFor("x64") is { } exe)
+            {
+                http.Timeout = TimeSpan.FromMinutes(5);
+                string path = Path.Combine(Path.GetTempPath(), $"QuadraSelfTest-{Guid.NewGuid():N}.exe");
+                try
+                {
+                    await Updates.DownloadAsync(http, exe, path);
+                    Check("Downloads an update and checks it against GitHub's checksum", File.Exists(path) && exe.Sha256 != null,
+                          $"{new FileInfo(path).Length / 1048576} MB, sha256 {exe.Sha256}");
+                }
+                catch (InvalidDataException e)
+                {
+                    Fail("Downloads an update and checks it against GitHub's checksum", e.Message);
+                }
+                finally
+                {
+                    File.Delete(path);
+                }
+            }
         }
         catch (Exception e)
         {
@@ -385,6 +408,109 @@ internal static class SelfTest
               $"{window.ActualWidth} × {window.ActualHeight} DIPs");
         Screenshot("settings.png", WindowRect(new WindowInteropHelper(window).Handle));
         window.Close();
+    }
+
+    // Installing, updating and uninstalling, as a user would, in a temporary folder under test names
+    // (QUADRA_TEST_ROOT), so the real Quadra is never touched.
+
+    private const string RunKey = @"Software\Microsoft\Windows\CurrentVersion\Run";
+    private const string TestUninstallKey = @"Software\Microsoft\Windows\CurrentVersion\Uninstall\QuadraTest";
+
+    private static async Task InstallUpdateUninstall()
+    {
+        string root = Path.Combine(Path.GetTempPath(), "QuadraSelfTest-" + Guid.NewGuid().ToString("N")[..8]);
+        string downloaded = Path.Combine(root, "Downloads", "Quadra-x64.exe");
+        string installFolder = Path.Combine(root, "Programs", "Quadra");
+        string installed = Path.Combine(installFolder, "Quadra.exe");
+        string shortcut = Path.Combine(root, "Start Menu", "QuadraTest.lnk");
+        try
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(downloaded)!);
+            File.Copy(Environment.ProcessPath!, downloaded);
+
+            int code = await RunTestCopy(root, downloaded, "");
+            Check("The downloaded Quadra.exe installs itself and closes", code == 0, $"exit code {code}");
+            Check("Installs Quadra.exe for the user, without administrator rights", File.Exists(installed));
+            Check("Adds a Start menu shortcut", File.Exists(shortcut));
+            using (var key = Registry.CurrentUser.OpenSubKey(TestUninstallKey))
+                Check("Appears in Settings → Apps, with Uninstall",
+                      key?.GetValue("UninstallString") is string u && u.Contains(installed, StringComparison.OrdinalIgnoreCase));
+            using (var key = Registry.CurrentUser.OpenSubKey(RunKey))
+                Check("Opens with Windows, from the installed copy",
+                      key?.GetValue("QuadraTest") is string r && r.Contains(installed, StringComparison.OrdinalIgnoreCase));
+            int first = await TestCopyProcess();
+            Check("Opens the installed copy", first != 0);
+
+            code = await RunTestCopy(root, downloaded, "");
+            await Wait(1500);
+            int same = await TestCopyProcess();
+            Check("Opening the downloaded file again keeps the installed copy open", code == 0 && same == first,
+                  $"process {first} → {same}");
+
+            code = await RunTestCopy(root, downloaded, "", fakeVersion: "99.0.0");
+            int second = await TestCopyProcess();
+            Check("A newer version closes the open copy, takes its place and opens",
+                  code == 0 && second != 0 && second != first, $"process {first} → {second}");
+
+            code = await RunTestCopy(root, installed, "--uninstall --quiet");
+            await Wait(4000);
+            Check("Uninstall closes Quadra", TestCopyWindow() == IntPtr.Zero);
+            bool removed = !Directory.Exists(installFolder) && !File.Exists(shortcut) &&
+                           !Directory.Exists(Path.Combine(root, "Data"));
+            using (var key = Registry.CurrentUser.OpenSubKey(RunKey)) removed &= key?.GetValue("QuadraTest") == null;
+            using (var key = Registry.CurrentUser.OpenSubKey(TestUninstallKey)) removed &= key == null;
+            Check("Uninstall removes the app, its shortcut, its entries and its settings", code == 0 && removed,
+                  $"exit code {code}, folder left: {Directory.Exists(installFolder)}");
+        }
+        catch (Exception e)
+        {
+            Fail("Installing, updating and uninstalling", e.ToString());
+        }
+        finally
+        {
+            // Leave nothing behind, even when a check failed.
+            if (TestCopyWindow() is var window && window != IntPtr.Zero)
+            {
+                Native.GetWindowThreadProcessId(window, out uint pid);
+                try { Process.GetProcessById((int)pid).Kill(); } catch (Exception) { }
+            }
+            using (var key = Registry.CurrentUser.OpenSubKey(RunKey, writable: true)) key?.DeleteValue("QuadraTest", false);
+            Registry.CurrentUser.DeleteSubKeyTree(TestUninstallKey, throwOnMissingSubKey: false);
+            await Wait(1000);
+            try { Directory.Delete(root, recursive: true); } catch (Exception) { }
+        }
+    }
+
+    /// <summary>Runs a copy of Quadra under the test names and waits (up to 30 s) for it to finish.</summary>
+    private static async Task<int> RunTestCopy(string root, string exe, string arguments, string? fakeVersion = null)
+    {
+        var start = new ProcessStartInfo(exe, arguments) { UseShellExecute = false };
+        start.Environment["QUADRA_TEST_ROOT"] = root;
+        if (fakeVersion != null) start.Environment["QUADRA_TEST_VERSION"] = fakeVersion;
+        using var process = Process.Start(start)!;
+        for (int i = 0; i < 150 && !process.HasExited; i++) await Wait(200);
+        if (process.HasExited) return process.ExitCode;
+        process.Kill();
+        return -1;
+    }
+
+    private static IntPtr TestCopyWindow() =>
+        Native.FindWindowEx(Native.HWND_MESSAGE, IntPtr.Zero, null, "QuadraTest.MessageWindow");
+
+    /// <summary>The process of the open test copy (waits up to 15 s for it to open), or 0.</summary>
+    private static async Task<int> TestCopyProcess()
+    {
+        for (int i = 0; i < 75; i++)
+        {
+            var window = TestCopyWindow();
+            if (window != IntPtr.Zero)
+            {
+                Native.GetWindowThreadProcessId(window, out uint pid);
+                return (int)pid;
+            }
+            await Wait(200);
+        }
+        return 0;
     }
 
     /// <summary>Presses keys together (in order) and releases them (in reverse order).</summary>

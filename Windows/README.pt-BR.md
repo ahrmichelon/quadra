@@ -41,15 +41,15 @@ na hora em que precisa, e vê onde a janela vai parar antes de soltar o mouse.
    (procure **Quadra for Windows**):
    - **Quadra-x64.exe** para a maioria dos PCs (Intel e AMD).
    - **Quadra-arm64.exe** para PCs com processador ARM (Snapdragon, Surface Pro X).
-2. Coloque o arquivo numa pasta onde ele vai ficar, por exemplo **Documentos\Quadra**, e, se
-   quiser, renomeie para **Quadra.exe**.
-3. Abra. O Quadra ainda não tem um certificado pago, então na primeira vez o Windows pode mostrar
+2. Abra o arquivo baixado. O Quadra ainda não tem um certificado pago, então o Windows pode mostrar
    **"O Windows protegeu o computador"**. Clique em **Mais informações** e depois em
    **Executar assim mesmo**.
-4. Um aviso diz que o Quadra está aberto. O ícone fica ao lado do relógio; se não aparecer, clique
-   na setinha **^**. Para deixá-lo sempre à vista, arraste o ícone para a barra de tarefas.
-5. Para o Quadra abrir sempre que você entrar no Windows, clique com o botão direito no ícone e
-   escolha **Iniciar com o Windows**.
+3. O Quadra se instala sozinho e abre. Ele fica na sua pasta de usuário
+   (`%LocalAppData%\Programs\Quadra`, sem precisar de administrador), aparece no menu Iniciar e em
+   **Configurações → Aplicativos**, e abre sozinho toda vez que o Windows inicia (dá para desligar
+   nas configurações dele). Depois, pode apagar o arquivo baixado.
+4. Um aviso diz que o Quadra está instalado. O ícone fica ao lado do relógio; se não aparecer,
+   clique na setinha **^**. Para deixá-lo sempre à vista, arraste o ícone para a barra de tarefas.
 
 Precisa do Windows 10 (versão 1809 ou mais nova) ou do Windows 11, 64 bits. O .NET já vem dentro
 do Quadra.exe, então não há mais nada para instalar.
@@ -73,9 +73,10 @@ mostra um aviso ao lado dele.
 
 Uma vez por dia o Quadra pergunta ao GitHub se saiu versão nova e avisa com uma notificação e um
 item no topo do menu (dá para desligar nas Configurações, onde **Procurar agora** verifica na
-hora). Para atualizar, baixe o Quadra.exe novo, saia do Quadra e coloque o arquivo novo no lugar do
-antigo. Essa verificação é a única vez que o Quadra usa a internet, e não envia nada sobre você ou
-o seu PC.
+hora). Clique em **Sim** para atualizar: o Quadra baixa a versão nova, confere com o arquivo
+publicado no GitHub, fecha e abre de novo sozinho, mantendo suas configurações e layouts. Abrir um
+Quadra.exe mais novo que você mesmo baixou atualiza do mesmo jeito. A verificação e o download são
+as únicas vezes que o Quadra usa a internet, e não enviam nada sobre você ou o seu PC.
 
 Bom saber:
 
@@ -84,8 +85,8 @@ Bom saber:
   como administrador.
 - As configurações ficam em `%AppData%\Quadra\settings.json`. O arquivo `quadra.log`, na mesma
   pasta, ajuda quando for relatar um problema.
-- Para remover o Quadra: desligue **Iniciar com o Windows**, escolha **Sair do Quadra** e apague
-  o Quadra.exe e a pasta `%AppData%\Quadra`.
+- Para remover o Quadra, abra **Configurações → Aplicativos → Aplicativos instalados**, procure
+  **Quadra** e escolha **Desinstalar**. Isso remove o Quadra, o atalho e as configurações dele.
 
 ## Compilar
 
@@ -99,6 +100,8 @@ dotnet publish src/Quadra/Quadra.csproj -c Release -r win-x64 -o publish/x64
 ```
 
 O segundo comando gera `publish/x64/Quadra.exe` com o .NET dentro. Use `-r win-arm64` para ARM.
+Aberto normalmente, o Quadra.exe se instala; acrescente `--portable` para rodá-lo de onde está
+enquanto mexe no código.
 No Windows, `Quadra.exe --self-test resultados` testa as partes que conversam com o Windows (mover
 janelas, atalhos, o painel, as configurações) e grava um relatório e capturas de tela na pasta
 `resultados`. O GitHub roda os testes e esse autoteste a cada mudança.

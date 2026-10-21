@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -48,6 +49,8 @@ internal sealed class QuadraApp : IDisposable
     private DispatcherTimer? focusTimer, checkTimer, updateTimer;
 
     private static readonly HttpClient Http = new() { Timeout = TimeSpan.FromSeconds(20) };
+    private static readonly HttpClient Downloads = new() { Timeout = TimeSpan.FromMinutes(10) };
+    private bool downloading;
     /// <summary>The newer release found by the last check, if any.</summary>
     private Release? availableUpdate;
     /// <summary>The release the last notification was about (null for other notifications).</summary>
@@ -93,6 +96,7 @@ internal sealed class QuadraApp : IDisposable
         hotKeys = new HotKeyCenter();
         hotKeys.Updated += failed => store.SetUnavailable(failed);
         hotKeys.ShowSettingsRequested += OpenSettings;
+        hotKeys.QuitRequested += Quit;
         HotKeyField.RecordingStarted = hotKeys.Suspend;
         HotKeyField.RecordingStopped = hotKeys.Resume;
         store.Changed += RegisterHotKeys;
@@ -113,12 +117,26 @@ internal sealed class QuadraApp : IDisposable
         StartUpdateChecks();
 
         StartWithWindows.UpdatePathIfMoved();
-        if (!store.Current.Welcomed)
+        DeleteOldUpdateDownloads();
+        Log.Write(Installer.IsRunningInstalled ? $"Running from {AppPaths.InstallFolder}" : $"Running from {Environment.ProcessPath}");
+
+        var settings = store.Current;
+        if (!settings.Welcomed || settings.LastVersion == null)
         {
-            var combo = store.Current.ShowGridHotKey ?? HotKeyCombo.ShowGridDefault;
-            tray.ShowBalloon(Loc.Get("Welcome_Title"), Loc.Format("Welcome_Text", combo.Display));
-            store.Edit(s => s.Welcomed = true);
+            // New, or coming from 1.0/1.1, which didn't install themselves.
+            var combo = settings.ShowGridHotKey ?? HotKeyCombo.ShowGridDefault;
+            string text = Installer.IsRunningInstalled ? "Welcome_Text" : "Welcome_TextPortable";
+            tray.ShowBalloon(Loc.Get("Welcome_Title"), Loc.Format(text, combo.Display));
         }
+        else if (settings.LastVersion != Links.Version)
+        {
+            tray.ShowBalloon(Loc.Format("Updated_Title", Links.Version), Loc.Get("Updated_Text"));
+        }
+        store.Edit(s =>
+        {
+            s.Welcomed = true;
+            s.LastVersion = Links.Version;
+        });
     }
 
     /// <summary>Registers the app's shortcuts and each layout's shortcut (only when they changed).</summary>
@@ -611,9 +629,59 @@ internal sealed class QuadraApp : IDisposable
         var answer = MessageBox.Show(
             Loc.Format("Update_Available", release.Version) + "\n\n" + Loc.Format("Update_Instructions", Links.Version),
             "Quadra", MessageBoxButton.YesNo, MessageBoxImage.Information);
-        if (answer != MessageBoxResult.Yes) return;
+        if (answer == MessageBoxResult.Yes) DownloadAndInstall(release);
+    }
+
+    /// <summary>
+    /// Downloads the new Quadra.exe (checked against GitHub's checksum) and opens it. The new version installs
+    /// itself: it closes this copy, takes its place and opens. If anything goes wrong, the download page opens.
+    /// </summary>
+    private async void DownloadAndInstall(Release release)
+    {
+        if (downloading) return;
         string architecture = RuntimeInformation.OSArchitecture == Architecture.Arm64 ? "arm64" : "x64";
-        Links.Open(release.DownloadUrl(architecture));
+        if (release.ExeFor(architecture) is not { } exe)
+        {
+            Links.Open(release.PageUrl);
+            return;
+        }
+        downloading = true;
+        notifiedUpdate = null;
+        tray?.ShowBalloon(Loc.Format("Update_Downloading", release.Version), Loc.Get("Update_DownloadingText"));
+        string path = Path.Combine(Path.GetTempPath(), $"Quadra-update-{release.Version}.exe");
+        try
+        {
+            await Updates.DownloadAsync(Downloads, exe, path);
+            Log.Write($"Downloaded Quadra {release.Version} to {path}; opening it to install");
+            Process.Start(new ProcessStartInfo(path) { UseShellExecute = false });
+        }
+        catch (Exception e)
+        {
+            Log.Write($"Couldn't download Quadra {release.Version}: {e}");
+            Message(Loc.Get("Update_DownloadFailed"), e.Message + "\n\n" + Loc.Get("Update_OpenPage"), MessageBoxImage.Warning);
+            Links.Open(release.PageUrl);
+        }
+        finally
+        {
+            downloading = false;
+        }
+    }
+
+    /// <summary>Updates downloaded earlier stay in Temp after installing themselves; remove them.</summary>
+    private static void DeleteOldUpdateDownloads()
+    {
+        try
+        {
+            foreach (var file in Directory.EnumerateFiles(Path.GetTempPath(), "Quadra-update-*.exe"))
+            {
+                if (string.Equals(file, Environment.ProcessPath, StringComparison.OrdinalIgnoreCase)) continue;
+                try { File.Delete(file); } catch (Exception) { } // still open; next time
+            }
+        }
+        catch (Exception e)
+        {
+            Log.Write($"Couldn't clean up old update downloads: {e.Message}");
+        }
     }
 
     private static void Message(string title, string text, MessageBoxImage image) =>
