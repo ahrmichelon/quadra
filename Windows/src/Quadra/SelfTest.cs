@@ -122,11 +122,11 @@ internal static class SelfTest
 
             if (release?.ExeFor("x64") is { } exe)
             {
-                http.Timeout = TimeSpan.FromMinutes(5);
+                using var download = new HttpClient { Timeout = TimeSpan.FromMinutes(5) };
                 string path = Path.Combine(Path.GetTempPath(), $"QuadraSelfTest-{Guid.NewGuid():N}.exe");
                 try
                 {
-                    await Updates.DownloadAsync(http, exe, path);
+                    await Updates.DownloadAsync(download, exe, path);
                     Check("Downloads an update and checks it against GitHub's checksum", File.Exists(path) && exe.Sha256 != null,
                           $"{new FileInfo(path).Length / 1048576} MB, sha256 {exe.Sha256}");
                 }
