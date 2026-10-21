@@ -1,0 +1,9 @@
+.DS_Store
+# Metadata files macOS creates on exFAT and other non-Mac drives
+._*
+.build/
+.swiftpm/
+build/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+DerivedData/

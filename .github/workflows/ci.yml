@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run tests
+        run: swift test
+
+      - name: Build Quadra.app
+        run: ./build.sh --zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Quadra
+          path: build/Quadra.zip

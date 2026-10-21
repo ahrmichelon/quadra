@@ -1,0 +1,91 @@
+<p align="center">
+  <img src="Branding/quadra-icon-1024.png" width="128" alt="Quadra icon">
+</p>
+
+<h1 align="center">Quadra</h1>
+
+<p align="center">
+  Arrange your Mac's windows on a grid. Free and open source.<br>
+  <a href="README.pt-BR.md">Leia em português</a>
+</p>
+
+<p align="center">
+  <img src="docs/images/panel-dark.png" width="430" alt="The Quadra grid over other windows">
+</p>
+
+Quadra is a menu bar app inspired by [Divvy](https://mizage.com/divvy/). Press a shortcut or
+click the icon, drag across the grid, and the window moves to that area of the screen.
+
+## Features
+
+- **Drag on a grid** to pick any area, with 1 to 20 columns and rows.
+- **See-through panel** in the middle of the screen, with a preview of where the window will land.
+- **Click another window** while the grid is open to move that one instead.
+- **Layouts with their own shortcuts**: save areas such as "left half" or "center" and apply them
+  with one keystroke. Six ready-made layouts are included.
+- **Multiple displays**: pick the display in the panel, or send a window to the next display.
+- **Ultrawide friendly**, and works with portrait and laptop displays too.
+- Adjustable gaps between windows, grid shape, size and opacity.
+- In English and Brazilian Portuguese.
+
+## Install
+
+1. Download `Quadra.zip` from the [latest release](https://github.com/ahrmichelon/quadra/releases/latest),
+   unzip it and move **Quadra.app** to **Applications**.
+2. Open it. Quadra is not notarized by Apple yet, so the first time macOS blocks it.
+   Open **System Settings → Privacy & Security**, scroll down and click **Open Anyway**.
+3. When asked, allow **Accessibility** (System Settings → Privacy & Security → Accessibility →
+   turn on Quadra). Quadra needs it to move other apps' windows.
+
+Requires macOS 14 Sonoma or later, on Apple silicon or Intel.
+
+> After updating Quadra, macOS may stop recognizing the permission. If shortcuts stop moving
+> windows, remove Quadra from the Accessibility list with **–** and add it again with **+**.
+
+## Use
+
+| Shortcut | What it does |
+|---|---|
+| **⌃⌥G** or click the menu bar icon | Open the grid |
+| Drag on the grid | Move the window to that area |
+| **← → ↑ ↓** / **↩** (grid open) | Halves / full screen |
+| **esc** | Close the grid |
+| **⌃⌥← → ↑ ↓**, **⌃⌥↩**, **⌃⌥C** | Default layouts: halves, full screen, center |
+| **⌃⌥⌘→** / **⌃⌥⌘←** | Move to the next / previous display |
+
+Right-click the menu bar icon, or click the gear on the panel, for the menu. Every shortcut
+can be changed in **Settings & Layouts**.
+
+<p align="center">
+  <img src="docs/images/settings.png" width="560" alt="Quadra settings and layouts">
+</p>
+
+## Build from source
+
+You need macOS 14 or later and Xcode 15.3 or later.
+
+```bash
+git clone https://github.com/ahrmichelon/quadra.git
+cd quadra
+./build.sh --install   # builds build/Quadra.app, copies it to /Applications and opens it
+swift test             # runs the tests
+```
+
+Open `Package.swift` in Xcode to work on the code.
+
+| Folder | Contents |
+|---|---|
+| `Sources/Quadra` | The app |
+| `Tests/QuadraTests` | Tests for the geometry, layouts and shortcuts |
+| `App` | `Info.plist` and translations |
+| `Branding` | Icon in every format, colors |
+| `Tools` | Script that draws the icon |
+
+## Contributing
+
+Bug reports, ideas and pull requests are welcome, in English or Portuguese.
+See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## License
+
+[MIT](LICENSE)

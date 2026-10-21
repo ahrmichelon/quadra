@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <title>Quadra</title>
+  <defs>
+    <linearGradient id="fundo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3B62F4"/>
+      <stop offset="1" stop-color="#2845C9"/>
+    </linearGradient>
+  </defs>
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="url(#fundo)"/>
+  <rect x="237" y="237" width="353" height="353" rx="36" fill="#7FE3FF"/>
+  <g fill="#FFFFFF" fill-opacity="0.28">
+    <rect x="631" y="237" width="156" height="156" rx="30"/>
+    <rect x="631" y="434" width="156" height="156" rx="30"/>
+    <rect x="237" y="631" width="156" height="156" rx="30"/>
+    <rect x="434" y="631" width="156" height="156" rx="30"/>
+    <rect x="631" y="631" width="156" height="156" rx="30"/>
+  </g>
+</svg>

@@ -1,0 +1,73 @@
+/* Português (Brasil). Cada linha: "texto em inglês, como está no código" = "tradução"; */
+
+/* Painel da grade */
+"Settings" = "Ajustes";
+"Close (esc)" = "Fechar (esc)";
+"↩ full screen · esc closes" = "↩ tela cheia · esc fecha";
+"Drag to choose the area · click another window to switch · ←→↑↓ halves · ↩ full screen · esc closes" = "Arraste para escolher a área · clique em outra janela para trocar · ←→↑↓ metades · ↩ tela cheia · esc fecha";
+"Columns: %lld" = "Colunas: %lld";
+"Rows: %lld" = "Linhas: %lld";
+
+/* Ícone e menu */
+"Click for the grid · right-click for the menu" = "Clique para a grade · botão direito para o menu";
+"Show Grid" = "Mostrar grade";
+"⚠︎ Grid shortcut: %@" = "⚠︎ Atalho da grade: %@";
+"Layouts" = "Layouts";
+"Untitled" = "Sem nome";
+"Displays" = "Telas";
+"Move to Next Display" = "Mover para a próxima tela";
+"Move to Previous Display" = "Mover para a tela anterior";
+"Columns × rows" = "Colunas × linhas";
+"%lld × %lld (custom)" = "%lld × %lld (personalizado)";
+"Fine-tune with the controls on the grid" = "Ajuste fino: use os controles na grade";
+"Grid Size" = "Tamanho da grade";
+"None" = "Nenhum";
+"%lld points" = "%lld pontos";
+"Window Spacing" = "Espaço entre janelas";
+"✓ Accessibility allowed" = "✓ Acessibilidade permitida";
+"Allow Accessibility…" = "Permitir Acessibilidade…";
+"Open at Login" = "Abrir ao iniciar o Mac";
+"Settings & Layouts…" = "Ajustes e layouts…";
+"About Quadra" = "Sobre o Quadra";
+"Quit Quadra" = "Sair do Quadra";
+"Quadra Settings" = "Ajustes do Quadra";
+"Couldn't change Open at Login" = "Não deu para mudar a abertura automática";
+"Tip: move Quadra.app to the Applications folder and try again." = "Dica: coloque o Quadra.app na pasta Aplicativos e tente de novo.";
+"Arrange your Mac's windows on a grid." = "Organize as janelas do Mac numa grade.";
+
+/* Layouts padrão e avisos */
+"Left half" = "Metade esquerda";
+"Right half" = "Metade direita";
+"Top half" = "Metade de cima";
+"Bottom half" = "Metade de baixo";
+"Full screen" = "Tela cheia";
+"Center" = "Centro";
+"Duplicate shortcut" = "Atalho repetido";
+"Used by another app" = "Outro app já usa";
+"Space" = "Espaço";
+
+/* Formatos da grade */
+"Square" = "Quadrado";
+"Like the display" = "Como a tela";
+
+/* Janela de Ajustes */
+"Arrange your Mac's windows on a grid · version %@" = "Organize as janelas do Mac numa grade · versão %@";
+"Show the grid" = "Mostrar a grade";
+"Move to the next display" = "Mover para a próxima tela";
+"Move to the previous display" = "Mover para a tela anterior";
+"Grid shape" = "Formato da grade";
+"Grid width" = "Largura da grade";
+"Grid opacity" = "Opacidade da grade";
+"Lower lets you see the apps behind it." = "Mais baixa deixa ver os apps de trás.";
+"Each layout moves the focused window to an area of the screen, with its own shortcut." = "Cada layout leva a janela em foco para uma área da tela, com um atalho próprio.";
+"New layout" = "Novo layout";
+"Delete the selected layout" = "Apagar o layout escolhido";
+"Choose a layout from the list or click + to create one." = "Escolha um layout na lista ou clique em + para criar um.";
+"Name" = "Nome";
+"Layout name" = "Nome do layout";
+"Shortcut" = "Atalho";
+"Area" = "Área";
+"Drag on the grid to choose the area." = "Arraste na grade para escolher a área.";
+"Press the shortcut…" = "Aperte o atalho…";
+"Record shortcut" = "Gravar atalho";
+"Remove shortcut" = "Remover atalho";
