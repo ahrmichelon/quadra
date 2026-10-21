@@ -302,6 +302,8 @@ internal static class SelfTest
             await Wait(600);
             Check("Notices a click on another app's window", seen.Contains(notepad),
                   $"{seen.Count} event(s), foreground is {(Native.GetForegroundWindow() == notepad ? "Notepad" : "another window")}");
+            Check("Finds the app window in front (for a click on the icon before any window was used)",
+                  WindowMover.FrontmostWindow() == notepad, WindowMover.Title(WindowMover.FrontmostWindow()));
             helper.Close();
         }
         finally

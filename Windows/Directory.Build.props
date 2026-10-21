@@ -10,7 +10,7 @@
     <!-- Debug symbols inside the .dll/.exe, so publishing gives a single Quadra.exe. -->
     <DebugType>embedded</DebugType>
 
-    <Version>1.2.1</Version>
+    <Version>1.2.2</Version>
     <Product>Quadra</Product>
     <Company>Quadra</Company>
     <Authors>Alan Ribeiro Michelon and Quadra contributors</Authors>

@@ -63,7 +63,9 @@ Quadra.exe, so there is nothing else to install.
 | **Ctrl+Alt+← → ↑ ↓**, **Ctrl+Alt+Enter**, **Ctrl+Alt+C** | Default layouts: halves, full screen, center |
 | **Ctrl+Alt+Shift+→** / **Ctrl+Alt+Shift+←** | Move to the next / previous display |
 
-Right-click the icon, or click the gear on the panel, for the menu. Every shortcut can be
+Clicking the icon opens the grid for the last window you used (or the one in front); with no window
+open, it opens the settings. Right-click the icon, or click the gear on the panel, for the menu.
+Every shortcut can be
 changed in **Settings and Layouts**; when another app already uses one, Quadra shows a warning
 next to it.
 

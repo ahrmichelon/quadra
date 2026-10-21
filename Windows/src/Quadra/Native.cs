@@ -164,6 +164,11 @@ internal static class Native
                       SWP_NOOWNERZORDER = 0x200;
     public const int DWMWA_EXTENDED_FRAME_BOUNDS = 9, DWMWA_CLOAKED = 14;
 
+    public delegate bool EnumWindowsProc(IntPtr hwnd, IntPtr data);
+
+    /// <summary>Lists the top-level windows from the front to the back.</summary>
+    [DllImport("user32.dll")] public static extern bool EnumWindows(EnumWindowsProc callback, IntPtr data);
+
     [DllImport("user32.dll")] public static extern IntPtr GetForegroundWindow();
     [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr hwnd);
     [DllImport("user32.dll")] public static extern bool IsWindow(IntPtr hwnd);

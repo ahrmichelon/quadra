@@ -65,7 +65,9 @@ do Quadra.exe, então não há mais nada para instalar.
 | **Ctrl+Alt+← → ↑ ↓**, **Ctrl+Alt+Enter**, **Ctrl+Alt+C** | Layouts prontos: metades, tela cheia, centro |
 | **Ctrl+Alt+Shift+→** / **Ctrl+Alt+Shift+←** | Leva para a próxima tela / tela anterior |
 
-Clique com o botão direito no ícone, ou na engrenagem do painel, para ver o menu. Todos os atalhos
+Clicar no ícone abre a grade para a última janela que você usou (ou a que está na frente); sem
+nenhuma janela aberta, abre as configurações. Clique com o botão direito no ícone, ou na engrenagem
+do painel, para ver o menu. Todos os atalhos
 podem ser trocados em **Configurações e layouts**; quando outro app já usa um atalho, o Quadra
 mostra um aviso ao lado dele.
 

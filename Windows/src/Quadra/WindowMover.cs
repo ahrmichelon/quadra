@@ -54,6 +54,22 @@ internal static class WindowMover
     }
 
     /// <summary>
+    /// The app window nearest the front of the screen (not minimized), or nothing when no app window is open.
+    /// Used when the tray icon is clicked before any window was used since Quadra opened.
+    /// </summary>
+    public static IntPtr FrontmostWindow()
+    {
+        IntPtr found = IntPtr.Zero;
+        Native.EnumWindows((hwnd, _) =>
+        {
+            if (Native.IsIconic(hwnd) || !IsManageable(hwnd)) return true;
+            found = hwnd;
+            return false; // stop: windows come from the front to the back
+        }, IntPtr.Zero);
+        return found;
+    }
+
+    /// <summary>
     /// The window as people see it. Windows 10 and 11 add invisible borders of a few pixels around most
     /// windows; the frame here leaves them out, so windows line up exactly with the screen edges.
     /// </summary>

@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using System.Windows;
 using WinForms = System.Windows.Forms;
 
@@ -58,19 +57,6 @@ internal sealed class TrayIcon : IDisposable
         var resource = Application.GetResourceStream(new Uri("pack://application:,,,/Assets/Quadra.ico"));
         using var stream = resource.Stream;
         return new System.Drawing.Icon(stream, WinForms.SystemInformation.SmallIconSize);
-    }
-
-    /// <summary>Shows the menu next to the icon, as a right click would.</summary>
-    public void ShowMenuAtIcon()
-    {
-        // NotifyIcon's own method also gives the menu the focus, so it closes when clicking elsewhere.
-        var show = typeof(WinForms.NotifyIcon).GetMethod("ShowContextMenu", BindingFlags.Instance | BindingFlags.NonPublic);
-        if (show != null)
-        {
-            show.Invoke(icon, null);
-            return;
-        }
-        Menu.Show(WinForms.Cursor.Position);
     }
 
     /// <summary>Shows the menu with its top left corner at a screen point (pixels).</summary>
