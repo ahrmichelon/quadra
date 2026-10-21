@@ -1,0 +1,185 @@
+<Window x:Class="Quadra.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Quadra"
+        Width="880"
+        SizeToContent="Height"
+        ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterScreen"
+        UseLayoutRounding="True"
+        FontFamily="Segoe UI"
+        FontSize="13"
+        Background="{x:Static SystemColors.WindowBrush}">
+  <Window.Resources>
+    <Style x:Key="Label" TargetType="TextBlock">
+      <Setter Property="HorizontalAlignment" Value="Right" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+      <Setter Property="Margin" Value="0,0,12,0" />
+    </Style>
+    <Style x:Key="Hint" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="#FF616161" />
+      <Setter Property="TextWrapping" Value="Wrap" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style x:Key="Warning" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="#FFB45309" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+      <Setter Property="Margin" Value="10,0,0,0" />
+    </Style>
+    <Style x:Key="SmallButton" TargetType="Button">
+      <Setter Property="Width" Value="30" />
+      <Setter Property="Height" Value="26" />
+      <Setter Property="Margin" Value="0,0,4,0" />
+      <Setter Property="FontSize" Value="14" />
+    </Style>
+    <Style TargetType="ComboBox">
+      <Setter Property="Width" Value="190" />
+      <Setter Property="HorizontalAlignment" Value="Left" />
+      <Setter Property="Padding" Value="8,4" />
+    </Style>
+  </Window.Resources>
+
+  <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Focusable="False">
+  <StackPanel Margin="24,20,24,22">
+    <!-- Header -->
+    <DockPanel>
+      <Image x:Name="AppIcon" Width="48" Height="48" DockPanel.Dock="Left" Margin="0,0,14,0" />
+      <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center">
+        <Hyperlink x:Name="SupportLink"><Run Text="♥ " /><Run x:Name="SupportText" /></Hyperlink>
+      </TextBlock>
+      <StackPanel VerticalAlignment="Center">
+        <TextBlock Text="Quadra" FontSize="22" FontWeight="SemiBold" />
+        <TextBlock x:Name="Tagline" Style="{StaticResource Hint}" />
+      </StackPanel>
+    </DockPanel>
+
+    <Separator Margin="0,16" />
+
+    <!-- App shortcuts and the panel's look -->
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+
+      <TextBlock x:Name="ShowGridLabel" Grid.Row="0" Style="{StaticResource Label}" />
+      <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="0,3">
+        <local:HotKeyField x:Name="ShowGridKey" />
+        <TextBlock x:Name="ShowGridWarning" Style="{StaticResource Warning}" />
+      </StackPanel>
+
+      <TextBlock x:Name="NextDisplayLabel" Grid.Row="1" Style="{StaticResource Label}" />
+      <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="0,3">
+        <local:HotKeyField x:Name="NextDisplayKey" />
+        <TextBlock x:Name="NextDisplayWarning" Style="{StaticResource Warning}" />
+      </StackPanel>
+
+      <TextBlock x:Name="PreviousDisplayLabel" Grid.Row="2" Style="{StaticResource Label}" />
+      <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="0,3">
+        <local:HotKeyField x:Name="PreviousDisplayKey" />
+        <TextBlock x:Name="PreviousDisplayWarning" Style="{StaticResource Warning}" />
+      </StackPanel>
+
+      <TextBlock x:Name="ShapeLabel" Grid.Row="3" Style="{StaticResource Label}" />
+      <ComboBox x:Name="ShapeBox" Grid.Row="3" Grid.Column="1" Margin="0,8,0,3" />
+
+      <TextBlock x:Name="WidthLabel" Grid.Row="4" Style="{StaticResource Label}" />
+      <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" Margin="0,6">
+        <Slider x:Name="WidthSlider" Width="220" Minimum="240" Maximum="720" TickFrequency="10"
+                IsSnapToTickEnabled="True" VerticalAlignment="Center" />
+        <TextBlock x:Name="WidthValue" Style="{StaticResource Hint}" Margin="10,0,0,0" />
+      </StackPanel>
+
+      <TextBlock x:Name="OpacityLabel" Grid.Row="5" Style="{StaticResource Label}" />
+      <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" Margin="0,6">
+        <Slider x:Name="OpacitySlider" Width="220" Minimum="0.2" Maximum="1" TickFrequency="0.05"
+                IsSnapToTickEnabled="True" VerticalAlignment="Center" />
+        <TextBlock x:Name="OpacityValue" Style="{StaticResource Hint}" Width="44" Margin="10,0,0,0" />
+        <TextBlock x:Name="OpacityHint" Style="{StaticResource Hint}" />
+      </StackPanel>
+
+      <TextBlock x:Name="SpacingLabel" Grid.Row="6" Style="{StaticResource Label}" />
+      <ComboBox x:Name="SpacingBox" Grid.Row="6" Grid.Column="1" Margin="0,3" />
+
+      <CheckBox x:Name="StartWithWindowsBox" Grid.Row="7" Grid.Column="1" Margin="0,10,0,0" />
+    </Grid>
+
+    <Separator Margin="0,16" />
+
+    <!-- Layouts -->
+    <TextBlock x:Name="LayoutsTitle" FontSize="15" FontWeight="SemiBold" />
+    <TextBlock x:Name="LayoutsHint" Style="{StaticResource Hint}" Margin="0,2,0,12" />
+
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="280" />
+        <ColumnDefinition Width="24" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+
+      <DockPanel Grid.Column="0">
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,6,0,0">
+          <Button x:Name="AddButton" Style="{StaticResource SmallButton}" Content="+" />
+          <Button x:Name="RemoveButton" Style="{StaticResource SmallButton}" Content="−" />
+          <Button x:Name="UpButton" Style="{StaticResource SmallButton}" Content="↑" Margin="8,0,4,0" />
+          <Button x:Name="DownButton" Style="{StaticResource SmallButton}" Content="↓" />
+        </StackPanel>
+        <ListBox x:Name="LayoutList" Height="290" HorizontalContentAlignment="Stretch"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+      </DockPanel>
+
+      <Grid x:Name="Editor" Grid.Column="2">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Name="NameLabel" Grid.Row="0" Style="{StaticResource Label}" />
+        <TextBox x:Name="NameBox" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Padding="4,3" />
+
+        <TextBlock x:Name="ShortcutLabel" Grid.Row="1" Style="{StaticResource Label}" />
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="0,12">
+          <local:HotKeyField x:Name="LayoutKey" />
+          <TextBlock x:Name="LayoutWarning" Style="{StaticResource Warning}" />
+        </StackPanel>
+
+        <TextBlock x:Name="AreaLabel" Grid.Row="2" Style="{StaticResource Label}" VerticalAlignment="Top"
+                   Margin="0,2,12,0" />
+        <StackPanel Grid.Row="2" Grid.Column="1">
+          <Border x:Name="AreaBorder" HorizontalAlignment="Left" Background="#FFF7F7F7" BorderBrush="#FFD0D0D0"
+                  BorderThickness="1" CornerRadius="6" Padding="6">
+            <local:GridCanvas x:Name="AreaGrid" />
+          </Border>
+          <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+            <TextBlock x:Name="ColumnsText" VerticalAlignment="Center" MinWidth="80" />
+            <Button x:Name="FewerColumns" Style="{StaticResource SmallButton}" Content="−" />
+            <Button x:Name="MoreColumns" Style="{StaticResource SmallButton}" Content="+" />
+            <TextBlock x:Name="RowsText" VerticalAlignment="Center" MinWidth="70" Margin="18,0,0,0" />
+            <Button x:Name="FewerRows" Style="{StaticResource SmallButton}" Content="−" />
+            <Button x:Name="MoreRows" Style="{StaticResource SmallButton}" Content="+" />
+          </StackPanel>
+          <TextBlock x:Name="AreaHint" Style="{StaticResource Hint}" Margin="0,8,0,0" />
+        </StackPanel>
+      </Grid>
+
+      <TextBlock x:Name="EmptyText" Grid.Column="2" Style="{StaticResource Hint}" HorizontalAlignment="Center"
+                 TextAlignment="Center" MaxWidth="320" />
+    </Grid>
+  </StackPanel>
+  </ScrollViewer>
+</Window>

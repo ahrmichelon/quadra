@@ -12,6 +12,8 @@
 O Quadra é um app de barra de menus inspirado no [Divvy](https://mizage.com/divvy/). Aperte um
 atalho ou clique no ícone, arraste na grade, e a janela vai para aquela área da tela.
 
+> **Usa Windows?** O Quadra também roda no Windows 10 e 11: veja o [Quadra para Windows](Windows/README.pt-BR.md).
+
 ## O que ele faz
 
 - **Arraste numa grade** para escolher qualquer área, com 1 a 20 colunas e linhas.

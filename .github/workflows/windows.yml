@@ -1,0 +1,60 @@
+name: Windows
+
+# Quadra for Windows: runs the tests, builds Quadra.exe for x64 and ARM64, and runs the self-test
+# (Quadra.exe --self-test) on a real Windows machine. The report, the screenshots and both .exe
+# files are kept as downloadable artifacts of each run.
+on:
+  push:
+    branches: [main]
+    paths: ["Windows/**", ".github/workflows/windows*.yml"]
+  pull_request:
+    paths: ["Windows/**", ".github/workflows/windows*.yml"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: pwsh
+        working-directory: Windows
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: Windows/global.json
+
+      - name: Run the tests
+        run: dotnet test tests/Quadra.Core.Tests/Quadra.Core.Tests.csproj -c Release
+
+      - name: Build Quadra.exe
+        run: |
+          dotnet publish src/Quadra/Quadra.csproj -c Release -r win-x64 -o publish/x64
+          dotnet publish src/Quadra/Quadra.csproj -c Release -r win-arm64 -o publish/arm64
+          New-Item -ItemType Directory -Force dist | Out-Null
+          Copy-Item publish/x64/Quadra.exe dist/Quadra-x64.exe
+          Copy-Item publish/arm64/Quadra.exe dist/Quadra-arm64.exe
+          Get-ChildItem dist | Format-Table Name, Length
+
+      - name: Self-test on Windows
+        run: |
+          $exe = Resolve-Path publish/x64/Quadra.exe
+          $out = Join-Path $PWD self-test
+          $process = Start-Process -FilePath $exe -ArgumentList "--self-test", "`"$out`"" -PassThru
+          $null = $process.Handle  # keeps the exit code readable after the process ends
+          if (-not $process.WaitForExit(300000)) { Stop-Process $process -Force; throw "The self-test took too long" }
+          Get-Content (Join-Path $out report.txt)
+          if ($process.ExitCode -ne 0) { throw "The self-test failed ($($process.ExitCode) check(s))" }
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: self-test
+          path: Windows/self-test
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Quadra-Windows
+          path: Windows/dist

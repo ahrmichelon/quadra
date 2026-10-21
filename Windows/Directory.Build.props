@@ -1,0 +1,21 @@
+<Project>
+  <PropertyGroup>
+    <!-- On exFAT drives macOS writes a hidden "._Name" file next to every file. Never build them. -->
+    <DefaultItemExcludes>$(DefaultItemExcludes);**/._*</DefaultItemExcludes>
+
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- Debug symbols inside the .dll/.exe, so publishing gives a single Quadra.exe. -->
+    <DebugType>embedded</DebugType>
+
+    <Version>1.0.0</Version>
+    <Product>Quadra</Product>
+    <Company>Quadra</Company>
+    <Authors>Alan Ribeiro Michelon and Quadra contributors</Authors>
+    <Copyright>Copyright © 2026 Alan Ribeiro Michelon and Quadra contributors</Copyright>
+    <NeutralLanguage>en</NeutralLanguage>
+    <SatelliteResourceLanguages>en;pt-BR</SatelliteResourceLanguages>
+  </PropertyGroup>
+</Project>

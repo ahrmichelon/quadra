@@ -1,0 +1,12 @@
+.DS_Store
+# Metadata files macOS creates on exFAT and other non-Mac drives
+._*
+
+bin/
+obj/
+artifacts/
+publish/
+*.user
+.vs/
+.vscode/
+TestResults/

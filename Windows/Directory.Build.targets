@@ -1,0 +1,12 @@
+<Project>
+  <!-- A second guard against the hidden "._Name" files from exFAT drives (see Directory.Build.props). -->
+  <ItemGroup>
+    <Compile Remove="**/._*" />
+    <EmbeddedResource Remove="**/._*" />
+    <None Remove="**/._*" />
+    <Content Remove="**/._*" />
+    <Page Remove="**/._*" />
+    <Resource Remove="**/._*" />
+    <ApplicationDefinition Remove="**/._*" />
+  </ItemGroup>
+</Project>

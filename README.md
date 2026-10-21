@@ -16,6 +16,8 @@
 Quadra is a menu bar app inspired by [Divvy](https://mizage.com/divvy/). Press a shortcut or
 click the icon, drag across the grid, and the window moves to that area of the screen.
 
+> **On Windows?** Quadra also runs on Windows 10 and 11: see [Quadra for Windows](Windows/README.md).
+
 ## Features
 
 - **Drag on a grid** to pick any area, with 1 to 20 columns and rows.
@@ -95,6 +97,7 @@ Open `Package.swift` in Xcode to work on the code.
 | `App` | `Info.plist` and translations |
 | `Branding` | Icon in every format, colors |
 | `Tools` | Script that draws the icon |
+| `Windows` | Quadra for Windows (C# and .NET), see [its README](Windows/README.md) |
 
 ## Contributing
 

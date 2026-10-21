@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <!-- Only for the icon next to the clock (NotifyIcon) and its menu. -->
+    <UseWindowsForms>true</UseWindowsForms>
+    <!-- Lets the app build on macOS and Linux too (it only runs on Windows). -->
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+
+    <RootNamespace>Quadra</RootNamespace>
+    <AssemblyName>Quadra</AssemblyName>
+    <AssemblyTitle>Quadra</AssemblyTitle>
+    <Description>Arrange your windows on a grid</Description>
+    <StartupObject>Quadra.Program</StartupObject>
+    <ApplicationIcon>Assets\Quadra.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <DebugType>embedded</DebugType>
+    <!-- WFO0003 asks WinForms apps to set DPI awareness in code; Quadra is a WPF app, and WPF reads it
+         from app.manifest. -->
+    <NoWarn>$(NoWarn);WFO0003</NoWarn>
+  </PropertyGroup>
+
+  <!-- Publishing with a runtime (win-x64 or win-arm64) makes one Quadra.exe with .NET inside,
+       so people don't have to install anything. -->
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' != ''">
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Quadra.Core\Quadra.Core.csproj" />
+    <Resource Include="Assets\Quadra.ico" />
+  </ItemGroup>
+</Project>

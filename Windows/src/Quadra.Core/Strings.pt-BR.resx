@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <!-- Português (Brasil). Mantenha as mesmas chaves do Strings.resx. -->
+  <data name="Language_Code" xml:space="preserve"><value>pt-BR</value></data>
+  <data name="Panel_Settings" xml:space="preserve"><value>Configurações</value></data>
+  <data name="Panel_Close" xml:space="preserve"><value>Fechar (Esc)</value></data>
+  <data name="Panel_Hint" xml:space="preserve"><value>Enter tela cheia · Esc fecha</value></data>
+  <data name="Panel_GridTip" xml:space="preserve"><value>Arraste para escolher a área · clique em outra janela para trocar · ←→↑↓ metades · Enter tela cheia · Esc fecha</value></data>
+  <data name="Panel_Columns" xml:space="preserve"><value>Colunas: {0}</value></data>
+  <data name="Panel_Rows" xml:space="preserve"><value>Linhas: {0}</value></data>
+  <data name="Panel_FewerColumns" xml:space="preserve"><value>Menos colunas</value></data>
+  <data name="Panel_MoreColumns" xml:space="preserve"><value>Mais colunas</value></data>
+  <data name="Panel_FewerRows" xml:space="preserve"><value>Menos linhas</value></data>
+  <data name="Panel_MoreRows" xml:space="preserve"><value>Mais linhas</value></data>
+  <data name="Panel_Window" xml:space="preserve"><value>Janela</value></data>
+  <data name="Display_Number" xml:space="preserve"><value>Tela {0}</value></data>
+  <data name="Display_BuiltIn" xml:space="preserve"><value>Tela integrada</value></data>
+  <data name="Tray_Tip" xml:space="preserve"><value>Quadra: clique para a grade, botão direito para o menu</value></data>
+  <data name="Menu_ShowGrid" xml:space="preserve"><value>Mostrar grade</value></data>
+  <data name="Menu_GridShortcutWarning" xml:space="preserve"><value>⚠ Atalho da grade: {0}</value></data>
+  <data name="Menu_Layouts" xml:space="preserve"><value>Layouts</value></data>
+  <data name="Menu_Untitled" xml:space="preserve"><value>Sem nome</value></data>
+  <data name="Menu_Displays" xml:space="preserve"><value>Telas</value></data>
+  <data name="Menu_NextDisplay" xml:space="preserve"><value>Mover para a próxima tela</value></data>
+  <data name="Menu_PreviousDisplay" xml:space="preserve"><value>Mover para a tela anterior</value></data>
+  <data name="Menu_GridSize" xml:space="preserve"><value>Tamanho da grade</value></data>
+  <data name="Menu_ColumnsRows" xml:space="preserve"><value>Colunas × linhas</value></data>
+  <data name="Menu_CustomSize" xml:space="preserve"><value>{0} × {1} (personalizado)</value></data>
+  <data name="Menu_FineTune" xml:space="preserve"><value>Ajuste fino: use os controles na grade</value></data>
+  <data name="Menu_Spacing" xml:space="preserve"><value>Espaço entre janelas</value></data>
+  <data name="Menu_SpacingNone" xml:space="preserve"><value>Nenhum</value></data>
+  <data name="Menu_SpacingPixels" xml:space="preserve"><value>{0} pixels</value></data>
+  <data name="Menu_StartWithWindows" xml:space="preserve"><value>Iniciar com o Windows</value></data>
+  <data name="Menu_Settings" xml:space="preserve"><value>Configurações e layouts…</value></data>
+  <data name="Menu_Support" xml:space="preserve"><value>Apoiar o Quadra…</value></data>
+  <data name="Menu_About" xml:space="preserve"><value>Sobre o Quadra</value></data>
+  <data name="Menu_Quit" xml:space="preserve"><value>Sair do Quadra</value></data>
+  <data name="About_Text" xml:space="preserve"><value>Quadra para Windows {0}
+
+Organize suas janelas numa grade.
+Grátis e de código aberto, licença MIT.
+
+{1}</value></data>
+  <data name="Welcome_Title" xml:space="preserve"><value>O Quadra está aberto</value></data>
+  <data name="Welcome_Text" xml:space="preserve"><value>Aperte {0} ou clique no ícone do Quadra ao lado do relógio para abrir a grade. Se não vir o ícone, clique na setinha ^.</value></data>
+  <data name="Error_StartWithWindows" xml:space="preserve"><value>Não deu para mudar o início com o Windows: {0}</value></data>
+  <data name="Layout_LeftHalf" xml:space="preserve"><value>Metade esquerda</value></data>
+  <data name="Layout_RightHalf" xml:space="preserve"><value>Metade direita</value></data>
+  <data name="Layout_TopHalf" xml:space="preserve"><value>Metade de cima</value></data>
+  <data name="Layout_BottomHalf" xml:space="preserve"><value>Metade de baixo</value></data>
+  <data name="Layout_FullScreen" xml:space="preserve"><value>Tela cheia</value></data>
+  <data name="Layout_Center" xml:space="preserve"><value>Centro</value></data>
+  <data name="Warn_Duplicate" xml:space="preserve"><value>Atalho repetido</value></data>
+  <data name="Warn_InUse" xml:space="preserve"><value>Outro app já usa</value></data>
+  <data name="Key_Space" xml:space="preserve"><value>Espaço</value></data>
+  <data name="Shape_Square" xml:space="preserve"><value>Quadrado</value></data>
+  <data name="Shape_Display" xml:space="preserve"><value>Como a tela</value></data>
+  <data name="Settings_Title" xml:space="preserve"><value>Configurações do Quadra</value></data>
+  <data name="Settings_Tagline" xml:space="preserve"><value>Organize suas janelas numa grade · versão {0}</value></data>
+  <data name="Settings_Support" xml:space="preserve"><value>Apoiar o Quadra</value></data>
+  <data name="Settings_ShowGrid" xml:space="preserve"><value>Mostrar a grade</value></data>
+  <data name="Settings_NextDisplay" xml:space="preserve"><value>Mover para a próxima tela</value></data>
+  <data name="Settings_PreviousDisplay" xml:space="preserve"><value>Mover para a tela anterior</value></data>
+  <data name="Settings_Shape" xml:space="preserve"><value>Formato da grade</value></data>
+  <data name="Settings_Width" xml:space="preserve"><value>Largura da grade</value></data>
+  <data name="Settings_Pixels" xml:space="preserve"><value>{0} px</value></data>
+  <data name="Settings_Opacity" xml:space="preserve"><value>Opacidade da grade</value></data>
+  <data name="Settings_OpacityHint" xml:space="preserve"><value>Mais baixa deixa ver os apps de trás.</value></data>
+  <data name="Settings_Spacing" xml:space="preserve"><value>Espaço entre janelas</value></data>
+  <data name="Settings_StartWithWindows" xml:space="preserve"><value>Abrir o Quadra quando o Windows iniciar</value></data>
+  <data name="Settings_Layouts" xml:space="preserve"><value>Layouts</value></data>
+  <data name="Settings_LayoutsHint" xml:space="preserve"><value>Cada layout leva a janela em foco para uma área da tela, com um atalho próprio.</value></data>
+  <data name="Settings_NewLayout" xml:space="preserve"><value>Novo layout</value></data>
+  <data name="Settings_DeleteLayout" xml:space="preserve"><value>Apagar o layout escolhido</value></data>
+  <data name="Settings_MoveUp" xml:space="preserve"><value>Mover para cima</value></data>
+  <data name="Settings_MoveDown" xml:space="preserve"><value>Mover para baixo</value></data>
+  <data name="Settings_ChooseLayout" xml:space="preserve"><value>Escolha um layout na lista ou clique em + para criar um.</value></data>
+  <data name="Settings_Name" xml:space="preserve"><value>Nome</value></data>
+  <data name="Settings_Shortcut" xml:space="preserve"><value>Atalho</value></data>
+  <data name="Settings_Area" xml:space="preserve"><value>Área</value></data>
+  <data name="Settings_AreaHint" xml:space="preserve"><value>Arraste na grade para escolher a área.</value></data>
+  <data name="HotKey_Press" xml:space="preserve"><value>Aperte o atalho…</value></data>
+  <data name="HotKey_Record" xml:space="preserve"><value>Gravar atalho</value></data>
+  <data name="HotKey_Remove" xml:space="preserve"><value>Remover atalho</value></data>
+  <data name="HotKey_RecordTip" xml:space="preserve"><value>Clique e aperte as teclas. Esc cancela.</value></data>
+  <data name="HotKey_NeedsModifier" xml:space="preserve"><value>Use Ctrl, Alt ou Win junto com a tecla</value></data>
+</root>
