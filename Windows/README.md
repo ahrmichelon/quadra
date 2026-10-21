@@ -67,6 +67,13 @@ Right-click the icon, or click the gear on the panel, for the menu. Every shortc
 changed in **Settings and Layouts**; when another app already uses one, Quadra shows a warning
 next to it.
 
+### Updates
+
+Once a day Quadra asks GitHub whether a new version is out, and tells you with a notification and
+an item at the top of its menu (you can turn this off in Settings, where **Check Now** checks right
+away). To update, download the new Quadra.exe, quit Quadra and put the new file in place of the old
+one. The check is the only time Quadra uses the internet, and it sends nothing about you or your PC.
+
 Good to know:
 
 - Opening Quadra.exe again while it is running opens its settings.

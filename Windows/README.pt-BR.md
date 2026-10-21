@@ -69,6 +69,14 @@ Clique com o botão direito no ícone, ou na engrenagem do painel, para ver o me
 podem ser trocados em **Configurações e layouts**; quando outro app já usa um atalho, o Quadra
 mostra um aviso ao lado dele.
 
+### Atualizações
+
+Uma vez por dia o Quadra pergunta ao GitHub se saiu versão nova e avisa com uma notificação e um
+item no topo do menu (dá para desligar nas Configurações, onde **Procurar agora** verifica na
+hora). Para atualizar, baixe o Quadra.exe novo, saia do Quadra e coloque o arquivo novo no lugar do
+antigo. Essa verificação é a única vez que o Quadra usa a internet, e não envia nada sobre você ou
+o seu PC.
+
 Bom saber:
 
 - Abrir o Quadra.exe de novo com ele já aberto mostra as configurações.

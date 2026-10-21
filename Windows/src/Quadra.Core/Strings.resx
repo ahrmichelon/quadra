@@ -88,4 +88,17 @@ Free and open source, MIT license.
   <data name="HotKey_Remove" xml:space="preserve"><value>Remove shortcut</value></data>
   <data name="HotKey_RecordTip" xml:space="preserve"><value>Click, then press the keys. Esc cancels.</value></data>
   <data name="HotKey_NeedsModifier" xml:space="preserve"><value>Use Ctrl, Alt or Win with the key</value></data>
+  <data name="Menu_CheckForUpdates" xml:space="preserve"><value>Check for Updates…</value></data>
+  <data name="Menu_UpdateAvailable" xml:space="preserve"><value>Update Available: Quadra {0}…</value></data>
+  <data name="Update_Available" xml:space="preserve"><value>Quadra {0} is available</value></data>
+  <data name="Update_Instructions" xml:space="preserve"><value>You have version {0}. Download the new Quadra.exe, then quit Quadra and put the new file in place of the old one.
+
+Download it now?</value></data>
+  <data name="Update_BalloonText" xml:space="preserve"><value>Click here to download it.</value></data>
+  <data name="Update_UpToDate" xml:space="preserve"><value>You're up to date</value></data>
+  <data name="Update_UpToDateText" xml:space="preserve"><value>Quadra {0} is the latest version.</value></data>
+  <data name="Update_Error" xml:space="preserve"><value>Couldn't check for updates</value></data>
+  <data name="Settings_Updates" xml:space="preserve"><value>Updates</value></data>
+  <data name="Settings_CheckDaily" xml:space="preserve"><value>Check for updates once a day</value></data>
+  <data name="Settings_CheckNow" xml:space="preserve"><value>Check Now</value></data>
 </root>

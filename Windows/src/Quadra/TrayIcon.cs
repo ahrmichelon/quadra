@@ -22,6 +22,9 @@ internal sealed class TrayIcon : IDisposable
 
     public event Action? MenuClosed;
 
+    /// <summary>The user clicked the last notification shown with <see cref="ShowBalloon"/>.</summary>
+    public event Action? BalloonClicked;
+
     public TrayIcon()
     {
         Menu.Opening += (_, e) =>
@@ -43,6 +46,7 @@ internal sealed class TrayIcon : IDisposable
             ContextMenuStrip = Menu,
             Visible = true,
         };
+        icon.BalloonTipClicked += (_, _) => BalloonClicked?.Invoke();
         icon.MouseClick += (_, e) =>
         {
             if (e.Button == WinForms.MouseButtons.Left) Clicked?.Invoke();

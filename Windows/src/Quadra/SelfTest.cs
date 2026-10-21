@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
@@ -92,6 +93,7 @@ internal static class SelfTest
         Check("Loads the icon", AppIcons.Large is BitmapSource { PixelWidth: 256 });
         Check("Loads the texts", Loc.Format("Panel_Columns", 6).Contains('6'), Loc.Format("Panel_Columns", 6));
 
+        await UpdateCheck();
         await MovingWindows(displays, primary, area);
         await OtherApps(area);
         await Shortcuts();
@@ -102,6 +104,23 @@ internal static class SelfTest
         {
             await Wait(300);
             Check("Shows the tray icon", true);
+        }
+    }
+
+    private static async Task UpdateCheck()
+    {
+        try
+        {
+            using var http = new HttpClient { Timeout = TimeSpan.FromSeconds(20) };
+            // Every published Windows release is newer than 0.0.1.
+            var release = await Updates.CheckAsync(http, "0.0.1");
+            Check("Finds the newest Windows release on GitHub", release != null,
+                  release == null ? "none found" : $"{release.Version}, {release.DownloadUrl("x64")}");
+        }
+        catch (Exception e)
+        {
+            // GitHub limits how often a machine may ask; the shared machines GitHub tests on sometimes hit it.
+            Note($"Couldn't ask GitHub for releases: {e.Message}");
         }
     }
 
@@ -359,7 +378,7 @@ internal static class SelfTest
 
     private static async Task Settings()
     {
-        var window = new SettingsWindow(new SettingsStore(null));
+        var window = new SettingsWindow(new SettingsStore(null), () => { });
         window.Show();
         await Wait(800);
         Check("Opens the settings window", window.IsVisible && window.ActualHeight > 300,

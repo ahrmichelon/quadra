@@ -88,4 +88,17 @@ Grátis e de código aberto, licença MIT.
   <data name="HotKey_Remove" xml:space="preserve"><value>Remover atalho</value></data>
   <data name="HotKey_RecordTip" xml:space="preserve"><value>Clique e aperte as teclas. Esc cancela.</value></data>
   <data name="HotKey_NeedsModifier" xml:space="preserve"><value>Use Ctrl, Alt ou Win junto com a tecla</value></data>
+  <data name="Menu_CheckForUpdates" xml:space="preserve"><value>Procurar atualizações…</value></data>
+  <data name="Menu_UpdateAvailable" xml:space="preserve"><value>Atualização disponível: Quadra {0}…</value></data>
+  <data name="Update_Available" xml:space="preserve"><value>O Quadra {0} está disponível</value></data>
+  <data name="Update_Instructions" xml:space="preserve"><value>Você tem a versão {0}. Baixe o Quadra.exe novo, depois saia do Quadra e coloque o arquivo novo no lugar do antigo.
+
+Baixar agora?</value></data>
+  <data name="Update_BalloonText" xml:space="preserve"><value>Clique aqui para baixar.</value></data>
+  <data name="Update_UpToDate" xml:space="preserve"><value>Você já tem a versão mais recente</value></data>
+  <data name="Update_UpToDateText" xml:space="preserve"><value>O Quadra {0} é a versão mais recente.</value></data>
+  <data name="Update_Error" xml:space="preserve"><value>Não deu para procurar atualizações</value></data>
+  <data name="Settings_Updates" xml:space="preserve"><value>Atualizações</value></data>
+  <data name="Settings_CheckDaily" xml:space="preserve"><value>Procurar atualizações uma vez por dia</value></data>
+  <data name="Settings_CheckNow" xml:space="preserve"><value>Procurar agora</value></data>
 </root>

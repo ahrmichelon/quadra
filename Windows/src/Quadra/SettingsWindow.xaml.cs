@@ -15,7 +15,8 @@ public partial class SettingsWindow : Window
     /// <summary>True while the window fills its controls, so their change events don't edit the settings.</summary>
     private bool updating;
 
-    public SettingsWindow(SettingsStore store)
+    /// <param name="checkForUpdates">What the "Check Now" button does.</param>
+    public SettingsWindow(SettingsStore store, Action checkForUpdates)
     {
         InitializeComponent();
         this.store = store;
@@ -37,6 +38,9 @@ public partial class SettingsWindow : Window
         OpacityHint.Text = Loc.Get("Settings_OpacityHint");
         SpacingLabel.Text = Loc.Get("Settings_Spacing");
         StartWithWindowsBox.Content = Loc.Get("Settings_StartWithWindows");
+        UpdatesLabel.Text = Loc.Get("Settings_Updates");
+        CheckDailyBox.Content = Loc.Get("Settings_CheckDaily");
+        CheckNowButton.Content = Loc.Get("Settings_CheckNow");
         LayoutsTitle.Text = Loc.Get("Settings_Layouts");
         LayoutsHint.Text = Loc.Get("Settings_LayoutsHint");
         AddButton.ToolTip = Loc.Get("Settings_NewLayout");
@@ -87,6 +91,8 @@ public partial class SettingsWindow : Window
             QuadraApp.SetStartWithWindows(StartWithWindowsBox.IsChecked == true);
             StartWithWindowsBox.IsChecked = StartWithWindows.IsEnabled;
         };
+        CheckDailyBox.Click += (_, _) => store.Edit(s => s.CheckForUpdates = CheckDailyBox.IsChecked == true);
+        CheckNowButton.Click += (_, _) => checkForUpdates();
         SupportLink.Click += (_, _) => Links.Open(Links.Support);
 
         // Layouts
@@ -147,6 +153,7 @@ public partial class SettingsWindow : Window
             OpacityValue.Text = $"{Math.Round(s.PanelOpacity * 100)}%";
             SpacingBox.SelectedIndex = Array.IndexOf(AppSettings.GapChoices, s.Gap);
             StartWithWindowsBox.IsChecked = StartWithWindows.IsEnabled;
+            CheckDailyBox.IsChecked = s.CheckForUpdates;
             RefreshList();
             RefreshEditor();
         }
