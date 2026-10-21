@@ -11,8 +11,7 @@ internal static class Log
 {
     private static readonly object Gate = new();
 
-    public static string Folder =>
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Quadra");
+    public static string Folder => AppPaths.DataFolder;
 
     public static string FilePath => Path.Combine(Folder, "quadra.log");
 
@@ -73,9 +72,10 @@ internal static class StartWithWindows
 {
     private const string RunKey = @"Software\Microsoft\Windows\CurrentVersion\Run";
     private const string ApprovedKey = @"Software\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run";
-    private const string Name = "Quadra";
+    private static string Name => AppPaths.Name;
 
-    private static string Command => $"\"{Environment.ProcessPath}\"";
+    /// <summary>The installed copy when there is one, otherwise this copy.</summary>
+    private static string Command => $"\"{(Installer.IsRunningInstalled || !File.Exists(AppPaths.InstalledExe) ? Environment.ProcessPath : AppPaths.InstalledExe)}\"";
 
     public static bool IsEnabled
     {
@@ -89,12 +89,13 @@ internal static class StartWithWindows
         }
     }
 
-    public static void Set(bool on)
+    /// <param name="exe">The Quadra.exe to start (the installer passes the installed one).</param>
+    public static void Set(bool on, string? exe = null)
     {
         using var run = Registry.CurrentUser.CreateSubKey(RunKey);
         if (on)
         {
-            run.SetValue(Name, Command);
+            run.SetValue(Name, exe != null ? $"\"{exe}\"" : Command);
             using var approved = Registry.CurrentUser.OpenSubKey(ApprovedKey, writable: true);
             approved?.DeleteValue(Name, throwOnMissingValue: false);
         }
@@ -105,12 +106,16 @@ internal static class StartWithWindows
     }
 
     /// <summary>If Quadra.exe was moved after turning this on, point the entry to the new place.</summary>
-    public static void UpdatePathIfMoved()
+    public static void UpdatePathIfMoved() => UpdatePath(null);
+
+    /// <summary>When the entry is on, points it to <paramref name="exe"/> (or to this copy).</summary>
+    public static void UpdatePath(string? exe)
     {
         try
         {
+            string command = exe != null ? $"\"{exe}\"" : Command;
             using var run = Registry.CurrentUser.OpenSubKey(RunKey, writable: true);
-            if (run?.GetValue(Name) is string current && current != Command) run.SetValue(Name, Command);
+            if (run?.GetValue(Name) is string current && current != command) run.SetValue(Name, command);
         }
         catch (Exception e)
         {

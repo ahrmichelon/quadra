@@ -40,14 +40,14 @@ and you can see where the window will land before letting go.
    (look for **Quadra for Windows**):
    - **Quadra-x64.exe** for most PCs (Intel and AMD).
    - **Quadra-arm64.exe** for PCs with an ARM processor (Snapdragon, Surface Pro X).
-2. Move it to a folder where it will stay, for example **Documents\Quadra**, and rename it
-   **Quadra.exe** if you like.
-3. Open it. Quadra isn't signed with a paid certificate yet, so the first time Windows may show
+2. Open the downloaded file. Quadra isn't signed with a paid certificate yet, so Windows may show
    **"Windows protected your PC"**. Click **More info**, then **Run anyway**.
-4. A notification says Quadra is running. Its icon is next to the clock; if you don't see it,
+3. Quadra installs itself and opens. It goes in your user folder (`%LocalAppData%\Programs\Quadra`,
+   no administrator rights needed), appears in the Start menu and in **Settings → Apps**, and opens
+   by itself every time Windows starts (you can turn this off in its settings). You can delete the
+   downloaded file afterwards.
+4. A notification says Quadra is installed. Its icon is next to the clock; if you don't see it,
    click the **^** arrow. To keep it always visible, drag it onto the taskbar.
-5. To have Quadra open every time you sign in, right-click its icon and choose
-   **Start with Windows**.
 
 Requires Windows 10 (version 1809 or later) or Windows 11, 64-bit. .NET is built into
 Quadra.exe, so there is nothing else to install.
@@ -71,8 +71,10 @@ next to it.
 
 Once a day Quadra asks GitHub whether a new version is out, and tells you with a notification and
 an item at the top of its menu (you can turn this off in Settings, where **Check Now** checks right
-away). To update, download the new Quadra.exe, quit Quadra and put the new file in place of the old
-one. The check is the only time Quadra uses the internet, and it sends nothing about you or your PC.
+away). Click **Yes** to update: Quadra downloads the new version, checks it against the file
+published on GitHub, closes and opens again by itself, keeping your settings and layouts. Opening a
+newer Quadra.exe that you downloaded yourself updates it the same way. The check and the download
+are the only times Quadra uses the internet, and they send nothing about you or your PC.
 
 Good to know:
 
@@ -80,8 +82,8 @@ Good to know:
 - Windows of apps that run as administrator can only be moved when Quadra runs as administrator too.
 - Settings are saved in `%AppData%\Quadra\settings.json`. The `quadra.log` file in the same
   folder helps when reporting a problem.
-- To remove Quadra: turn off **Start with Windows**, choose **Quit Quadra**, then delete
-  Quadra.exe and the `%AppData%\Quadra` folder.
+- To remove Quadra, open **Settings → Apps → Installed apps**, find **Quadra** and choose
+  **Uninstall**. It removes Quadra, its shortcut and its settings.
 
 ## Build from source
 
@@ -95,6 +97,8 @@ dotnet publish src/Quadra/Quadra.csproj -c Release -r win-x64 -o publish/x64
 ```
 
 The second command makes `publish/x64/Quadra.exe` with .NET inside. Use `-r win-arm64` for ARM.
+Opened normally, Quadra.exe installs itself; add `--portable` to run it from where it is while you
+work on the code.
 On Windows, `Quadra.exe --self-test results` checks the parts that talk to Windows (moving
 windows, shortcuts, the panel, the settings window) and writes a report and screenshots to the
 `results` folder. GitHub runs the tests and this self-test on every change.

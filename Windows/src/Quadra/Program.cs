@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 
@@ -13,9 +14,16 @@ internal static class Program
         if (args.Length > 0 && args[0] == "--self-test")
             return SelfTest.Main(args.Length > 1 ? args[1] : "self-test");
 
+        // Uninstall in Settings → Apps runs Quadra.exe --uninstall.
+        if (args.Contains("--uninstall")) return Installer.Uninstall(quiet: args.Contains("--quiet"));
+
+        // Opened from Downloads (or an update downloaded to Temp): install or update Quadra, then open the
+        // installed copy. --portable keeps it running from where it is (handy while working on the code).
+        if (!args.Contains("--portable") && !Installer.IsRunningInstalled && Installer.InstallAndOpen()) return 0;
+
         // Only one Quadra at a time. Opening Quadra.exe again shows the settings of the one already running
         // (handy when its icon is hidden under the ^ arrow next to the clock).
-        using var single = new Mutex(initiallyOwned: true, @"Local\Quadra.SingleInstance", out bool isFirst);
+        using var single = new Mutex(initiallyOwned: true, $@"Local\{AppPaths.Name}.SingleInstance", out bool isFirst);
         if (!isFirst)
         {
             HotKeyCenter.AskRunningCopyToShowSettings();

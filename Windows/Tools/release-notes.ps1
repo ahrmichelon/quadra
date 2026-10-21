@@ -23,14 +23,16 @@ $notes
 
 ## Install
 
-Download **Quadra-x64.exe** (most PCs) or **Quadra-arm64.exe** (ARM processors such as Snapdragon), put it
-in a folder where it will stay and open it. The first time, Windows may show "Windows protected your PC":
-click **More info**, then **Run anyway**. Quadra's icon appears next to the clock (or under the **^** arrow).
-Requires Windows 10 (1809 or later) or Windows 11, 64-bit. Nothing else to install.
+Download **Quadra-x64.exe** (most PCs) or **Quadra-arm64.exe** (ARM processors such as Snapdragon) and open
+it. Windows may show "Windows protected your PC": click **More info**, then **Run anyway**. Quadra installs
+itself for your user (no administrator rights), adds itself to the Start menu and opens when Windows starts.
+Its icon appears next to the clock (or under the **^** arrow). Already have Quadra 1.2 or later? It updates
+itself. Requires Windows 10 (1809 or later) or Windows 11, 64-bit.
 
-**Em português:** baixe o **Quadra-x64.exe** (a maioria dos PCs) ou o **Quadra-arm64.exe** (processadores ARM),
-coloque numa pasta onde ele vai ficar e abra. Se aparecer "O Windows protegeu o computador", clique em
-**Mais informações** e depois em **Executar assim mesmo**. O ícone fica ao lado do relógio (ou na setinha **^**).
+**Em português:** baixe o **Quadra-x64.exe** (a maioria dos PCs) ou o **Quadra-arm64.exe** (processadores ARM)
+e abra. Se aparecer "O Windows protegeu o computador", clique em **Mais informações** e depois em
+**Executar assim mesmo**. O Quadra se instala sozinho, aparece no menu Iniciar e abre junto com o Windows.
+O ícone fica ao lado do relógio (ou na setinha **^**).
 
 ## SHA-256
 

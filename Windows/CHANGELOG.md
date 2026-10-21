@@ -1,5 +1,17 @@
 # Changelog: Quadra for Windows
 
+## 1.2.0
+
+- Quadra installs itself: opening the downloaded Quadra.exe puts it in your user folder
+  (`%LocalAppData%\Programs\Quadra`, no administrator rights), adds it to the Start menu and to
+  Settings → Apps, and makes it open by itself when Windows starts. Before, it only ran from where
+  it was downloaded and didn't come back after restarting Windows unless you turned on
+  Start with Windows.
+- Updating takes one click: Quadra downloads the new version, checks it against the file published
+  on GitHub, then closes and opens again by itself. Opening a newer Quadra.exe also updates it.
+- Uninstall from Settings → Apps removes Quadra, its shortcut and its settings.
+- After an update, a notification says which version is now running.
+
 ## 1.1.0
 
 - Quadra tells you when a new version is out, like Quadra for Mac 1.1. It asks GitHub once a day

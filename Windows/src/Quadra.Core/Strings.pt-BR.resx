@@ -46,7 +46,7 @@ Grátis e de código aberto, licença MIT.
 
 {1}</value></data>
   <data name="Welcome_Title" xml:space="preserve"><value>O Quadra está aberto</value></data>
-  <data name="Welcome_Text" xml:space="preserve"><value>Aperte {0} ou clique no ícone do Quadra ao lado do relógio para abrir a grade. Se não vir o ícone, clique na setinha ^.</value></data>
+  <data name="Welcome_Text" xml:space="preserve"><value>O Quadra está instalado e abre sozinho quando o Windows inicia. Aperte {0} ou clique no ícone dele ao lado do relógio para abrir a grade. Se não vir o ícone, clique na setinha ^.</value></data>
   <data name="Error_StartWithWindows" xml:space="preserve"><value>Não deu para mudar o início com o Windows: {0}</value></data>
   <data name="Layout_LeftHalf" xml:space="preserve"><value>Metade esquerda</value></data>
   <data name="Layout_RightHalf" xml:space="preserve"><value>Metade direita</value></data>
@@ -91,9 +91,9 @@ Grátis e de código aberto, licença MIT.
   <data name="Menu_CheckForUpdates" xml:space="preserve"><value>Procurar atualizações…</value></data>
   <data name="Menu_UpdateAvailable" xml:space="preserve"><value>Atualização disponível: Quadra {0}…</value></data>
   <data name="Update_Available" xml:space="preserve"><value>O Quadra {0} está disponível</value></data>
-  <data name="Update_Instructions" xml:space="preserve"><value>Você tem a versão {0}. Baixe o Quadra.exe novo, depois saia do Quadra e coloque o arquivo novo no lugar do antigo.
+  <data name="Update_Instructions" xml:space="preserve"><value>Você tem a versão {0}. O Quadra vai baixar a versão nova, fechar e abrir de novo sozinho.
 
-Baixar agora?</value></data>
+Atualizar agora?</value></data>
   <data name="Update_BalloonText" xml:space="preserve"><value>Clique aqui para baixar.</value></data>
   <data name="Update_UpToDate" xml:space="preserve"><value>Você já tem a versão mais recente</value></data>
   <data name="Update_UpToDateText" xml:space="preserve"><value>O Quadra {0} é a versão mais recente.</value></data>
@@ -101,4 +101,17 @@ Baixar agora?</value></data>
   <data name="Settings_Updates" xml:space="preserve"><value>Atualizações</value></data>
   <data name="Settings_CheckDaily" xml:space="preserve"><value>Procurar atualizações uma vez por dia</value></data>
   <data name="Settings_CheckNow" xml:space="preserve"><value>Procurar agora</value></data>
+  <data name="Welcome_TextPortable" xml:space="preserve"><value>Aperte {0} ou clique no ícone do Quadra ao lado do relógio para abrir a grade. Se não vir o ícone, clique na setinha ^.</value></data>
+  <data name="Updated_Title" xml:space="preserve"><value>O Quadra foi atualizado para a versão {0}</value></data>
+  <data name="Updated_Text" xml:space="preserve"><value>Suas configurações e layouts continuam como estavam.</value></data>
+  <data name="Update_Downloading" xml:space="preserve"><value>Baixando o Quadra {0}…</value></data>
+  <data name="Update_DownloadingText" xml:space="preserve"><value>O Quadra vai fechar e abrir de novo quando terminar.</value></data>
+  <data name="Update_DownloadFailed" xml:space="preserve"><value>Não deu para baixar a atualização</value></data>
+  <data name="Update_OpenPage" xml:space="preserve"><value>A página de download vai abrir no lugar.</value></data>
+  <data name="Uninstall_Confirm" xml:space="preserve"><value>Remover o Quadra deste PC?
+
+O Quadra, o atalho no menu Iniciar e as configurações e layouts dele serão apagados.</value></data>
+  <data name="Uninstall_Done" xml:space="preserve"><value>O Quadra foi removido deste PC.</value></data>
+  <data name="Uninstall_Failed" xml:space="preserve"><value>Não deu para remover o Quadra por completo: {0}</value></data>
+  <data name="Shortcut_Description" xml:space="preserve"><value>Organize suas janelas numa grade</value></data>
 </root>

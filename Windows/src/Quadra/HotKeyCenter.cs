@@ -13,9 +13,11 @@ namespace Quadra;
 /// </summary>
 internal sealed class HotKeyCenter : IDisposable
 {
-    /// <summary>The hidden window's name, which a second copy of Quadra looks for.</summary>
-    public const string WindowName = "Quadra.MessageWindow";
+    /// <summary>The hidden window's name, which other copies of Quadra look for.</summary>
+    public static string WindowName => AppPaths.Name + ".MessageWindow";
     public static readonly uint ShowSettingsMessage = Native.RegisterWindowMessage("Quadra.ShowSettings");
+    /// <summary>Sent by a newer Quadra.exe that is installing itself, or by Uninstall.</summary>
+    public static readonly uint QuitMessage = Native.RegisterWindowMessage("Quadra.Quit");
 
     private readonly HwndSource window;
     private readonly Dictionary<int, (HotKeyCombo Combo, Action Action)> bindings = [];
@@ -27,6 +29,9 @@ internal sealed class HotKeyCenter : IDisposable
 
     /// <summary>Someone opened Quadra.exe again while it was already running.</summary>
     public event Action? ShowSettingsRequested;
+
+    /// <summary>A newer Quadra is replacing this one, or Quadra is being uninstalled.</summary>
+    public event Action? QuitRequested;
 
     public HotKeyCenter()
     {
@@ -108,6 +113,11 @@ internal sealed class HotKeyCenter : IDisposable
         else if ((uint)message == ShowSettingsMessage)
         {
             window.Dispatcher.BeginInvoke(() => ShowSettingsRequested?.Invoke());
+            handled = true;
+        }
+        else if ((uint)message == QuitMessage)
+        {
+            window.Dispatcher.BeginInvoke(() => QuitRequested?.Invoke());
             handled = true;
         }
         return IntPtr.Zero;

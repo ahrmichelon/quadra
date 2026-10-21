@@ -305,4 +305,7 @@ internal static class Native
 
     [DllImport("kernel32.dll")]
     public static extern bool CloseHandle(IntPtr handle);
+
+    [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+    public static extern bool DeleteFile(string path);
 }

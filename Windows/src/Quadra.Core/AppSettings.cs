@@ -81,6 +81,8 @@ public sealed class AppSettings
     public DateTimeOffset? LastUpdateCheck { get; set; }
     /// <summary>The newest version the user was already told about, so the automatic check doesn't repeat it.</summary>
     public string? AnnouncedVersion { get; set; }
+    /// <summary>The version that last ran, to say "Quadra was updated" once after an update.</summary>
+    public string? LastVersion { get; set; }
 
     public static int ClampSize(int v) => Math.Clamp(v, MinSize, MaxSize);
 
@@ -131,6 +133,7 @@ public sealed class AppSettings
             ["checkForUpdates"] = CheckForUpdates,
             ["lastUpdateCheck"] = LastUpdateCheck?.ToString("O", System.Globalization.CultureInfo.InvariantCulture),
             ["announcedVersion"] = AnnouncedVersion,
+            ["lastVersion"] = LastVersion,
         };
         return o.ToJsonString(Json);
 
@@ -157,6 +160,7 @@ public sealed class AppSettings
         s.LastUpdateCheck = DateTimeOffset.TryParse(String(o, "lastUpdateCheck"), System.Globalization.CultureInfo.InvariantCulture,
                                                     System.Globalization.DateTimeStyles.RoundtripKind, out var last) ? last : null;
         s.AnnouncedVersion = String(o, "announcedVersion");
+        s.LastVersion = String(o, "lastVersion");
 
         if (o["layouts"] is JsonArray array)
         {
