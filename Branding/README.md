@@ -9,6 +9,7 @@ Arrange your Mac's windows on a grid.
 | `quadra-icon.svg` | The original vector drawing. Use it on websites, documents and slides. |
 | `quadra-icon-1024.png` | The icon at 1024 × 1024, with a transparent background. |
 | `AppIcon.icns` | The app icon with every macOS size. `build.sh` copies it into `Quadra.app`. |
+| `quadra-social-preview.png` | 1280 × 640 card shown when the repository link is shared. |
 
 To redraw the PNG and the `.icns` after changing the drawing in `Tools/make-icon.swift`:
 
