@@ -6,6 +6,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private var statusItem: NSStatusItem!
     private let settingsMenu = NSMenu()
     private let store = LayoutStore()
+    private let updates = UpdateChecker()
     private lazy var panel = GridPanel()
     /// Outline around the chosen window.
     private lazy var targetHighlight = OverlayWindow(style: .outline)
@@ -58,6 +59,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         HotKeyCenter.shared.onUpdate = { [weak self] failed in self?.store.unavailable = failed }
         store.onChange = { [weak self] in self?.registerHotKeys() }
         registerHotKeys()
+
+        updates.onNewVersion = { [weak self] release in self?.showUpdateAlert(release) }
+        updates.start()
 
         // The first time, macOS shows the alert that leads to System Settings.
         if !WindowMover.isTrusted() { _ = WindowMover.isTrusted(prompt: true) }
@@ -251,6 +255,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     func menuNeedsUpdate(_ menu: NSMenu) {
         menu.removeAllItems()
 
+        if let release = updates.available {
+            let it = item(String(localized: "Update Available: Quadra \(release.version)…"), #selector(showAvailableUpdate))
+            it.image = NSImage(systemSymbolName: "arrow.down.circle.fill", accessibilityDescription: nil)
+            menu.addItem(it)
+            menu.addItem(.separator())
+        }
+
         if !panel.isVisible {
             menu.addItem(item(String(localized: "Show Grid"), #selector(showGridFromMenu), shortcut: store.showGridHotKey))
             if let warning = store.warning(for: store.showGridHotKey) {
@@ -319,6 +330,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.addItem(settings)
         menu.addItem(.separator())
 
+        menu.addItem(item(String(localized: "Check for Updates…"), #selector(checkForUpdates)))
         menu.addItem(item(String(localized: "Support Quadra…"), #selector(openSupport)))
         menu.addItem(item(String(localized: "About Quadra"), #selector(showAbout)))
         menu.addItem(NSMenuItem(title: String(localized: "Quit Quadra"),
@@ -413,6 +425,69 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             NSApp.activate()
             alert.runModal()
         }
+    }
+
+    // MARK: Updates
+
+    @objc private func showAvailableUpdate() {
+        guard let release = updates.available else { return }
+        afterMenuCloses { [weak self] in self?.showUpdateAlert(release) }
+    }
+
+    @objc private func checkForUpdates() {
+        afterMenuCloses { [weak self] in
+            self?.updates.check { result in
+                guard let self else { return }
+                switch result {
+                case .success(let release?):
+                    self.showUpdateAlert(release)
+                case .success(nil):
+                    self.showAlert(String(localized: "You're up to date"),
+                                   String(localized: "Quadra \(UpdateChecker.currentVersion) is the latest version."))
+                case .failure(let error):
+                    self.showAlert(String(localized: "Couldn't check for updates"), error.localizedDescription)
+                }
+            }
+        }
+    }
+
+    /// Tells the user about a new version: a download link, or the Homebrew command.
+    private func showUpdateAlert(_ release: UpdateChecker.Release) {
+        updates.markAnnounced(release)
+        if panel.isVisible { panel.orderOut(nil) }
+        let current = UpdateChecker.currentVersion
+        let homebrew = UpdateChecker.installedWithHomebrew
+        let alert = NSAlert()
+        alert.messageText = String(localized: "Quadra \(release.version) is available")
+        if homebrew {
+            alert.informativeText = String(localized: "You have version \(current). To update, run this in Terminal:")
+                + "\n\n" + UpdateChecker.homebrewUpgradeCommand
+            alert.addButton(withTitle: String(localized: "Copy Command"))
+            alert.addButton(withTitle: String(localized: "What's New"))
+        } else {
+            alert.informativeText = String(localized:
+                "You have version \(current). Download the new version and replace the app in the Applications folder.")
+            alert.addButton(withTitle: String(localized: "Download"))
+        }
+        alert.addButton(withTitle: String(localized: "Later"))
+        NSApp.activate()
+        switch alert.runModal() {
+        case .alertFirstButtonReturn where homebrew:
+            NSPasteboard.general.clearContents()
+            NSPasteboard.general.setString(UpdateChecker.homebrewUpgradeCommand, forType: .string)
+        case .alertFirstButtonReturn, .alertSecondButtonReturn where homebrew:
+            NSWorkspace.shared.open(release.htmlURL)
+        default:
+            break
+        }
+    }
+
+    private func showAlert(_ title: String, _ text: String) {
+        let alert = NSAlert()
+        alert.messageText = title
+        alert.informativeText = text
+        NSApp.activate()
+        alert.runModal()
     }
 
     @objc private func openSupport() {

@@ -8,6 +8,7 @@ struct SettingsView: View {
     @AppStorage("panelOpacity") private var panelOpacity = Settings.defaultPanelOpacity
     @AppStorage("panelSize") private var panelSize = Settings.defaultPanelSize
     @AppStorage("panelShape") private var panelShape = PanelShape.fourThree
+    @AppStorage("checkForUpdates") private var checkForUpdates = true
 
     init(store: LayoutStore) {
         self.store = store
@@ -71,6 +72,10 @@ struct SettingsView: View {
                             .foregroundStyle(.secondary)
                     }
                 }
+                GridRow {
+                    Text("Updates")
+                    Toggle("Check for updates once a day", isOn: $checkForUpdates)
+                }
             }
 
             Divider()
@@ -88,7 +93,7 @@ struct SettingsView: View {
             }
         }
         .padding(20)
-        .frame(width: 790, height: 760)
+        .frame(width: 790, height: 790)
     }
 
     private func shortcutRow(_ title: LocalizedStringKey, _ combo: Binding<HotKeyCombo?>) -> some View {

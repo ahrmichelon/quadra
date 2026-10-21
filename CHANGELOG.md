@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.0
+
+- Quadra tells you when a new version is out. It checks GitHub once a day (you can turn this
+  off in Settings), and "Check for Updates…" in the menu checks right away.
+- Install and update with Homebrew: `brew install --cask ahrmichelon/tap/quadra`.
+- Releases are signed with the project's own certificate, so macOS keeps the Accessibility
+  permission across updates. Coming from 1.0.x, allow Quadra in Accessibility one last time.
+
 ## 1.0.1
 
 - "Support Quadra…" in the menu and a support link in Settings.

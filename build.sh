@@ -49,8 +49,11 @@ cp Branding/AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
 
 IDENTITY="${QUADRA_SIGN_IDENTITY:-$(security find-identity -v -p codesigning 2>/dev/null \
   | awk -F'"' '/Developer ID Application|Apple Development/ { print $2; exit }')}"
-codesign --force --timestamp=none --sign "${IDENTITY:--}" "$APP"
-echo "Built $APP (signed with: ${IDENTITY:-ad hoc})"
+SIGN=(--force --timestamp=none --sign "${IDENTITY:--}")
+# The release workflow keeps its certificate in a keychain of its own.
+[[ -n "${QUADRA_SIGN_KEYCHAIN:-}" ]] && SIGN+=(--keychain "$QUADRA_SIGN_KEYCHAIN")
+codesign "${SIGN[@]}" "$APP"
+echo "Built $APP (signed with: ${QUADRA_SIGN_NAME:-${IDENTITY:-ad hoc}})"
 
 case "${1:-}" in
   --install)

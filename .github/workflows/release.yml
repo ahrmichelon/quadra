@@ -1,9 +1,18 @@
 name: Release
 
-# Pushing a tag such as v1.0.0 builds Quadra.zip and publishes it as a GitHub release.
+# Pushing a tag such as v1.2.0:
+#   1. runs the tests,
+#   2. builds Quadra.zip signed with the project's certificate ("Quadra Open Source"),
+#   3. publishes it as a GitHub release, with notes from CHANGELOG.md,
+#   4. updates the Homebrew cask in ahrmichelon/homebrew-tap.
+# Running it by hand ("Run workflow") is a rehearsal: steps 1 and 2 only, nothing is published.
+#
+# Secrets: QUADRA_CERT_P12 (base64 of the .p12), QUADRA_CERT_PASSWORD, TAP_DEPLOY_KEY
+# (SSH key with write access to the tap).
 on:
   push:
     tags: ["v*"]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -17,10 +26,70 @@ jobs:
       - name: Run tests
         run: swift test
 
+      - name: Load the signing certificate
+        env:
+          CERT_P12: ${{ secrets.QUADRA_CERT_P12 }}
+          CERT_PASSWORD: ${{ secrets.QUADRA_CERT_PASSWORD }}
+        run: |
+          KEYCHAIN="$RUNNER_TEMP/quadra-signing.keychain-db"
+          KEYCHAIN_PASSWORD="$(uuidgen)"
+          echo "$CERT_P12" | base64 --decode > "$RUNNER_TEMP/quadra.p12"
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+          security set-keychain-settings -lut 3600 "$KEYCHAIN"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+          security import "$RUNNER_TEMP/quadra.p12" -k "$KEYCHAIN" -P "$CERT_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN" > /dev/null
+          security list-keychains -d user -s "$KEYCHAIN" $(security list-keychains -d user | tr -d '"')
+          rm "$RUNNER_TEMP/quadra.p12"
+          # The certificate is self-signed, so it is looked up by its fingerprint.
+          HASH="$(security find-identity -p codesigning "$KEYCHAIN" | awk '/Quadra Open Source/ { print $2; exit }')"
+          test -n "$HASH"
+          echo "QUADRA_SIGN_IDENTITY=$HASH" >> "$GITHUB_ENV"
+          echo "QUADRA_SIGN_KEYCHAIN=$KEYCHAIN" >> "$GITHUB_ENV"
+          echo "QUADRA_SIGN_NAME=Quadra Open Source" >> "$GITHUB_ENV"
+
       - name: Build Quadra.zip
         run: ./build.sh --zip
 
+      - name: Check the signature
+        run: |
+          codesign --verify --strict --verbose=2 build/Quadra.app
+          codesign -dv build/Quadra.app 2>&1 | grep -E "^(Identifier|Authority)="
+          codesign -d -r- build/Quadra.app 2>&1 | grep designated
+
+      - name: Keep the rehearsal build
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Quadra-rehearsal
+          path: build/Quadra.zip
+
       - name: Publish the release
+        if: github.event_name == 'push'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" build/Quadra.zip --title "Quadra $GITHUB_REF_NAME" --generate-notes
+        run: |
+          Tools/release-notes.sh "$GITHUB_REF_NAME" > "$RUNNER_TEMP/notes.md"
+          gh release create "$GITHUB_REF_NAME" build/Quadra.zip --title "Quadra $GITHUB_REF_NAME" \
+            --notes-file "$RUNNER_TEMP/notes.md" --latest
+
+      - name: Update the Homebrew cask
+        if: github.event_name == 'push'
+        env:
+          TAP_DEPLOY_KEY: ${{ secrets.TAP_DEPLOY_KEY }}
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          SHA256="$(shasum -a 256 build/Quadra.zip | cut -d' ' -f1)"
+          KEY="$RUNNER_TEMP/tap_key"
+          echo "$TAP_DEPLOY_KEY" > "$KEY"
+          chmod 600 "$KEY"
+          export GIT_SSH_COMMAND="ssh -i $KEY -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new"
+          git clone --depth 1 git@github.com:ahrmichelon/homebrew-tap.git "$RUNNER_TEMP/tap"
+          cd "$RUNNER_TEMP/tap"
+          sed -i '' -E "s/^  version \".*\"/  version \"$VERSION\"/; s/^  sha256 \".*\"/  sha256 \"$SHA256\"/" Casks/quadra.rb
+          git diff --stat
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "quadra $VERSION"
+          git push
+          rm -f "$KEY"

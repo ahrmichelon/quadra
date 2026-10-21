@@ -26,6 +26,16 @@ atalho ou clique no ícone, arraste na grade, e a janela vai para aquela área d
 
 ## Instalar
 
+**Com o [Homebrew](https://brew.sh):**
+
+```bash
+brew install --cask ahrmichelon/tap/quadra
+```
+
+Depois siga os passos 2 e 3 abaixo. Para atualizar no futuro: `brew upgrade --cask quadra`.
+
+**Ou baixe direto:**
+
 1. Baixe o `Quadra.zip` na [versão mais recente](https://github.com/ahrmichelon/quadra/releases/latest),
    descompacte e mova o **Quadra.app** para **Aplicativos**.
 2. Abra o app. O Quadra ainda não tem a verificação da Apple, então na primeira vez o macOS bloqueia.
@@ -35,9 +45,14 @@ atalho ou clique no ícone, arraste na grade, e a janela vai para aquela área d
 
 Precisa do macOS 14 Sonoma ou mais novo, em Mac com Apple Silicon ou Intel.
 
-> Depois de atualizar o Quadra, o macOS pode deixar de reconhecer a permissão. Se os atalhos
-> pararem de mover as janelas, remova o Quadra da lista de Acessibilidade com **–** e adicione de
-> novo com **+**.
+### Atualizações
+
+Uma vez por dia o Quadra pergunta ao GitHub se saiu uma versão nova e te avisa quando houver
+(dá para desligar nos Ajustes). É a única vez que o Quadra usa a internet.
+
+A partir da versão 1.1.0, o macOS mantém a permissão de Acessibilidade quando o Quadra atualiza.
+Vindo da 1.0.x, remova o Quadra da lista de Acessibilidade com **–** e adicione de novo com **+**
+uma vez.
 
 ## Como usar
 

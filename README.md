@@ -30,6 +30,16 @@ click the icon, drag across the grid, and the window moves to that area of the s
 
 ## Install
 
+**With [Homebrew](https://brew.sh):**
+
+```bash
+brew install --cask ahrmichelon/tap/quadra
+```
+
+Then follow steps 2 and 3 below. To update later: `brew upgrade --cask quadra`.
+
+**Or download it:**
+
 1. Download `Quadra.zip` from the [latest release](https://github.com/ahrmichelon/quadra/releases/latest),
    unzip it and move **Quadra.app** to **Applications**.
 2. Open it. Quadra is not notarized by Apple yet, so the first time macOS blocks it.
@@ -39,8 +49,13 @@ click the icon, drag across the grid, and the window moves to that area of the s
 
 Requires macOS 14 Sonoma or later, on Apple silicon or Intel.
 
-> After updating Quadra, macOS may stop recognizing the permission. If shortcuts stop moving
-> windows, remove Quadra from the Accessibility list with **–** and add it again with **+**.
+### Updates
+
+Once a day Quadra asks GitHub whether a new version is out, and tells you when there is one
+(you can turn this off in Settings). It's the only time Quadra uses the internet.
+
+From version 1.1.0 on, macOS keeps the Accessibility permission when Quadra updates. Coming from
+1.0.x, remove Quadra from the Accessibility list with **–** and add it again with **+** once.
 
 ## Use
 
