@@ -19,7 +19,9 @@ internal static class Program
 
         // Opened from Downloads (or an update downloaded to Temp): install or update Quadra, then open the
         // installed copy. --portable keeps it running from where it is (handy while working on the code).
-        if (!args.Contains("--portable") && !Installer.IsRunningInstalled && Installer.InstallAndOpen()) return 0;
+        if (!args.Contains("--portable") && !Installer.IsRunningInstalled &&
+            Installer.InstallAndOpen(fromUpdateButton: args.Contains(QuadraApp.FromUpdateArgument)))
+            return 0;
 
         // Only one Quadra at a time. Opening Quadra.exe again shows the settings of the one already running
         // (handy when its icon is hidden under the ^ arrow next to the clock).
@@ -31,7 +33,7 @@ internal static class Program
         }
 
         var app = new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
-        var quadra = new QuadraApp(app);
+        var quadra = new QuadraApp(app, justInstalled: args.Contains(Installer.JustInstalledArgument));
 
         // An unexpected error is written to the log instead of closing Quadra.
         app.DispatcherUnhandledException += (_, e) =>

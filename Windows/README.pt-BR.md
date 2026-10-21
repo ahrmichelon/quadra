@@ -48,7 +48,7 @@ na hora em que precisa, e vê onde a janela vai parar antes de soltar o mouse.
    (`%LocalAppData%\Programs\Quadra`, sem precisar de administrador), aparece no menu Iniciar e em
    **Configurações → Aplicativos**, e abre sozinho toda vez que o Windows inicia (dá para desligar
    nas configurações dele). Depois, pode apagar o arquivo baixado.
-4. Um aviso diz que o Quadra está instalado. O ícone fica ao lado do relógio; se não aparecer,
+4. Uma janela avisa que o Quadra foi instalado. O ícone fica ao lado do relógio; se não aparecer,
    clique na setinha **^**. Para deixá-lo sempre à vista, arraste o ícone para a barra de tarefas.
 
 Precisa do Windows 10 (versão 1809 ou mais nova) ou do Windows 11, 64 bits. O .NET já vem dentro

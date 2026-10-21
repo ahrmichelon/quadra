@@ -46,7 +46,7 @@ and you can see where the window will land before letting go.
    no administrator rights needed), appears in the Start menu and in **Settings → Apps**, and opens
    by itself every time Windows starts (you can turn this off in its settings). You can delete the
    downloaded file afterwards.
-4. A notification says Quadra is installed. Its icon is next to the clock; if you don't see it,
+4. A window says Quadra is installed. Its icon is next to the clock; if you don't see it,
    click the **^** arrow. To keep it always visible, drag it onto the taskbar.
 
 Requires Windows 10 (version 1809 or later) or Windows 11, 64-bit. .NET is built into

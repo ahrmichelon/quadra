@@ -56,7 +56,17 @@ internal sealed class QuadraApp : IDisposable
     /// <summary>The release the last notification was about (null for other notifications).</summary>
     private Release? notifiedUpdate;
 
-    public QuadraApp(Application app) => this.app = app;
+    /// <summary>Given to an update downloaded by the update button, so it installs without the "installed" window.</summary>
+    public const string FromUpdateArgument = "--from-update";
+
+    /// <summary>The installer already showed a window saying Quadra was installed or updated.</summary>
+    private readonly bool justInstalled;
+
+    public QuadraApp(Application app, bool justInstalled = false)
+    {
+        this.app = app;
+        this.justInstalled = justInstalled;
+    }
 
     private static int DoubleClickTime => WinForms.SystemInformation.DoubleClickTime;
 
@@ -121,7 +131,11 @@ internal sealed class QuadraApp : IDisposable
         Log.Write(Installer.IsRunningInstalled ? $"Running from {AppPaths.InstallFolder}" : $"Running from {Environment.ProcessPath}");
 
         var settings = store.Current;
-        if (!settings.Welcomed || settings.LastVersion == null)
+        if (justInstalled)
+        {
+            // The installer's window already said it.
+        }
+        else if (!settings.Welcomed || settings.LastVersion == null)
         {
             // New, or coming from 1.0/1.1, which didn't install themselves.
             var combo = settings.ShowGridHotKey ?? HotKeyCombo.ShowGridDefault;
@@ -653,7 +667,7 @@ internal sealed class QuadraApp : IDisposable
         {
             await Updates.DownloadAsync(Downloads, exe, path);
             Log.Write($"Downloaded Quadra {release.Version} to {path}; opening it to install");
-            Process.Start(new ProcessStartInfo(path) { UseShellExecute = false });
+            Process.Start(new ProcessStartInfo(path, FromUpdateArgument) { UseShellExecute = false });
         }
         catch (Exception e)
         {
