@@ -428,7 +428,7 @@ internal static class SelfTest
             Directory.CreateDirectory(Path.GetDirectoryName(downloaded)!);
             File.Copy(Environment.ProcessPath!, downloaded);
 
-            int code = await RunTestCopy(root, downloaded, "");
+            int code = await InstallShowingTheWindow(root, downloaded);
             Check("The downloaded Quadra.exe installs itself and closes", code == 0, $"exit code {code}");
             Check("Installs Quadra.exe for the user, without administrator rights", File.Exists(installed));
             Check("Adds a Start menu shortcut", File.Exists(shortcut));
@@ -479,6 +479,40 @@ internal static class SelfTest
             await Wait(1000);
             try { Directory.Delete(root, recursive: true); } catch (Exception) { }
         }
+    }
+
+    /// <summary>
+    /// Opens the downloaded copy as a user would, so it shows the "Quadra is installed" window; checks that the
+    /// window appears, takes a screenshot of it and closes it.
+    /// </summary>
+    private static async Task<int> InstallShowingTheWindow(string root, string exe)
+    {
+        var start = new ProcessStartInfo(exe) { UseShellExecute = false };
+        start.Environment["QUADRA_TEST_ROOT"] = root;
+        start.Environment["QUADRA_TEST_SHOW_WINDOW"] = "1";
+        using var process = Process.Start(start)!;
+        IntPtr dialog = IntPtr.Zero;
+        for (int i = 0; i < 100 && dialog == IntPtr.Zero && !process.HasExited; i++)
+        {
+            await Wait(200);
+            var found = Native.FindWindowEx(IntPtr.Zero, IntPtr.Zero, "#32770", "Quadra"); // a message box
+            if (found != IntPtr.Zero)
+            {
+                Native.GetWindowThreadProcessId(found, out uint pid);
+                if (pid == process.Id) dialog = found;
+            }
+        }
+        Check("Says in a window that Quadra was installed", dialog != IntPtr.Zero);
+        if (dialog != IntPtr.Zero)
+        {
+            await Wait(500);
+            Screenshot("installed-window.png", WindowRect(dialog).Inflate(20));
+            Native.PostMessage(dialog, 0x0010 /* WM_CLOSE */, IntPtr.Zero, IntPtr.Zero);
+        }
+        for (int i = 0; i < 150 && !process.HasExited; i++) await Wait(200);
+        if (process.HasExited) return process.ExitCode;
+        process.Kill();
+        return -1;
     }
 
     /// <summary>Runs a copy of Quadra under the test names and waits (up to 30 s) for it to finish.</summary>

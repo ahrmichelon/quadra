@@ -43,12 +43,16 @@ internal static class Installer
         return new Version(info.FileMajorPart, info.FileMinorPart, info.FileBuildPart);
     }
 
+    /// <summary>The argument the installer gives the installed copy, so it doesn't repeat the news as a notification.</summary>
+    public const string JustInstalledArgument = "--just-installed";
+
     /// <summary>
     /// Run when Quadra.exe is opened from anywhere but its install folder (Downloads, or an update in Temp).
-    /// Installs or updates Quadra and opens the installed copy. False when it couldn't, so this copy keeps
-    /// running from where it is.
+    /// Installs or updates Quadra and opens the installed copy, then says so in a window (not when the update
+    /// came from Quadra's own update button, which shows a notification instead). False when it couldn't
+    /// install, so this copy keeps running from where it is.
     /// </summary>
-    public static bool InstallAndOpen()
+    public static bool InstallAndOpen(bool fromUpdateButton)
     {
         string source = Environment.ProcessPath ?? "", target = AppPaths.InstalledExe;
         try
@@ -80,7 +84,15 @@ internal static class Installer
             }
 
             Register(firstInstall);
-            Process.Start(new ProcessStartInfo(target) { UseShellExecute = false, WorkingDirectory = AppPaths.InstallFolder });
+            // The self-test only asks for the window when it is ready to look at it and close it.
+            bool tellHere = !fromUpdateButton &&
+                            (!AppPaths.IsTest || Environment.GetEnvironmentVariable("QUADRA_TEST_SHOW_WINDOW") == "1");
+            Process.Start(new ProcessStartInfo(target, tellHere ? JustInstalledArgument : "")
+            {
+                UseShellExecute = false,
+                WorkingDirectory = AppPaths.InstallFolder,
+            });
+            if (tellHere) ShowInstalled(firstInstall || installed == null, installed);
             return true;
         }
         catch (Exception e)
@@ -88,6 +100,31 @@ internal static class Installer
             Log.Write($"Couldn't install Quadra in {target}: {e}");
             return false;
         }
+    }
+
+    /// <summary>
+    /// Says that Quadra was installed (or updated), where it is and that it opens with Windows, so the user
+    /// knows something happened: the install itself takes a second and shows nothing.
+    /// </summary>
+    private static void ShowInstalled(bool firstInstall, Version? previous)
+    {
+        string version = OwnVersion.ToString(3);
+        string text;
+        if (previous == null || firstInstall)
+        {
+            var settings = new SettingsStore(System.IO.Path.Combine(AppPaths.DataFolder, "settings.json")).Current;
+            var combo = settings.ShowGridHotKey ?? HotKeyCombo.ShowGridDefault;
+            text = Loc.Format("Install_Done", version) + "\n\n" + Loc.Format("Install_DoneText", combo.Display);
+        }
+        else if (OwnVersion > previous)
+        {
+            text = Loc.Format("Updated_Title", version) + "\n\n" + Loc.Get("Install_UpdatedText");
+        }
+        else
+        {
+            text = Loc.Format("Install_Done", version) + "\n\n" + Loc.Get("Install_AlreadyText");
+        }
+        MessageBox.Show(text, "Quadra", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 
     /// <summary>

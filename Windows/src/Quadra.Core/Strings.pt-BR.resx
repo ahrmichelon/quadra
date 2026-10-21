@@ -114,4 +114,10 @@ O Quadra, o atalho no menu Iniciar e as configurações e layouts dele serão ap
   <data name="Uninstall_Done" xml:space="preserve"><value>O Quadra foi removido deste PC.</value></data>
   <data name="Uninstall_Failed" xml:space="preserve"><value>Não deu para remover o Quadra por completo: {0}</value></data>
   <data name="Shortcut_Description" xml:space="preserve"><value>Organize suas janelas numa grade</value></data>
+  <data name="Install_Done" xml:space="preserve"><value>O Quadra {0} foi instalado</value></data>
+  <data name="Install_DoneText" xml:space="preserve"><value>Ele já está aberto: o ícone fica ao lado do relógio (se não aparecer, clique na setinha ^). Aperte {0} para abrir a grade.
+
+O Quadra está no menu Iniciar e abre sozinho toda vez que o Windows inicia. Pode apagar o arquivo que você baixou.</value></data>
+  <data name="Install_UpdatedText" xml:space="preserve"><value>Ele já está aberto, com suas configurações e layouts como estavam. Pode apagar o arquivo que você baixou.</value></data>
+  <data name="Install_AlreadyText" xml:space="preserve"><value>Ele já estava instalado e agora está aberto. Pode apagar o arquivo que você baixou.</value></data>
 </root>

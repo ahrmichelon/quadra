@@ -1,5 +1,13 @@
 # Changelog: Quadra for Windows
 
+## 1.2.1
+
+- Installing now says so: after opening the downloaded Quadra.exe, a window tells you Quadra is
+  installed, where its icon is, that it is in the Start menu and opens by itself with Windows, and
+  that the downloaded file can be deleted. Opening a newer Quadra.exe says it was updated. Before,
+  the only sign was a notification, which Windows can hide (Do not disturb), so it looked like
+  nothing had been installed.
+
 ## 1.2.0
 
 - Quadra installs itself: opening the downloaded Quadra.exe puts it in your user folder

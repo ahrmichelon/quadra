@@ -114,4 +114,10 @@ Quadra, its Start menu shortcut, and its settings and layouts will be deleted.</
   <data name="Uninstall_Done" xml:space="preserve"><value>Quadra was removed from this PC.</value></data>
   <data name="Uninstall_Failed" xml:space="preserve"><value>Couldn't remove Quadra completely: {0}</value></data>
   <data name="Shortcut_Description" xml:space="preserve"><value>Arrange your windows on a grid</value></data>
+  <data name="Install_Done" xml:space="preserve"><value>Quadra {0} is installed</value></data>
+  <data name="Install_DoneText" xml:space="preserve"><value>It's open now: its icon is next to the clock (if you don't see it, click the ^ arrow). Press {0} to open the grid.
+
+Quadra is in the Start menu and opens by itself every time Windows starts. You can delete the file you downloaded.</value></data>
+  <data name="Install_UpdatedText" xml:space="preserve"><value>It's open now, with your settings and layouts as they were. You can delete the file you downloaded.</value></data>
+  <data name="Install_AlreadyText" xml:space="preserve"><value>It was already installed and is open now. You can delete the file you downloaded.</value></data>
 </root>
