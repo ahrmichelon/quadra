@@ -15,6 +15,7 @@ Open an issue with:
 ```bash
 ./build.sh --install   # build, copy to /Applications and open
 ./build.sh --test      # run the tests (or plain `swift test`)
+./build.sh --appstore  # the Mac App Store version (sandboxed; see docs/app-store/GUIA.md)
 ```
 
 If the project is on an exFAT drive, macOS creates hidden `._` files next to every file, which

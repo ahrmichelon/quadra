@@ -7,3 +7,7 @@ build/
 *.xcodeproj/xcuserdata/
 *.xcworkspace/xcuserdata/
 DerivedData/
+
+# App Store provisioning profiles stay on the maintainer's Mac
+App/*.provisionprofile
+.build-appstore/

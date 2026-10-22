@@ -28,9 +28,11 @@ struct SettingsView: View {
                         .foregroundStyle(.secondary)
                 }
                 Spacer()
+                #if !APP_STORE
                 Link(destination: Links.support) {
                     Label("Support Quadra", systemImage: "heart")
                 }
+                #endif
             }
 
             Divider()
@@ -72,10 +74,12 @@ struct SettingsView: View {
                             .foregroundStyle(.secondary)
                     }
                 }
+                #if !APP_STORE
                 GridRow {
                     Text("Updates")
                     Toggle("Check for updates once a day", isOn: $checkForUpdates)
                 }
+                #endif
             }
 
             Divider()

@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- A welcome window explains why Quadra needs the Accessibility permission, opens System Settings
+  and notices by itself when the permission is granted.
+- `./build.sh --appstore` builds the Mac App Store version: sandboxed, without the update check
+  and the donation link. Store texts, screenshots and a privacy policy are in `docs/app-store`
+  and `PRIVACY.md`.
+
 ## 1.1.0
 
 - Quadra tells you when a new version is out. It checks GitHub once a day (you can turn this

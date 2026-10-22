@@ -6,7 +6,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private var statusItem: NSStatusItem!
     private let settingsMenu = NSMenu()
     private let store = LayoutStore()
+    #if !APP_STORE
+    // The App Store updates the app itself, so that version has no update check.
     private let updates = UpdateChecker()
+    #endif
+    private let welcome = WelcomeWindowController()
     private lazy var panel = GridPanel()
     /// Outline around the chosen window.
     private lazy var targetHighlight = OverlayWindow(style: .outline)
@@ -60,11 +64,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         store.onChange = { [weak self] in self?.registerHotKeys() }
         registerHotKeys()
 
+        #if !APP_STORE
         updates.onNewVersion = { [weak self] release in self?.showUpdateAlert(release) }
         updates.start()
+        #endif
 
-        // The first time, macOS shows the alert that leads to System Settings.
-        if !WindowMover.isTrusted() { _ = WindowMover.isTrusted(prompt: true) }
+        welcome.onOpenSettings = { [weak self] in self?.openAccessibilitySettings() }
+        if !WindowMover.isTrusted() { showWelcome() }
+    }
+
+    /// Explains the Accessibility permission and waits for it.
+    @objc private func showWelcome() {
+        if panel.isVisible { panel.orderOut(nil) }
+        welcome.show(shortcut: store.showGridHotKey?.display)
     }
 
     /// Registers the app's shortcuts and each layout's shortcut.
@@ -120,7 +132,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     private func toggleGrid(fromStatusItem: Bool) {
         if panel.isVisible { panel.orderOut(nil); return }
-        guard WindowMover.isTrusted() else { openAccessibilitySettings(); return }
+        guard WindowMover.isTrusted() else { showWelcome(); return }
         guard let window = WindowMover.focusedWindow(), presentGrid(for: window) else {
             // No focused window: from the icon, show the menu; from the shortcut, just beep.
             if fromStatusItem { showMenuFromStatusItem() } else { NSSound.beep() }
@@ -204,7 +216,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             panel.orderOut(nil)
             return target
         }
-        guard WindowMover.isTrusted() else { openAccessibilitySettings(); return nil }
+        guard WindowMover.isTrusted() else { showWelcome(); return nil }
         return WindowMover.focusedWindow()
     }
 
@@ -255,12 +267,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     func menuNeedsUpdate(_ menu: NSMenu) {
         menu.removeAllItems()
 
+        #if !APP_STORE
         if let release = updates.available {
             let it = item(String(localized: "Update Available: Quadra \(release.version)…"), #selector(showAvailableUpdate))
             it.image = NSImage(systemSymbolName: "arrow.down.circle.fill", accessibilityDescription: nil)
             menu.addItem(it)
             menu.addItem(.separator())
         }
+        #endif
 
         if !panel.isVisible {
             menu.addItem(item(String(localized: "Show Grid"), #selector(showGridFromMenu), shortcut: store.showGridHotKey))
@@ -320,7 +334,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         if WindowMover.isTrusted() {
             menu.addItem(info(String(localized: "✓ Accessibility allowed")))
         } else {
-            menu.addItem(item(String(localized: "Allow Accessibility…"), #selector(openAccessibilitySettings)))
+            menu.addItem(item(String(localized: "Allow Accessibility…"), #selector(showWelcome)))
         }
         let login = item(String(localized: "Open at Login"), #selector(toggleLaunchAtLogin))
         login.state = SMAppService.mainApp.status == .enabled ? .on : .off
@@ -330,8 +344,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.addItem(settings)
         menu.addItem(.separator())
 
+        #if !APP_STORE
         menu.addItem(item(String(localized: "Check for Updates…"), #selector(checkForUpdates)))
         menu.addItem(item(String(localized: "Support Quadra…"), #selector(openSupport)))
+        #endif
         menu.addItem(item(String(localized: "About Quadra"), #selector(showAbout)))
         menu.addItem(NSMenuItem(title: String(localized: "Quit Quadra"),
                                 action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
@@ -427,8 +443,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
     }
 
-    // MARK: Updates
+    // MARK: Updates and support (not in the App Store version)
 
+    #if !APP_STORE
     @objc private func showAvailableUpdate() {
         guard let release = updates.available else { return }
         afterMenuCloses { [weak self] in self?.showUpdateAlert(release) }
@@ -494,6 +511,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         if panel.isVisible { panel.orderOut(nil) }
         NSWorkspace.shared.open(Links.support)
     }
+    #endif
 
     @objc private func showAbout() {
         if panel.isVisible { panel.orderOut(nil) }

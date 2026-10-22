@@ -26,7 +26,7 @@ enum Snapshot {
     static func render(to path: String, dark: Bool) {
         let appearance = NSAppearance(named: dark ? .darkAqua : .aqua)!
         let content = GridContentView()
-        let size = content.configure(title: "Safari — Start Page", cols: 6, rows: 6,
+        let size = content.configure(title: String(localized: "Safari — Start Page"), cols: 6, rows: 6,
                                      gridSize: CGSize(width: Settings.defaultPanelSize,
                                                       height: Settings.defaultPanelSize * 3 / 4),
                                      current: CGRect(x: 0.12, y: 0.15, width: 0.55, height: 0.62),
@@ -59,8 +59,31 @@ enum Snapshot {
         save(host, appearance: appearance, to: path)
     }
 
+    /// The welcome window, asking for the permission (or, with `ready`, after it was granted).
+    static func renderWelcome(to path: String, dark: Bool, ready: Bool) {
+        let appearance = NSAppearance(named: dark ? .darkAqua : .aqua)!
+        let model = WelcomeModel()
+        model.isTrusted = ready
+        let host = NSHostingView(rootView: WelcomeView(model: model, onOpenSettings: {}, onClose: {})
+            .background(Color(nsColor: .windowBackgroundColor)))
+        let window = NSWindow(contentRect: CGRect(origin: .zero, size: host.fittingSize), styleMask: [.borderless],
+                              backing: .buffered, defer: false)
+        window.appearance = appearance
+        window.contentView = host
+        host.layoutSubtreeIfNeeded()
+        RunLoop.main.run(until: Date().addingTimeInterval(0.5))
+        save(host, appearance: appearance, to: path)
+    }
+
+    /// Saves at twice the size (like a Retina display), or at QUADRA_SNAPSHOT_SCALE times.
     private static func save(_ view: NSView, appearance: NSAppearance, to path: String) {
-        guard let rep = view.bitmapImageRepForCachingDisplay(in: view.bounds) else { return }
+        let scale = Int(ProcessInfo.processInfo.environment["QUADRA_SNAPSHOT_SCALE"] ?? "") ?? 2
+        let size = view.bounds.size
+        guard let rep = NSBitmapImageRep(bitmapDataPlanes: nil, pixelsWide: Int(size.width) * scale,
+                                         pixelsHigh: Int(size.height) * scale, bitsPerSample: 8,
+                                         samplesPerPixel: 4, hasAlpha: true, isPlanar: false,
+                                         colorSpaceName: .deviceRGB, bytesPerRow: 0, bitsPerPixel: 0) else { return }
+        rep.size = size
         appearance.performAsCurrentDrawingAppearance {
             view.cacheDisplay(in: view.bounds, to: rep)
         }

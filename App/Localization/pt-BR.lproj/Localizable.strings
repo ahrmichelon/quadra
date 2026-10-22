@@ -87,3 +87,19 @@
 "Press the shortcut…" = "Aperte o atalho…";
 "Record shortcut" = "Gravar atalho";
 "Remove shortcut" = "Remover atalho";
+
+/* Boas-vindas e permissão */
+"Welcome to Quadra" = "Boas-vindas ao Quadra";
+"Quadra is ready" = "O Quadra está pronto";
+"Press %@ or click the grid icon in the menu bar to arrange the focused window." = "Aperte %@ ou clique no ícone da grade na barra de menus para organizar a janela em foco.";
+"Done" = "OK";
+"Allow Quadra to move windows" = "Permita que o Quadra mova as janelas";
+"To move and resize other apps' windows, macOS asks you to turn Quadra on in Accessibility. Quadra only reads the position, size and title of the focused window, and never sends them anywhere." = "Para mover e redimensionar as janelas dos outros apps, o macOS pede que você ligue o Quadra em Acessibilidade. O Quadra só lê a posição, o tamanho e o título da janela em foco, e nunca envia isso para lugar nenhum.";
+"Click Open System Settings" = "Clique em Abrir Ajustes do Sistema";
+"Turn Quadra on in the list" = "Ligue o Quadra na lista";
+"That's it: Quadra notices by itself" = "Pronto: o Quadra percebe sozinho";
+"Not Now" = "Agora não";
+"Open System Settings" = "Abrir Ajustes do Sistema";
+
+/* Exemplo nas imagens da App Store */
+"Safari — Start Page" = "Safari — Página inicial";
