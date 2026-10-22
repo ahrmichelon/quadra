@@ -13,7 +13,7 @@
   <img src="docs/images/panel-dark.png" width="430" alt="The Quadra grid over other windows">
 </p>
 
-Quadra is a menu bar app inspired by [Divvy](https://mizage.com/divvy/). Press a shortcut or
+Quadra is a menu bar app that arranges your windows on a grid. Press a shortcut or
 click the icon, drag across the grid, and the window moves to that area of the screen.
 
 > **On Windows?** Quadra also runs on Windows 10 and 11: see [Quadra for Windows](Windows/README.md).
@@ -119,6 +119,3 @@ Developer ID (US$ 99 per year), so macOS stops blocking the download.
 [MIT](LICENSE)
 
 Quadra is made by [Vulpini](https://vulpini.com.br).
-
-Quadra is an independent project, not affiliated with, endorsed by or connected to Mizage LLC or Divvy.
-Divvy is a trademark of Mizage LLC.

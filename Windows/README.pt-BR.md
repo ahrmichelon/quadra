@@ -9,7 +9,7 @@
   <a href="README.md">Read in English</a> · <a href="../README.pt-BR.md">Quadra para Mac</a>
 </p>
 
-O Quadra é um app da bandeja do sistema inspirado no [Divvy](https://mizage.com/divvy/). Aperte
+O Quadra é um app da bandeja do sistema que organiza as suas janelas numa grade. Aperte
 um atalho ou clique no ícone ao lado do relógio, arraste na grade, e a janela vai para aquela área
 da tela. É a versão para Windows do [Quadra para Mac](../README.pt-BR.md), com a mesma grade, os
 mesmos layouts e atalhos.
@@ -120,6 +120,3 @@ O Quadra é grátis. Se ele te ajuda, veja [como apoiar](../README.pt-BR.md#apoi
 [MIT](../LICENSE)
 
 O Quadra é feito pela [Vulpini](https://vulpini.com.br).
-
-O Quadra é um projeto independente, sem ligação com a Mizage LLC nem com o Divvy, e não é endossado por elas.
-Divvy é uma marca da Mizage LLC.

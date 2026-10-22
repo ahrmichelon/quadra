@@ -1,7 +1,7 @@
 import AppKit
 import Carbon
 
-/// A saved screen area with its own shortcut (like Divvy's "shortcuts").
+/// A saved screen area with its own shortcut.
 struct SavedLayout: Codable, Identifiable, Equatable {
     var id = UUID()
     var name: String

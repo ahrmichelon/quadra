@@ -9,7 +9,7 @@
   <a href="README.md">Read in English</a>
 </p>
 
-O Quadra é um app de barra de menus inspirado no [Divvy](https://mizage.com/divvy/). Aperte um
+O Quadra é um app de barra de menus que organiza as suas janelas numa grade. Aperte um
 atalho ou clique no ícone, arraste na grade, e a janela vai para aquela área da tela.
 
 > **Usa Windows?** O Quadra também roda no Windows 10 e 11: veja o [Quadra para Windows](Windows/README.pt-BR.md).
@@ -109,6 +109,3 @@ Pix copia e cola:
 [MIT](LICENSE)
 
 O Quadra é feito pela [Vulpini](https://vulpini.com.br).
-
-O Quadra é um projeto independente, sem ligação com a Mizage LLC nem com o Divvy, e não é endossado por elas.
-Divvy é uma marca da Mizage LLC.

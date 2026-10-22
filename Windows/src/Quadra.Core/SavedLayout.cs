@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace Quadra;
 
-/// <summary>A saved screen area with its own shortcut (like Divvy's "shortcuts").</summary>
+/// <summary>A saved screen area with its own shortcut.</summary>
 public sealed class SavedLayout
 {
     [JsonPropertyName("id")] public Guid Id { get; set; } = Guid.NewGuid();

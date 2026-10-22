@@ -69,7 +69,7 @@ Em [appstoreconnect.apple.com](https://appstoreconnect.apple.com) → **Apps** �
   tudo, o que dá 4+.
 
 Regras da Apple a lembrar: os textos e as palavras-chave da loja **não podem citar outros apps ou
-marcas** (por isso o Divvy não aparece lá), e o app não pode mandar baixar versões de fora da loja.
+marcas**, e o app não pode mandar baixar versões de fora da loja.
 
 ## 7. Gerar o pacote
 

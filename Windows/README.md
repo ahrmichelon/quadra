@@ -9,7 +9,7 @@
   <a href="README.pt-BR.md">Leia em português</a> · <a href="../README.md">Quadra for Mac</a>
 </p>
 
-Quadra is a tray app inspired by [Divvy](https://mizage.com/divvy/). Press a shortcut or click
+Quadra is a tray app that arranges your windows on a grid. Press a shortcut or click
 the icon next to the clock, drag across the grid, and the window moves to that area of the
 screen. It is the Windows version of [Quadra for Mac](../README.md), with the same grid, layouts
 and shortcuts.
@@ -131,6 +131,3 @@ Quadra is free. If it helps you, see [how to support it](../README.md#support-qu
 [MIT](../LICENSE)
 
 Quadra is made by [Vulpini](https://vulpini.com.br).
-
-Quadra is an independent project, not affiliated with, endorsed by or connected to Mizage LLC or Divvy.
-Divvy is a trademark of Mizage LLC.
