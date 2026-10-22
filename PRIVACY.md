@@ -11,13 +11,13 @@ Quadra does not collect, store or share any personal data.
 - Your settings and layouts are saved only on your computer.
 - **Network:** the App Store version makes no network requests at all. The version downloaded
   from GitHub or installed with Homebrew asks GitHub, at most once a day, which is the latest
-  version (`api.github.com/repos/ahrmichelon/quadra/releases`). Nothing about you or your
+  version (`api.github.com/repos/vulpini-br/quadra/releases`). Nothing about you or your
   computer is sent, and you can turn this off in Settings. GitHub's own
   [privacy statement](https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement)
   applies to that request.
 - Links in the app (such as "Support Quadra") open in your web browser.
 
-Questions: open an issue at [github.com/ahrmichelon/quadra/issues](https://github.com/ahrmichelon/quadra/issues).
+Questions: open an issue at [github.com/vulpini-br/quadra/issues](https://github.com/vulpini-br/quadra/issues).
 
 ---
 
@@ -35,9 +35,9 @@ O Quadra não coleta, não guarda e não compartilha nenhum dado pessoal.
 - Seus ajustes e layouts ficam salvos só no seu computador.
 - **Internet:** a versão da App Store não acessa a internet. A versão baixada do GitHub ou
   instalada pelo Homebrew pergunta ao GitHub, no máximo uma vez por dia, qual é a versão mais
-  recente (`api.github.com/repos/ahrmichelon/quadra/releases`). Nada sobre você ou o seu
+  recente (`api.github.com/repos/vulpini-br/quadra/releases`). Nada sobre você ou o seu
   computador é enviado, e dá para desligar isso nos Ajustes. Nesse pedido vale a
   [declaração de privacidade do GitHub](https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement).
 - Os links do app (como "Apoiar o Quadra") abrem no seu navegador.
 
-Dúvidas: abra uma issue em [github.com/ahrmichelon/quadra/issues](https://github.com/ahrmichelon/quadra/issues).
+Dúvidas: abra uma issue em [github.com/vulpini-br/quadra/issues](https://github.com/vulpini-br/quadra/issues).

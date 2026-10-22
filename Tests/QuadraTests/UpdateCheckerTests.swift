@@ -14,11 +14,11 @@ final class UpdateCheckerTests: XCTestCase {
 
     func testReadsGitHubsLatestReleaseAnswer() throws {
         let json = """
-        {"tag_name": "v1.2.3", "html_url": "https://github.com/ahrmichelon/quadra/releases/tag/v1.2.3",
+        {"tag_name": "v1.2.3", "html_url": "https://github.com/vulpini-br/quadra/releases/tag/v1.2.3",
          "name": "Quadra v1.2.3", "draft": false, "prerelease": false}
         """
         let release = try JSONDecoder().decode(UpdateChecker.Release.self, from: Data(json.utf8))
         XCTAssertEqual(release.version, "1.2.3")
-        XCTAssertEqual(release.htmlURL.absoluteString, "https://github.com/ahrmichelon/quadra/releases/tag/v1.2.3")
+        XCTAssertEqual(release.htmlURL.absoluteString, "https://github.com/vulpini-br/quadra/releases/tag/v1.2.3")
     }
 }

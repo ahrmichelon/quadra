@@ -4,7 +4,7 @@ name: Release
 #   1. runs the tests,
 #   2. builds Quadra.zip signed with the project's certificate ("Quadra Open Source"),
 #   3. publishes it as a GitHub release, with notes from CHANGELOG.md,
-#   4. updates the Homebrew cask in ahrmichelon/homebrew-tap.
+#   4. updates the Homebrew cask in vulpini-br/homebrew-tap.
 # Running it by hand ("Run workflow") is a rehearsal: steps 1 and 2 only, nothing is published.
 #
 # Secrets: QUADRA_CERT_P12 (base64 of the .p12), QUADRA_CERT_PASSWORD, TAP_DEPLOY_KEY
@@ -84,7 +84,7 @@ jobs:
           echo "$TAP_DEPLOY_KEY" > "$KEY"
           chmod 600 "$KEY"
           export GIT_SSH_COMMAND="ssh -i $KEY -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new"
-          git clone --depth 1 git@github.com:ahrmichelon/homebrew-tap.git "$RUNNER_TEMP/tap"
+          git clone --depth 1 git@github.com:vulpini-br/homebrew-tap.git "$RUNNER_TEMP/tap"
           cd "$RUNNER_TEMP/tap"
           sed -i '' -E "s/^  version \".*\"/  version \"$VERSION\"/; s/^  sha256 \".*\"/  sha256 \"$SHA256\"/" Casks/quadra.rb
           git diff --stat

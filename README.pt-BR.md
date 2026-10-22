@@ -31,14 +31,14 @@ atalho ou clique no ícone, arraste na grade, e a janela vai para aquela área d
 **Com o [Homebrew](https://brew.sh):**
 
 ```bash
-brew install --cask ahrmichelon/tap/quadra
+brew install --cask vulpini-br/tap/quadra
 ```
 
 Depois siga os passos 2 e 3 abaixo. Para atualizar no futuro: `brew upgrade --cask quadra`.
 
 **Ou baixe direto:**
 
-1. Baixe o `Quadra.zip` na [versão mais recente](https://github.com/ahrmichelon/quadra/releases/latest),
+1. Baixe o `Quadra.zip` na [versão mais recente](https://github.com/vulpini-br/quadra/releases/latest),
    descompacte e mova o **Quadra.app** para **Aplicativos**.
 2. Abra o app. O Quadra ainda não tem a verificação da Apple, então na primeira vez o macOS bloqueia.
    Abra **Ajustes do Sistema → Privacidade e Segurança**, role até o fim e clique em **Abrir Mesmo Assim**.
@@ -75,7 +75,7 @@ trocados em **Ajustes e layouts**.
 Precisa do macOS 14 ou mais novo e do Xcode 15.3 ou mais novo.
 
 ```bash
-git clone https://github.com/ahrmichelon/quadra.git
+git clone https://github.com/vulpini-br/quadra.git
 cd quadra
 ./build.sh --install   # gera o build/Quadra.app, copia para Aplicativos e abre
 swift test             # roda os testes

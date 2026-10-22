@@ -36,7 +36,7 @@ and you can see where the window will land before letting go.
 
 ## Install
 
-1. Download Quadra from the [releases page](https://github.com/ahrmichelon/quadra/releases?q=windows&expanded=true)
+1. Download Quadra from the [releases page](https://github.com/vulpini-br/quadra/releases?q=windows&expanded=true)
    (look for **Quadra for Windows**):
    - **Quadra-x64.exe** for most PCs (Intel and AMD).
    - **Quadra-arm64.exe** for PCs with an ARM processor (Snapdragon, Surface Pro X).

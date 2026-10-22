@@ -42,13 +42,13 @@ Quadra collects no data and makes no network requests. To move windows it needs 
 Quadra is free and open source.
 
 **Support URL**
-https://github.com/ahrmichelon/quadra/issues
+https://github.com/vulpini-br/quadra/issues
 
 **Marketing URL**
-https://github.com/ahrmichelon/quadra
+https://github.com/vulpini-br/quadra
 
 **Privacy policy URL**
-https://github.com/ahrmichelon/quadra/blob/main/PRIVACY.md
+https://github.com/vulpini-br/quadra/blob/main/PRIVACY.md
 
 **Category**
 Productivity

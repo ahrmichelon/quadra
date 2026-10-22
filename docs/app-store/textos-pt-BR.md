@@ -42,10 +42,10 @@ O Quadra não coleta nenhum dado e não acessa a internet. Para mover as janelas
 O Quadra é grátis e de código aberto.
 
 **URL de suporte**
-https://github.com/ahrmichelon/quadra/issues
+https://github.com/vulpini-br/quadra/issues
 
 **URL de marketing**
-https://github.com/ahrmichelon/quadra
+https://github.com/vulpini-br/quadra
 
 **URL da política de privacidade**
-https://github.com/ahrmichelon/quadra/blob/main/PRIVACY.md
+https://github.com/vulpini-br/quadra/blob/main/PRIVACY.md

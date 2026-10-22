@@ -1,4 +1,5 @@
 # The "Sponsor" button at the top of the repository.
-# When GitHub Sponsors is approved for @ahrmichelon, uncomment the next line.
-# github: ahrmichelon
-custom: ["https://github.com/ahrmichelon/quadra#support-quadra"]
+# When GitHub Sponsors is approved (for @ahrmichelon or the vulpini-br organization),
+# uncomment the next line with that account.
+# github: vulpini-br
+custom: ["https://github.com/vulpini-br/quadra#support-quadra"]

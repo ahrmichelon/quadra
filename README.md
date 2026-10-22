@@ -35,14 +35,14 @@ click the icon, drag across the grid, and the window moves to that area of the s
 **With [Homebrew](https://brew.sh):**
 
 ```bash
-brew install --cask ahrmichelon/tap/quadra
+brew install --cask vulpini-br/tap/quadra
 ```
 
 Then follow steps 2 and 3 below. To update later: `brew upgrade --cask quadra`.
 
 **Or download it:**
 
-1. Download `Quadra.zip` from the [latest release](https://github.com/ahrmichelon/quadra/releases/latest),
+1. Download `Quadra.zip` from the [latest release](https://github.com/vulpini-br/quadra/releases/latest),
    unzip it and move **Quadra.app** to **Applications**.
 2. Open it. Quadra is not notarized by Apple yet, so the first time macOS blocks it.
    Open **System Settings → Privacy & Security**, scroll down and click **Open Anyway**.
@@ -82,7 +82,7 @@ can be changed in **Settings & Layouts**.
 You need macOS 14 or later and Xcode 15.3 or later.
 
 ```bash
-git clone https://github.com/ahrmichelon/quadra.git
+git clone https://github.com/vulpini-br/quadra.git
 cd quadra
 ./build.sh --install   # builds build/Quadra.app, copies it to /Applications and opens it
 swift test             # runs the tests

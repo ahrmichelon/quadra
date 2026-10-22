@@ -16,7 +16,7 @@ final class UpdateChecker {
         var version: String { tagName.hasPrefix("v") ? String(tagName.dropFirst()) : tagName }
     }
 
-    static let latestReleaseAPI = URL(string: "https://api.github.com/repos/ahrmichelon/quadra/releases/latest")!
+    static let latestReleaseAPI = URL(string: "https://api.github.com/repos/vulpini-br/quadra/releases/latest")!
 
     /// The newer release found by the last check, if any.
     private(set) var available: Release?

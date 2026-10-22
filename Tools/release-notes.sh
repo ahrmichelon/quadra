@@ -20,7 +20,7 @@ cat <<'EOF'
 With Homebrew:
 
 ```bash
-brew install --cask ahrmichelon/tap/quadra
+brew install --cask vulpini-br/tap/quadra
 ```
 
 Or download **Quadra.zip** below, unzip it and move **Quadra.app** to **Applications**.
@@ -31,7 +31,7 @@ Already have Quadra? It tells you about new versions; with Homebrew, run `brew u
 
 ---
 
-**Em português:** instale com `brew install --cask ahrmichelon/tap/quadra` ou baixe o **Quadra.zip**,
+**Em português:** instale com `brew install --cask vulpini-br/tap/quadra` ou baixe o **Quadra.zip**,
 mova o app para **Aplicativos** e, na primeira vez, clique em **Abrir Mesmo Assim** em
 Ajustes do Sistema → Privacidade e Segurança. Depois permita a **Acessibilidade**.
 EOF

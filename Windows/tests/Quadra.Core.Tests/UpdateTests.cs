@@ -30,14 +30,14 @@ public class UpdateTests
           {"tag_name": "windows-v1.3.0", "draft": true, "prerelease": false, "html_url": "https://example.com/draft", "assets": []},
           {"tag_name": "windows-v1.2.0", "draft": false, "prerelease": true, "html_url": "https://example.com/beta", "assets": []},
           {"tag_name": "v1.4.0", "draft": false, "prerelease": false,
-           "html_url": "https://github.com/ahrmichelon/quadra/releases/tag/v1.4.0",
-           "assets": [{"name": "Quadra.zip", "browser_download_url": "https://github.com/ahrmichelon/quadra/releases/download/v1.4.0/Quadra.zip"}]},
+           "html_url": "https://github.com/vulpini-br/quadra/releases/tag/v1.4.0",
+           "assets": [{"name": "Quadra.zip", "browser_download_url": "https://github.com/vulpini-br/quadra/releases/download/v1.4.0/Quadra.zip"}]},
           {"tag_name": "windows-v1.1.0", "draft": false, "prerelease": false,
-           "html_url": "https://github.com/ahrmichelon/quadra/releases/tag/windows-v1.1.0",
+           "html_url": "https://github.com/vulpini-br/quadra/releases/tag/windows-v1.1.0",
            "assets": [
-             {"name": "Quadra-x64.exe", "browser_download_url": "https://github.com/ahrmichelon/quadra/releases/download/windows-v1.1.0/Quadra-x64.exe",
+             {"name": "Quadra-x64.exe", "browser_download_url": "https://github.com/vulpini-br/quadra/releases/download/windows-v1.1.0/Quadra-x64.exe",
               "digest": "sha256:062ECE52D51F0B3A5357D86D7C6F254C3EE170CDF4D5A5751D774949FE2BF113"},
-             {"name": "Quadra-arm64.exe", "browser_download_url": "https://github.com/ahrmichelon/quadra/releases/download/windows-v1.1.0/Quadra-arm64.exe"}
+             {"name": "Quadra-arm64.exe", "browser_download_url": "https://github.com/vulpini-br/quadra/releases/download/windows-v1.1.0/Quadra-arm64.exe"}
            ]},
           {"tag_name": "windows-v1.0.0", "draft": false, "prerelease": false, "html_url": "https://example.com/1.0.0", "assets": []}
         ]
@@ -49,8 +49,8 @@ public class UpdateTests
         var release = Updates.NewestWindowsRelease(Releases);
         Assert.NotNull(release);
         Assert.Equal("1.1.0", release.Version); // not the Mac's 1.4.0, the draft or the pre-release
-        Assert.Equal("https://github.com/ahrmichelon/quadra/releases/tag/windows-v1.1.0", release.PageUrl);
-        Assert.Equal("https://github.com/ahrmichelon/quadra/releases/download/windows-v1.1.0/Quadra-arm64.exe",
+        Assert.Equal("https://github.com/vulpini-br/quadra/releases/tag/windows-v1.1.0", release.PageUrl);
+        Assert.Equal("https://github.com/vulpini-br/quadra/releases/download/windows-v1.1.0/Quadra-arm64.exe",
                      release.DownloadUrl("arm64"));
         // A processor without its own file gets the release page.
         Assert.Equal(release.PageUrl, release.DownloadUrl("x86"));

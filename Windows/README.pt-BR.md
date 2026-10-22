@@ -37,7 +37,7 @@ na hora em que precisa, e vê onde a janela vai parar antes de soltar o mouse.
 
 ## Instalar
 
-1. Baixe o Quadra na [página de versões](https://github.com/ahrmichelon/quadra/releases?q=windows&expanded=true)
+1. Baixe o Quadra na [página de versões](https://github.com/vulpini-br/quadra/releases?q=windows&expanded=true)
    (procure **Quadra for Windows**):
    - **Quadra-x64.exe** para a maioria dos PCs (Intel e AMD).
    - **Quadra-arm64.exe** para PCs com processador ARM (Snapdragon, Surface Pro X).

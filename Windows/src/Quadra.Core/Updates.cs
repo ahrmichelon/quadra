@@ -26,7 +26,7 @@ public sealed record Asset(string Url, string? Sha256);
 /// </summary>
 public static class Updates
 {
-    public const string ReleasesApi = "https://api.github.com/repos/ahrmichelon/quadra/releases?per_page=30";
+    public const string ReleasesApi = "https://api.github.com/repos/vulpini-br/quadra/releases?per_page=30";
     public const string TagPrefix = "windows-v";
 
     /// <summary>Automatic checks happen at most this often.</summary>

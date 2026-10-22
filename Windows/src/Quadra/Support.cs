@@ -38,12 +38,12 @@ internal static class Log
 /// <summary>Web pages the app opens, and the app's version.</summary>
 internal static class Links
 {
-    public const string Repository = "https://github.com/ahrmichelon/quadra";
+    public const string Repository = "https://github.com/vulpini-br/quadra";
 
     /// <summary>The "support Quadra" section of the README, in the app's language.</summary>
     public static string Support => Loc.IsPortuguese
-        ? "https://github.com/ahrmichelon/quadra/blob/main/README.pt-BR.md#apoie-o-quadra"
-        : "https://github.com/ahrmichelon/quadra#support-quadra";
+        ? "https://github.com/vulpini-br/quadra/blob/main/README.pt-BR.md#apoie-o-quadra"
+        : "https://github.com/vulpini-br/quadra#support-quadra";
 
     public static void Open(string url)
     {
