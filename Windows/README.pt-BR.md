@@ -118,3 +118,6 @@ O Quadra é grátis. Se ele te ajuda, veja [como apoiar](../README.pt-BR.md#apoi
 ## Licença
 
 [MIT](../LICENSE)
+
+O Quadra é um projeto independente, sem ligação com a Mizage LLC nem com o Divvy, e não é endossado por elas.
+Divvy é uma marca da Mizage LLC.
