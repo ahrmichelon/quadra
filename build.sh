@@ -60,7 +60,7 @@ cp Branding/AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
 
 if [[ "$MODE" == "--appstore" ]]; then
   # The bundle identifier registered in App Store Connect (decided with the Apple account).
-  STORE_ID="${QUADRA_APPSTORE_BUNDLE_ID:-io.github.ahrmichelon.quadra.appstore}"
+  STORE_ID="${QUADRA_APPSTORE_BUNDLE_ID:-br.com.vulpini.quadra}"
   PLIST="$APP/Contents/Info.plist"
   /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier $STORE_ID" "$PLIST"
   /usr/libexec/PlistBuddy -c "Add :ITSAppUsesNonExemptEncryption bool false" "$PLIST"

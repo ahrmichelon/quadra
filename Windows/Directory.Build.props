@@ -12,9 +12,9 @@
 
     <Version>1.2.2</Version>
     <Product>Quadra</Product>
-    <Company>Quadra</Company>
-    <Authors>Alan Ribeiro Michelon and Quadra contributors</Authors>
-    <Copyright>Copyright © 2026 Alan Ribeiro Michelon and Quadra contributors</Copyright>
+    <Company>Vulpini</Company>
+    <Authors>Vulpini Contabilidade Ltda and Quadra contributors</Authors>
+    <Copyright>Copyright © 2026 Vulpini Contabilidade Ltda and Quadra contributors</Copyright>
     <NeutralLanguage>en</NeutralLanguage>
     <SatelliteResourceLanguages>en;pt-BR</SatelliteResourceLanguages>
   </PropertyGroup>

@@ -145,7 +145,7 @@ internal static class Installer
         using var key = Registry.CurrentUser.CreateSubKey(UninstallKey + AppPaths.Name);
         key.SetValue("DisplayName", AppPaths.IsTest ? "Quadra (self-test)" : "Quadra");
         key.SetValue("DisplayVersion", OwnVersion.ToString(3));
-        key.SetValue("Publisher", "Alan Ribeiro Michelon");
+        key.SetValue("Publisher", "Vulpini");
         key.SetValue("DisplayIcon", exe + ",0");
         key.SetValue("InstallLocation", AppPaths.InstallFolder);
         key.SetValue("InstallDate", DateTime.Now.ToString("yyyyMMdd"));

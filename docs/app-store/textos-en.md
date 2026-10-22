@@ -54,7 +54,7 @@ https://github.com/ahrmichelon/quadra/blob/main/PRIVACY.md
 Productivity
 
 **Copyright**
-2026 Vulpini *(use the company's legal name)*
+2026 Vulpini Contabilidade Ltda
 
 **App Privacy** (in App Store Connect)
 Data Not Collected

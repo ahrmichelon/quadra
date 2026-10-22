@@ -12,29 +12,19 @@ e as imagens em [`screenshots/`](screenshots). A política de privacidade é o
 
 ## 0. Conta de desenvolvedor da empresa
 
-Inscreva a **Vulpini como organização** no [Apple Developer Program](https://developer.apple.com/programs/enroll/)
-(US$ 99 por ano). Para isso, a Apple pede:
-
-- o número **D-U-N-S** da empresa, que é gratuito; a própria página de inscrição ajuda a procurar ou
-  pedir, e pode levar alguns dias;
-- que a empresa seja uma pessoa jurídica com CNPJ. A Apple costuma não aceitar empresário
-  individual como organização, então confira se o tipo da Vulpini é aceito;
-- um site e um e-mail com o domínio da empresa;
-- que você tenha autorização para assinar contratos pela empresa.
-
+O Quadra é publicado pela **Vulpini Contabilidade Ltda** (CNPJ 55.377.852/0001-94,
+[vulpini.com.br](https://vulpini.com.br)), inscrita como **organização** no
+[Apple Developer Program](https://developer.apple.com/programs/enroll/) (US$ 99 por ano).
+A Apple pede o número **D-U-N-S** da empresa ([consulta e pedido gratuitos](https://developer.apple.com/enroll/duns-lookup/)),
+um site e um e-mail com o domínio da empresa, e que quem faz a inscrição possa assinar pela empresa.
 Na App Store, quem aparece como vendedor é a Vulpini.
 
-## 1. Escolher o identificador do app
+## 1. Identificador do app
 
-É um nome interno e único, no formato de endereço ao contrário. Com o domínio da empresa, algo como
-`br.com.vulpini.quadra`. Depois de escolher, troque o valor padrão de `QUADRA_APPSTORE_BUNDLE_ID`
-em `build.sh`, ou rode o build com a variável:
-
-```bash
-QUADRA_APPSTORE_BUNDLE_ID=br.com.vulpini.quadra ./build.sh --appstore
-```
-
-Esse identificador não pode mudar depois que o app estiver na loja.
+O identificador da versão da App Store é **`br.com.vulpini.quadra`**. Ele já é o padrão do
+`build.sh` e não pode mudar depois que o app estiver na loja. (A versão do GitHub e do Homebrew
+continua com o identificador antigo, `io.github.ahrmichelon.quadra`, para quem já usa não precisar
+liberar a Acessibilidade de novo. Ninguém vê esse nome.)
 
 ## 2. Certificados
 

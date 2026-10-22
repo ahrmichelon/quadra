@@ -118,5 +118,7 @@ Developer ID (US$ 99 per year), so macOS stops blocking the download.
 
 [MIT](LICENSE)
 
+Quadra is made by [Vulpini](https://vulpini.com.br).
+
 Quadra is an independent project, not affiliated with, endorsed by or connected to Mizage LLC or Divvy.
 Divvy is a trademark of Mizage LLC.

@@ -119,5 +119,7 @@ O Quadra é grátis. Se ele te ajuda, veja [como apoiar](../README.pt-BR.md#apoi
 
 [MIT](../LICENSE)
 
+O Quadra é feito pela [Vulpini](https://vulpini.com.br).
+
 O Quadra é um projeto independente, sem ligação com a Mizage LLC nem com o Divvy, e não é endossado por elas.
 Divvy é uma marca da Mizage LLC.
