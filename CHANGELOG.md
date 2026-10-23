@@ -1,9 +1,13 @@
 # Changelog
 
-## Unreleased
+## 1.2.0
 
 - A welcome window explains why Quadra needs the Accessibility permission, opens System Settings
   and notices by itself when the permission is granted.
+- Quadra is now published by [Vulpini](https://vulpini.com.br). The project moved to
+  [github.com/vulpini-br/quadra](https://github.com/vulpini-br/quadra), and Homebrew is now
+  `brew install --cask vulpini-br/tap/quadra` (old links keep working).
+- Pix donations now go to Vulpini Contabilidade.
 - `./build.sh --appstore` builds the Mac App Store version: sandboxed, without the update check
   and the donation link. Store texts, screenshots and a privacy policy are in `docs/app-store`
   and `PRIVACY.md`.
