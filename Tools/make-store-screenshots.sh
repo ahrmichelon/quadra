@@ -22,6 +22,7 @@ render() { # name, language, snapshot option, extra words…
 for language in en pt-BR; do
   render panel "$language" --snapshot dark
   render settings "$language" --snapshot-settings
+  render workspaces "$language" --snapshot-settings workspaces
   render welcome "$language" --snapshot-welcome
 done
 

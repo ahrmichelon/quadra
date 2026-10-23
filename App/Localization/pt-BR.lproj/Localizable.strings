@@ -94,7 +94,7 @@
 "Press %@ or click the grid icon in the menu bar to arrange the focused window." = "Aperte %@ ou clique no ícone da grade na barra de menus para organizar a janela em foco.";
 "Done" = "OK";
 "Allow Quadra to move windows" = "Permita que o Quadra mova as janelas";
-"To move and resize other apps' windows, macOS asks you to turn Quadra on in Accessibility. Quadra only reads the position, size and title of the focused window, and never sends them anywhere." = "Para mover e redimensionar as janelas dos outros apps, o macOS pede que você ligue o Quadra em Acessibilidade. O Quadra só lê a posição, o tamanho e o título da janela em foco, e nunca envia isso para lugar nenhum.";
+"To move and resize other apps' windows, macOS asks you to turn Quadra on in Accessibility. Quadra only reads the position, size and title of the windows it arranges, and never sends them anywhere." = "Para mover e redimensionar as janelas dos outros apps, o macOS pede que você ligue o Quadra em Acessibilidade. O Quadra só lê a posição, o tamanho e o título das janelas que organiza, e nunca envia isso para lugar nenhum.";
 "Click Open System Settings" = "Clique em Abrir Ajustes do Sistema";
 "Turn Quadra on in the list" = "Ligue o Quadra na lista";
 "That's it: Quadra notices by itself" = "Pronto: o Quadra percebe sozinho";
@@ -103,3 +103,32 @@
 
 /* Exemplo nas imagens da App Store */
 "Safari — Start Page" = "Safari — Página inicial";
+
+/* Espaços de trabalho */
+"Workspaces" = "Espaços de trabalho";
+"Workspace %lld" = "Espaço de trabalho %lld";
+"Save Current Windows as Workspace…" = "Salvar as janelas atuais como espaço de trabalho…";
+"No windows to save" = "Nenhuma janela para salvar";
+"Open the windows you want in the workspace and try again." = "Abra as janelas que você quer no espaço de trabalho e tente de novo.";
+"Save Workspace" = "Salvar espaço de trabalho";
+"Quadra will remember where the windows of %@ are. Give the workspace a name:" = "O Quadra vai lembrar onde ficam as janelas de %@. Dê um nome ao espaço de trabalho:";
+"Save" = "Salvar";
+"Cancel" = "Cancelar";
+"OK" = "OK";
+"General" = "Geral";
+"Each workspace remembers where the windows of several apps are and puts them all back with one shortcut." = "Cada espaço de trabalho lembra onde ficam as janelas de vários apps e põe todas de volta no lugar com um atalho.";
+"Quadra needs the Accessibility permission to see the windows. Choose Allow Accessibility… in the Quadra menu." = "O Quadra precisa da permissão de Acessibilidade para ver as janelas. Escolha Permitir Acessibilidade… no menu do Quadra.";
+"Save Current Windows" = "Salvar janelas atuais";
+"Delete the selected workspace" = "Apagar o espaço de trabalho escolhido";
+"Arrange the windows the way you like, then click + to save them as a workspace." = "Arrume as janelas do jeito que quiser e clique em + para salvá-las como espaço de trabalho.";
+"Workspace name" = "Nome do espaço de trabalho";
+"Windows" = "Janelas";
+"Leave this window out" = "Deixar esta janela de fora";
+"Update with Current Windows" = "Atualizar com as janelas atuais";
+"Restore Now" = "Restaurar agora";
+"Apps and documents that are closed are opened again when you restore." = "Os apps e documentos que estiverem fechados são abertos de novo ao restaurar.";
+
+/* Exemplo de espaço de trabalho nas imagens */
+"Writing" = "Escrita";
+"Report" = "Relatório";
+"Start Page" = "Página inicial";

@@ -1,4 +1,5 @@
 import AppKit
+import Carbon
 import SwiftUI
 
 /// Draws parts of the app to PNG images, to check the look without opening windows on screen.
@@ -25,6 +26,8 @@ enum Snapshot {
     /// The grid panel over a make-believe desktop, with two displays in the picker.
     static func render(to path: String, dark: Bool) {
         let appearance = NSAppearance(named: dark ? .darkAqua : .aqua)!
+        // Some controls follow the app's appearance rather than the window's.
+        NSApp.appearance = appearance
         let content = GridContentView()
         let size = content.configure(title: String(localized: "Safari — Start Page"), cols: 6, rows: 6,
                                      gridSize: CGSize(width: Settings.defaultPanelSize,
@@ -44,10 +47,15 @@ enum Snapshot {
         save(desktop, appearance: appearance, to: path)
     }
 
-    /// The Settings window with the default layouts (without reading or writing preferences).
-    static func renderSettings(to path: String, dark: Bool) {
+    /// The Settings window on a tab, with the default layouts and a sample workspace
+    /// (without reading or writing preferences).
+    static func renderSettings(to path: String, dark: Bool, tab: SettingsTab = .layouts) {
         let appearance = NSAppearance(named: dark ? .darkAqua : .aqua)!
-        let host = NSHostingView(rootView: SettingsView(store: LayoutStore(persist: false))
+        // Some controls follow the app's appearance rather than the window's.
+        NSApp.appearance = appearance
+        let store = LayoutStore(persist: false)
+        store.workspaces = [sampleWorkspace]
+        let host = NSHostingView(rootView: SettingsView(store: store, tab: tab)
             .background(Color(nsColor: .windowBackgroundColor)))
         let size = host.fittingSize
         let window = NSWindow(contentRect: CGRect(origin: .zero, size: size), styleMask: [.borderless],
@@ -59,9 +67,29 @@ enum Snapshot {
         save(host, appearance: appearance, to: path)
     }
 
+    /// A workspace for the screenshots: writing on the left, notes and music on the right.
+    private static var sampleWorkspace: Workspace {
+        func window(_ app: String, _ id: String, _ title: String, _ rect: CGRect) -> WindowPlacement {
+            WindowPlacement(bundleID: id, appName: app, title: title, display: "Studio Display",
+                            displayIndex: 0, unitRect: rect)
+        }
+        return Workspace(name: String(localized: "Writing"), hotKey: HotKeyCombo(keyCode: kVK_ANSI_1,
+                                                                             modifiers: controlKey | optionKey),
+                         windows: [
+                             window("Pages", "com.apple.iWork.Pages", String(localized: "Report"),
+                                    CGRect(x: 0, y: 0, width: 0.6, height: 1)),
+                             window("Safari", "com.apple.Safari", String(localized: "Start Page"),
+                                    CGRect(x: 0.6, y: 0, width: 0.4, height: 0.6)),
+                             window("Notes", "com.apple.Notes", "",
+                                    CGRect(x: 0.6, y: 0.6, width: 0.4, height: 0.4)),
+                         ])
+    }
+
     /// The welcome window, asking for the permission (or, with `ready`, after it was granted).
     static func renderWelcome(to path: String, dark: Bool, ready: Bool) {
         let appearance = NSAppearance(named: dark ? .darkAqua : .aqua)!
+        // Some controls follow the app's appearance rather than the window's.
+        NSApp.appearance = appearance
         let model = WelcomeModel()
         model.isTrusted = ready
         let host = NSHostingView(rootView: WelcomeView(model: model, onOpenSettings: {}, onClose: {})

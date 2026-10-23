@@ -60,6 +60,7 @@ final class LayoutStore: ObservableObject {
     @Published var showGridHotKey: HotKeyCombo? = .showGridDefault { didSet { changed() } }
     @Published var nextScreenHotKey: HotKeyCombo? = .nextScreenDefault { didSet { changed() } }
     @Published var previousScreenHotKey: HotKeyCombo? = .previousScreenDefault { didSet { changed() } }
+    @Published var workspaces: [Workspace] = [] { didSet { changed() } }
     /// Shortcuts macOS refused to register (usually because another app already uses them).
     @Published var unavailable: Set<HotKeyCombo> = []
 
@@ -75,17 +76,19 @@ final class LayoutStore: ObservableObject {
         var showGridHotKey: HotKeyCombo?
         var nextScreenHotKey: HotKeyCombo?
         var previousScreenHotKey: HotKeyCombo?
+        var workspaces: [Workspace]
 
         init(layouts: [SavedLayout], showGridHotKey: HotKeyCombo?, nextScreenHotKey: HotKeyCombo?,
-             previousScreenHotKey: HotKeyCombo?) {
+             previousScreenHotKey: HotKeyCombo?, workspaces: [Workspace] = []) {
             self.layouts = layouts
             self.showGridHotKey = showGridHotKey
             self.nextScreenHotKey = nextScreenHotKey
             self.previousScreenHotKey = previousScreenHotKey
+            self.workspaces = workspaces
         }
 
         private enum CodingKeys: String, CodingKey {
-            case layouts, showGridHotKey, nextScreenHotKey, previousScreenHotKey
+            case layouts, showGridHotKey, nextScreenHotKey, previousScreenHotKey, workspaces
         }
 
         // A shortcut missing from the file (saved by an older version) gets its default;
@@ -99,6 +102,8 @@ final class LayoutStore: ObservableObject {
             showGridHotKey = try hotKey(.showGridHotKey, .showGridDefault)
             nextScreenHotKey = try hotKey(.nextScreenHotKey, .nextScreenDefault)
             previousScreenHotKey = try hotKey(.previousScreenHotKey, .previousScreenDefault)
+            // Saved before workspaces existed: none yet.
+            workspaces = try c.decodeIfPresent([Workspace].self, forKey: .workspaces) ?? []
         }
 
         func encode(to encoder: Encoder) throws {
@@ -107,6 +112,7 @@ final class LayoutStore: ObservableObject {
             try c.encode(showGridHotKey, forKey: .showGridHotKey)
             try c.encode(nextScreenHotKey, forKey: .nextScreenHotKey)
             try c.encode(previousScreenHotKey, forKey: .previousScreenHotKey)
+            try c.encode(workspaces, forKey: .workspaces)
         }
     }
 
@@ -119,6 +125,7 @@ final class LayoutStore: ObservableObject {
             showGridHotKey = config.showGridHotKey
             nextScreenHotKey = config.nextScreenHotKey
             previousScreenHotKey = config.previousScreenHotKey
+            workspaces = config.workspaces
         } else {
             layouts = SavedLayout.defaults
         }
@@ -126,17 +133,29 @@ final class LayoutStore: ObservableObject {
 
     var config: Config {
         Config(layouts: layouts, showGridHotKey: showGridHotKey, nextScreenHotKey: nextScreenHotKey,
-               previousScreenHotKey: previousScreenHotKey)
+               previousScreenHotKey: previousScreenHotKey, workspaces: workspaces)
     }
 
     func layout(id: UUID) -> SavedLayout? {
         layouts.first { $0.id == id }
     }
 
+    func workspace(id: UUID) -> Workspace? {
+        workspaces.first { $0.id == id }
+    }
+
+    /// A name such as "Workspace 3" that isn't used yet.
+    func newWorkspaceName() -> String {
+        var n = workspaces.count + 1
+        while workspaces.contains(where: { $0.name == String(localized: "Workspace \(n)") }) { n += 1 }
+        return String(localized: "Workspace \(n)")
+    }
+
     /// Warning to show next to a shortcut, or nil when all is well.
     func warning(for combo: HotKeyCombo?) -> String? {
         guard let combo else { return nil }
         let all = [showGridHotKey, nextScreenHotKey, previousScreenHotKey] + layouts.map(\.hotKey)
+            + workspaces.map(\.hotKey)
         if all.filter({ $0 == combo }).count > 1 { return String(localized: "Duplicate shortcut") }
         if unavailable.contains(combo) { return String(localized: "Used by another app") }
         return nil

@@ -9,7 +9,7 @@ Quadra – Window Grid
 Arrange windows on a grid
 
 **Promotional text** [170]
-Drag across a grid and the window moves to that area. Layouts with their own shortcuts, multiple displays and ultrawide screens.
+Drag across a grid and the window moves to that area. Layouts and workspaces with their own shortcuts, multiple displays and ultrawide screens.
 
 **Keywords** [100, comma-separated, no spaces after commas]
 window,manager,tiling,snap,resize,layout,grid,ultrawide,displays,split,screen,organize,workspace
@@ -27,6 +27,10 @@ LAYOUTS WITH THEIR OWN SHORTCUTS
 • Save the areas you use most, like "left half" or "center", and apply them with one keystroke.
 • Six ready-made layouts: halves (Control-Option-arrows), full screen and center.
 
+WORKSPACES
+• Save where the windows of several apps are, and put them all back with one shortcut.
+• Closed apps and documents are opened for you, and minimized windows come back.
+
 MULTIPLE DISPLAYS AND ULTRAWIDE
 • Choose the display in the panel, or send a window to the next display with a shortcut.
 • Made for ultrawide monitors, and works with portrait and laptop displays too.
@@ -37,7 +41,7 @@ YOUR WAY
 • In English and Brazilian Portuguese.
 
 PRIVATE
-Quadra collects no data and makes no network requests. To move windows it needs the Accessibility permission, which you turn on once in System Settings; it only reads the position, size and title of the focused window.
+Quadra collects no data and makes no network requests. To move windows it needs the Accessibility permission, which you turn on once in System Settings; it only reads the position, size and title of the windows it arranges. Layouts and workspaces are saved on your Mac.
 
 Quadra is free and open source.
 
@@ -61,9 +65,9 @@ Data Not Collected
 
 **Notes for App Review**
 
-Quadra is a menu bar app that moves and resizes the focused window to an area chosen on a grid.
+Quadra is a menu bar app that moves and resizes the focused window to an area chosen on a grid, and can save and restore the windows of several apps at once (workspaces).
 
-It needs the Accessibility permission to move other apps' windows (this is its core function). On first launch, a window explains why and opens System Settings > Privacy & Security > Accessibility, where Quadra must be turned on. Quadra reads only the position, size and title of the focused window and makes no network requests.
+It needs the Accessibility permission to move other apps' windows (this is its core function). On first launch, a window explains why and opens System Settings > Privacy & Security > Accessibility, where Quadra must be turned on. Quadra reads only the position, size and title of the windows it arranges (the focused one, or the open apps' windows when a workspace is saved or restored) and makes no network requests.
 
 How to test:
 1. Launch Quadra and click "Open System Settings" in the welcome window. Turn Quadra on in Accessibility.
@@ -71,6 +75,7 @@ How to test:
 3. Press Control-Option-G, or click the grid icon in the menu bar. A grid panel appears.
 4. Drag across some cells: the TextEdit window moves to that area of the screen.
 5. Press Control-Option-Left Arrow: the window moves to the left half. Control-Option-Return: full screen.
-6. Right-click the menu bar icon for Settings & Layouts, where layouts and shortcuts can be edited.
+6. Right-click the menu bar icon and choose "Save Current Windows as Workspace…". Move the TextEdit window somewhere else, then choose the workspace in the same menu: the window goes back.
+7. Right-click the menu bar icon for Settings & Layouts, where layouts, workspaces and shortcuts can be edited.
 
 No account or login is needed.

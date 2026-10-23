@@ -21,6 +21,8 @@ atalho ou clique no ícone, arraste na grade, e a janela vai para aquela área d
 - **Clique em outra janela** com a grade aberta para mover essa no lugar.
 - **Layouts com atalho próprio**: salve áreas como "metade esquerda" ou "centro" e aplique com
   um atalho. Já vem com seis layouts prontos.
+- **Espaços de trabalho**: salve onde ficam as janelas de vários apps e ponha todas de volta com
+  um atalho. Os apps e documentos fechados são abertos para você.
 - **Vários monitores**: escolha a tela no painel ou mande a janela para a próxima tela.
 - **Pensado para monitores ultrawide**, e funciona com monitores em pé e telas de notebook.
 - Espaço entre janelas, formato, tamanho e opacidade da grade ajustáveis.
@@ -69,6 +71,17 @@ uma vez.
 
 O menu abre com o botão direito no ícone ou na engrenagem do painel. Todos os atalhos podem ser
 trocados em **Ajustes e layouts**.
+
+### Espaços de trabalho
+
+Arrume as janelas dos apps que você usa juntos, clique com o botão direito no ícone da barra de
+menus e escolha **Salvar as janelas atuais como espaço de trabalho…**. Dê um atalho a ele em
+**Ajustes e layouts → Espaços de trabalho**. O atalho põe cada janela de volta onde estava, na
+mesma tela, e abre os apps e documentos que estiverem fechados.
+
+<p align="center">
+  <img src="docs/images/workspaces-pt-BR.png" width="560" alt="Espaços de trabalho nos ajustes do Quadra">
+</p>
 
 ## Compilar
 

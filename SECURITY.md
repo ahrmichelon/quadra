@@ -1,7 +1,8 @@
 # Security
 
 Quadra uses the macOS Accessibility permission to move other apps' windows. It reads only the
-position, size and title of the focused window.
+position, size and title of the windows it arranges: the focused window, or the open apps' windows
+when you save or restore a workspace. Workspaces are kept in Quadra's settings on your Mac.
 
 Its only network access is a request to GitHub, at most once a day, asking for the latest
 release (`api.github.com/repos/vulpini-br/quadra/releases/latest`). Nothing about you or your

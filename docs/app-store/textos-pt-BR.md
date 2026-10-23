@@ -9,7 +9,7 @@ Quadra – Grade de Janelas
 Organize janelas numa grade
 
 **Texto promocional** [170]
-Arraste numa grade e a janela vai para aquela área. Layouts com atalhos próprios, vários monitores e telas ultrawide.
+Arraste numa grade e a janela vai para aquela área. Layouts e espaços de trabalho com atalho próprio, vários monitores e ultrawide.
 
 **Palavras-chave** [100, separadas por vírgula, sem espaço depois da vírgula]
 janela,janelas,organizar,grade,redimensionar,layout,monitor,ultrawide,telas,dividir,produtividade
@@ -27,6 +27,10 @@ LAYOUTS COM ATALHO PRÓPRIO
 • Salve as áreas que você mais usa, como "metade esquerda" ou "centro", e aplique com um atalho.
 • Seis layouts prontos: metades (Control-Option-setas), tela cheia e centro.
 
+ESPAÇOS DE TRABALHO
+• Salve onde ficam as janelas de vários apps e ponha todas de volta com um atalho.
+• Os apps e documentos fechados são abertos para você, e as janelas minimizadas voltam.
+
 VÁRIOS MONITORES E ULTRAWIDE
 • Escolha a tela no painel, ou mande a janela para a próxima tela com um atalho.
 • Pensado para monitores ultrawide, e funciona com monitores em pé e telas de notebook.
@@ -37,7 +41,7 @@ DO SEU JEITO
 • Em português e inglês.
 
 PRIVADO
-O Quadra não coleta nenhum dado e não acessa a internet. Para mover as janelas, ele precisa da permissão de Acessibilidade, que você liga uma vez nos Ajustes do Sistema; ele só lê a posição, o tamanho e o título da janela em foco.
+O Quadra não coleta nenhum dado e não acessa a internet. Para mover as janelas, ele precisa da permissão de Acessibilidade, que você liga uma vez nos Ajustes do Sistema; ele só lê a posição, o tamanho e o título das janelas que organiza. Layouts e espaços de trabalho ficam salvos no seu Mac.
 
 O Quadra é grátis e de código aberto.
 

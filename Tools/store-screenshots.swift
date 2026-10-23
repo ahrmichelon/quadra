@@ -1,7 +1,7 @@
 import AppKit
 
 // Composes the Mac App Store screenshots (2880 × 1800): a caption on top and a picture of the app.
-// Usage: swift Tools/store-screenshots.swift <folder with panel-*, settings-*, welcome-* PNGs> <output folder>
+// Usage: swift Tools/store-screenshots.swift <folder with panel-*, settings-*, workspaces-*, welcome-* PNGs> <output folder>
 // (Tools/make-store-screenshots.sh renders those pictures and runs this file.)
 
 let args = CommandLine.arguments
@@ -27,6 +27,10 @@ let shots = [
          title: ["en": "Layouts with their own shortcuts.", "pt-BR": "Layouts com atalhos próprios."],
          subtitle: ["en": "Halves, full screen, center, or your own.",
                     "pt-BR": "Metades, tela cheia, centro, ou os seus."]),
+    Shot(picture: "workspaces",
+         title: ["en": "Your apps, back in place.", "pt-BR": "Seus apps, de volta no lugar."],
+         subtitle: ["en": "Save a workspace and restore it with one shortcut.",
+                    "pt-BR": "Salve um espaço de trabalho e restaure com um atalho."]),
     Shot(picture: "welcome",
          title: ["en": "Private by design.", "pt-BR": "Feito para ser privado."],
          subtitle: ["en": "No data collected. No internet access.",

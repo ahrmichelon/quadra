@@ -25,6 +25,8 @@ click the icon, drag across the grid, and the window moves to that area of the s
 - **Click another window** while the grid is open to move that one instead.
 - **Layouts with their own shortcuts**: save areas such as "left half" or "center" and apply them
   with one keystroke. Six ready-made layouts are included.
+- **Workspaces**: save where the windows of several apps are and put them all back with one
+  shortcut. Closed apps and documents are opened for you.
 - **Multiple displays**: pick the display in the panel, or send a window to the next display.
 - **Ultrawide friendly**, and works with portrait and laptop displays too.
 - Adjustable gaps between windows, grid shape, size and opacity.
@@ -75,6 +77,17 @@ can be changed in **Settings & Layouts**.
 
 <p align="center">
   <img src="docs/images/settings.png" width="560" alt="Quadra settings and layouts">
+</p>
+
+### Workspaces
+
+Arrange the windows of the apps you use together, then right-click the menu bar icon and choose
+**Save Current Windows as Workspace…**. Give the workspace a shortcut in **Settings & Layouts →
+Workspaces**. The shortcut puts every window back where it was, on the same display, and opens
+the apps and documents that were closed.
+
+<p align="center">
+  <img src="docs/images/workspaces.png" width="560" alt="Workspaces in Quadra's settings">
 </p>
 
 ## Build from source

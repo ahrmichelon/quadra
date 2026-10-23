@@ -62,7 +62,7 @@ Em [appstoreconnect.apple.com](https://appstoreconnect.apple.com) → **Apps** �
 ## 6. Preencher a página
 
 - **Textos:** copie de `textos-en.md` e `textos-pt-BR.md`.
-- **Imagens:** envie as de `screenshots/` em cada idioma, na ordem 1, 2, 3. Para gerar de novo:
+- **Imagens:** envie as de `screenshots/` em cada idioma, na ordem 1, 2, 3, 4. Para gerar de novo:
   `./Tools/make-store-screenshots.sh`. Capturas reais do app em uso também são bem-vindas.
 - **Privacidade do app:** "Dados não coletados". **URL da política:** a de `textos-en.md`.
 - **Categoria:** Produtividade. **Preço:** Grátis. **Classificação etária:** responda "não" a

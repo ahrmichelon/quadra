@@ -75,7 +75,7 @@ struct WelcomeView: View {
             } else {
                 Text("Allow Quadra to move windows")
                     .font(.title2.weight(.semibold))
-                Text("To move and resize other apps' windows, macOS asks you to turn Quadra on in Accessibility. Quadra only reads the position, size and title of the focused window, and never sends them anywhere.")
+                Text("To move and resize other apps' windows, macOS asks you to turn Quadra on in Accessibility. Quadra only reads the position, size and title of the windows it arranges, and never sends them anywhere.")
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)

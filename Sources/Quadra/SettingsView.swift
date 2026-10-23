@@ -1,22 +1,32 @@
 import AppKit
 import SwiftUI
 
-/// Settings window: the app's shortcuts, the panel's look and the list of layouts.
+/// The tabs of the Settings window.
+enum SettingsTab: String {
+    case general, layouts, workspaces
+    /// Preference that remembers the open tab (the menu sets it to open Settings on a given tab).
+    static let storageKey = "settingsTab"
+}
+
+/// Settings window: the app's shortcuts and the panel's look, the layouts and the workspaces.
 struct SettingsView: View {
     @ObservedObject var store: LayoutStore
-    @State private var selectedID: UUID?
-    @AppStorage("panelOpacity") private var panelOpacity = Settings.defaultPanelOpacity
-    @AppStorage("panelSize") private var panelSize = Settings.defaultPanelSize
-    @AppStorage("panelShape") private var panelShape = PanelShape.fourThree
-    @AppStorage("checkForUpdates") private var checkForUpdates = true
+    @AppStorage(SettingsTab.storageKey) private var savedTab = SettingsTab.general
+    /// A tab fixed from outside (for the screenshots), so the preference isn't touched.
+    @State private var fixedTab: SettingsTab?
 
-    init(store: LayoutStore) {
+    init(store: LayoutStore, tab: SettingsTab? = nil) {
         self.store = store
-        _selectedID = State(initialValue: store.layouts.first?.id)
+        _fixedTab = State(initialValue: tab)
+    }
+
+    private var tab: Binding<SettingsTab> {
+        Binding(get: { fixedTab ?? savedTab },
+                set: { if fixedTab != nil { fixedTab = $0 } else { savedTab = $0 } })
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: 16) {
             HStack(spacing: 12) {
                 Image(nsImage: NSApp.applicationIconImage)
                     .resizable()
@@ -35,69 +45,94 @@ struct SettingsView: View {
                 #endif
             }
 
-            Divider()
-
-            Grid(alignment: .leading, horizontalSpacing: 10, verticalSpacing: 10) {
-                shortcutRow("Show the grid", $store.showGridHotKey)
-                shortcutRow("Move to the next display", $store.nextScreenHotKey)
-                shortcutRow("Move to the previous display", $store.previousScreenHotKey)
-                GridRow {
-                    Text("Grid shape")
-                    Picker("Grid shape", selection: $panelShape) {
-                        ForEach(PanelShape.allCases) { Text(verbatim: $0.title).tag($0) }
-                    }
-                    .pickerStyle(.segmented)
-                    .labelsHidden()
-                    .fixedSize()
-                }
-                GridRow {
-                    Text("Grid width")
-                    HStack(spacing: 10) {
-                        Slider(value: $panelSize, in: Settings.panelSizeRange, step: 10)
-                            .frame(width: 200)
-                        Text("\(Int(panelSize)) points")
-                            .monospacedDigit()
-                            .foregroundStyle(.secondary)
-                    }
-                }
-                GridRow {
-                    Text("Grid opacity")
-                    HStack(spacing: 10) {
-                        Slider(value: $panelOpacity, in: 0.2...1.0)
-                            .frame(width: 200)
-                        Text(verbatim: "\(Int((panelOpacity * 100).rounded()))%")
-                            .monospacedDigit()
-                            .foregroundStyle(.secondary)
-                            .frame(width: 44, alignment: .leading)
-                        Text("Lower lets you see the apps behind it.")
-                            .font(.callout)
-                            .foregroundStyle(.secondary)
-                    }
-                }
-                #if !APP_STORE
-                GridRow {
-                    Text("Updates")
-                    Toggle("Check for updates once a day", isOn: $checkForUpdates)
-                }
-                #endif
+            // A segmented control rather than a TabView: it looks the same and also draws
+            // correctly in the screenshots, whatever the system appearance.
+            Picker("Settings", selection: tab) {
+                Text("General").tag(SettingsTab.general)
+                Text("Layouts").tag(SettingsTab.layouts)
+                Text("Workspaces").tag(SettingsTab.workspaces)
             }
+            .pickerStyle(.segmented)
+            .labelsHidden()
+            .fixedSize()
+            .frame(maxWidth: .infinity)
 
-            Divider()
-
-            VStack(alignment: .leading, spacing: 3) {
-                Text("Layouts").font(.headline)
-                Text("Each layout moves the focused window to an area of the screen, with its own shortcut.")
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
+            Group {
+                switch tab.wrappedValue {
+                case .general: GeneralTab(store: store)
+                case .layouts: LayoutsTab(store: store)
+                case .workspaces: WorkspacesTab(store: store)
+                }
             }
-
-            HStack(alignment: .top, spacing: 20) {
-                layoutList
-                editor
-            }
+            .background(RoundedRectangle(cornerRadius: 8).fill(Color.primary.opacity(0.035)))
+            .overlay(RoundedRectangle(cornerRadius: 8).strokeBorder(Color.primary.opacity(0.09)))
         }
         .padding(20)
-        .frame(width: 790, height: 790)
+        .frame(width: 790, height: 660)
+    }
+
+    private var appVersion: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.0"
+    }
+}
+
+// MARK: General
+
+/// The app's own shortcuts, the panel's look and the update check.
+private struct GeneralTab: View {
+    @ObservedObject var store: LayoutStore
+    @AppStorage("panelOpacity") private var panelOpacity = Settings.defaultPanelOpacity
+    @AppStorage("panelSize") private var panelSize = Settings.defaultPanelSize
+    @AppStorage("panelShape") private var panelShape = PanelShape.fourThree
+    @AppStorage("checkForUpdates") private var checkForUpdates = true
+
+    var body: some View {
+        Grid(alignment: .leading, horizontalSpacing: 10, verticalSpacing: 12) {
+            shortcutRow("Show the grid", $store.showGridHotKey)
+            shortcutRow("Move to the next display", $store.nextScreenHotKey)
+            shortcutRow("Move to the previous display", $store.previousScreenHotKey)
+            GridRow {
+                Text("Grid shape")
+                Picker("Grid shape", selection: $panelShape) {
+                    ForEach(PanelShape.allCases) { Text(verbatim: $0.title).tag($0) }
+                }
+                .pickerStyle(.segmented)
+                .labelsHidden()
+                .fixedSize()
+            }
+            GridRow {
+                Text("Grid width")
+                HStack(spacing: 10) {
+                    Slider(value: $panelSize, in: Settings.panelSizeRange, step: 10)
+                        .frame(width: 200)
+                    Text("\(Int(panelSize)) points")
+                        .monospacedDigit()
+                        .foregroundStyle(.secondary)
+                }
+            }
+            GridRow {
+                Text("Grid opacity")
+                HStack(spacing: 10) {
+                    Slider(value: $panelOpacity, in: 0.2...1.0)
+                        .frame(width: 200)
+                    Text(verbatim: "\(Int((panelOpacity * 100).rounded()))%")
+                        .monospacedDigit()
+                        .foregroundStyle(.secondary)
+                        .frame(width: 44, alignment: .leading)
+                    Text("Lower lets you see the apps behind it.")
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                }
+            }
+            #if !APP_STORE
+            GridRow {
+                Text("Updates")
+                Toggle("Check for updates once a day", isOn: $checkForUpdates)
+            }
+            #endif
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }
 
     private func shortcutRow(_ title: LocalizedStringKey, _ combo: Binding<HotKeyCombo?>) -> some View {
@@ -109,12 +144,33 @@ struct SettingsView: View {
             }
         }
     }
+}
 
-    private var appVersion: String {
-        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.0"
+// MARK: Layouts
+
+/// The list of layouts and the editor of the selected one.
+private struct LayoutsTab: View {
+    @ObservedObject var store: LayoutStore
+    @State private var selectedID: UUID?
+
+    init(store: LayoutStore) {
+        self.store = store
+        _selectedID = State(initialValue: store.layouts.first?.id)
     }
 
-    // MARK: List
+    var body: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            Text("Each layout moves the focused window to an area of the screen, with its own shortcut.")
+                .font(.callout)
+                .foregroundStyle(.secondary)
+            HStack(alignment: .top, spacing: 20) {
+                layoutList
+                editor
+            }
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+    }
 
     private var layoutList: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -157,8 +213,6 @@ struct SettingsView: View {
         store.layouts.remove(at: i)
         selectedID = store.layouts.indices.contains(i) ? store.layouts[i].id : store.layouts.last?.id
     }
-
-    // MARK: Editor
 
     @ViewBuilder private var editor: some View {
         if let id = selectedID, let layout = binding(for: id) {
@@ -349,7 +403,7 @@ struct HotKeyField: View {
     }
 }
 
-private struct WarningLabel: View {
+struct WarningLabel: View {
     let text: String?
 
     var body: some View {

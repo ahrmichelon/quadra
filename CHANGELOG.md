@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.3.0
+
+- **Workspaces**: save where the windows of several apps are and put them all back with one
+  shortcut. Choose "Save Current Windows as Workspace…" in the menu. When you restore a
+  workspace, closed apps and documents are opened again, hidden apps and minimized windows come
+  back, and each window goes back to its place on its display.
+- Settings now has three tabs: General, Layouts and Workspaces. In Workspaces you can give a
+  workspace a shortcut, update it with the current windows, or leave a window out.
+
 ## 1.2.0
 
 - A welcome window explains why Quadra needs the Accessibility permission, opens System Settings

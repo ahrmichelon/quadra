@@ -96,6 +96,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             let id = layout.id
             list.append((combo, { [weak self] in self?.applyLayout(id: id) }))
         }
+        for workspace in store.workspaces {
+            guard let combo = workspace.hotKey else { continue }
+            let id = workspace.id
+            list.append((combo, { [weak self] in self?.restoreWorkspace(id: id) }))
+        }
         HotKeyCenter.shared.set(list)
     }
 
@@ -295,6 +300,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             menu.addItem(.separator())
         }
 
+        menu.addItem(.sectionHeader(title: String(localized: "Workspaces")))
+        for workspace in store.workspaces {
+            let title = workspace.name.isEmpty ? String(localized: "Untitled") : workspace.name
+            let it = item(title, #selector(restoreWorkspaceFromMenu(_:)), shortcut: workspace.hotKey)
+            it.representedObject = workspace.id
+            menu.addItem(it)
+        }
+        menu.addItem(item(String(localized: "Save Current Windows as Workspace…"), #selector(saveWorkspaceFromMenu)))
+        menu.addItem(.separator())
+
         if NSScreen.screens.count > 1 {
             menu.addItem(.sectionHeader(title: String(localized: "Displays")))
             menu.addItem(item(String(localized: "Move to Next Display"), #selector(moveToNextScreenFromMenu),
@@ -443,6 +458,65 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
     }
 
+    private func showAlert(_ title: String, _ text: String) {
+        let alert = NSAlert()
+        alert.messageText = title
+        alert.informativeText = text
+        NSApp.activate()
+        alert.runModal()
+    }
+
+    // MARK: Workspaces
+
+    /// Puts the workspace's windows back in place, opening the apps that are closed.
+    private func restoreWorkspace(id: UUID) {
+        guard let workspace = store.workspace(id: id) else { return }
+        if panel.isVisible { panel.orderOut(nil) }
+        guard WindowMover.isTrusted() else { showWelcome(); return }
+        WorkspaceArranger.restore(workspace) { moved in
+            if moved == 0 { NSSound.beep() }
+        }
+    }
+
+    @objc private func restoreWorkspaceFromMenu(_ sender: NSMenuItem) {
+        guard let id = sender.representedObject as? UUID else { return }
+        afterMenuCloses { [weak self] in self?.restoreWorkspace(id: id) }
+    }
+
+    @objc private func saveWorkspaceFromMenu() {
+        afterMenuCloses { [weak self] in self?.saveWorkspace() }
+    }
+
+    /// Saves where the open windows are as a new workspace, asking for its name, then opens
+    /// Settings on the Workspaces tab so it can get a shortcut.
+    private func saveWorkspace() {
+        guard WindowMover.isTrusted() else { showWelcome(); return }
+        // Read the windows before the dialog appears, while they are as the user left them.
+        let windows = WorkspaceArranger.capture()
+        guard !windows.isEmpty else {
+            showAlert(String(localized: "No windows to save"),
+                      String(localized: "Open the windows you want in the workspace and try again."))
+            return
+        }
+        let alert = NSAlert()
+        alert.messageText = String(localized: "Save Workspace")
+        let apps = Workspace(name: "", windows: windows).appNames.formatted(.list(type: .and))
+        alert.informativeText = String(localized: "Quadra will remember where the windows of \(apps) are. Give the workspace a name:")
+        let field = NSTextField(frame: NSRect(x: 0, y: 0, width: 280, height: 24))
+        field.stringValue = store.newWorkspaceName()
+        alert.accessoryView = field
+        alert.addButton(withTitle: String(localized: "Save"))
+        alert.addButton(withTitle: String(localized: "Cancel"))
+        alert.window.initialFirstResponder = field
+        NSApp.activate()
+        guard alert.runModal() == .alertFirstButtonReturn else { return }
+        let name = field.stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
+        store.workspaces.append(Workspace(name: name.isEmpty ? store.newWorkspaceName() : name,
+                                          hotKey: nil, windows: windows))
+        UserDefaults.standard.set(SettingsTab.workspaces.rawValue, forKey: SettingsTab.storageKey)
+        openSettings()
+    }
+
     // MARK: Updates and support (not in the App Store version)
 
     #if !APP_STORE
@@ -492,19 +566,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         case .alertFirstButtonReturn where homebrew:
             NSPasteboard.general.clearContents()
             NSPasteboard.general.setString(UpdateChecker.homebrewUpgradeCommand, forType: .string)
-        case .alertFirstButtonReturn, .alertSecondButtonReturn where homebrew:
+        case .alertFirstButtonReturn,
+             .alertSecondButtonReturn where homebrew:
             NSWorkspace.shared.open(release.htmlURL)
         default:
             break
         }
-    }
-
-    private func showAlert(_ title: String, _ text: String) {
-        let alert = NSAlert()
-        alert.messageText = title
-        alert.informativeText = text
-        NSApp.activate()
-        alert.runModal()
     }
 
     @objc private func openSupport() {

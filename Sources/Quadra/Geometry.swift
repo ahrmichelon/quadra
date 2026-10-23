@@ -82,6 +82,16 @@ enum Geometry {
         return CGRect(x: left, y: bottom, width: right - left, height: top - bottom)
     }
 
+    /// The opposite of `frame(for:in:gap:)`: a window's area as fractions of the usable area
+    /// (0 to 1, origin at the top left), kept inside the display.
+    static func unit(of frame: CGRect, in visible: CGRect) -> CGRect {
+        let x = min(max((frame.minX - visible.minX) / visible.width, 0), 1)
+        let y = min(max((visible.maxY - frame.maxY) / visible.height, 0), 1)
+        let width = min(frame.width / visible.width, 1 - x)
+        let height = min(frame.height / visible.height, 1 - y)
+        return CGRect(x: x, y: y, width: width, height: height)
+    }
+
     /// Moves a window frame from one display to another, keeping its relative position and size
     /// (a window on the left half stays on the left half).
     static func map(_ frame: CGRect, from source: CGRect, to dest: CGRect) -> CGRect {
