@@ -48,7 +48,7 @@ jobs:
           Get-Content (Join-Path $out report.txt)
           if ($process.ExitCode -ne 0) { throw "The self-test failed ($($process.ExitCode) check(s))" }
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: self-test
@@ -70,7 +70,7 @@ jobs:
           # the newest schema header. Only a failed validation stops the run (above).
           exit 0
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: Quadra-Windows
           path: |
