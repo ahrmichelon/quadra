@@ -102,3 +102,5 @@ jobs:
           Write-Output "Settings → Apps: $($entry.DisplayName) $($entry.DisplayVersion), $($entry.Publisher)"
           winget uninstall --manifest $manifest --silent --disable-interactivity
           Write-Output "winget uninstall: exit code $LASTEXITCODE"
+          if (Test-Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\Quadra") { throw "Quadra is still in Settings → Apps after winget uninstall" }
+          exit 0
