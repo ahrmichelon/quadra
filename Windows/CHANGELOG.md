@@ -1,5 +1,13 @@
 # Changelog: Quadra for Windows
 
+## 1.3.0
+
+- Ready for winget, the Windows Package Manager: `winget install Vulpini.Quadra` (once Microsoft has
+  reviewed the package). `Quadra.exe --install --silent` installs or updates without any window and
+  reports the result with its exit code; Quadra opens again if it was open, and a new install opens
+  the next time Windows starts.
+- Published by Vulpini; the project now lives at github.com/vulpini-br/quadra.
+
 ## 1.2.2
 
 - Clicking the icon next to the clock opens the grid even before you used any window since Quadra

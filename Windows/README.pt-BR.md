@@ -37,6 +37,19 @@ na hora em que precisa, e vê onde a janela vai parar antes de soltar o mouse.
 
 ## Instalar
 
+**Com o winget** (o gerenciador de pacotes do Windows 10 e 11), depois que a Microsoft revisar o
+pacote:
+
+```powershell
+winget install Vulpini.Quadra
+```
+
+O Quadra se instala para o seu usuário e abre sozinho na próxima vez que o Windows iniciar (ou abra
+pelo menu Iniciar agora). `winget upgrade Vulpini.Quadra` atualiza, mas o próprio Quadra também
+avisa das versões novas.
+
+**Ou baixe:**
+
 1. Baixe o Quadra na [página de versões](https://github.com/vulpini-br/quadra/releases?q=windows&expanded=true)
    (procure **Quadra for Windows**):
    - **Quadra-x64.exe** para a maioria dos PCs (Intel e AMD).

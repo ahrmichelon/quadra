@@ -454,15 +454,30 @@ internal static class SelfTest
             Check("A newer version closes the open copy, takes its place and opens",
                   code == 0 && second != 0 && second != first, $"process {first} → {second}");
 
-            code = await RunTestCopy(root, installed, "--uninstall --quiet");
-            await Wait(4000);
-            Check("Uninstall closes Quadra", TestCopyWindow() == IntPtr.Zero);
-            bool removed = !Directory.Exists(installFolder) && !File.Exists(shortcut) &&
-                           !Directory.Exists(Path.Combine(root, "Data"));
-            using (var key = Registry.CurrentUser.OpenSubKey(RunKey)) removed &= key?.GetValue("QuadraTest") == null;
-            using (var key = Registry.CurrentUser.OpenSubKey(TestUninstallKey)) removed &= key == null;
-            Check("Uninstall removes the app, its shortcut, its entries and its settings", code == 0 && removed,
-                  $"exit code {code}, folder left: {Directory.Exists(installFolder)}");
+            // winget upgrade: Quadra.exe --install --silent with Quadra open. No window (the copy would wait for
+            // someone to close it, and RunTestCopy would time out); the open copy is replaced and opened again.
+            code = await RunTestCopy(root, downloaded, "--install --silent", fakeVersion: "100.0.0");
+            int third = await TestCopyProcess();
+            Check("A silent update (winget upgrade) replaces the open copy and opens it again",
+                  code == 0 && third != 0 && third != second, $"exit code {code}, process {second} → {third}");
+
+            await UninstallAndCheck(root, installed, installFolder, shortcut);
+
+            // winget install: Quadra.exe --install --silent on a PC without Quadra. No window, and Quadra doesn't
+            // open now: it is in the Start menu and opens with Windows.
+            code = await RunTestCopy(root, downloaded, "--install --silent");
+            await Wait(1500);
+            bool registered;
+            using (var key = Registry.CurrentUser.OpenSubKey(TestUninstallKey))
+                registered = key?.GetValue("DisplayVersion") is string v && v == Links.Version &&
+                             key.GetValue("QuietUninstallString") is string q && q.Contains("--uninstall --quiet");
+            using (var key = Registry.CurrentUser.OpenSubKey(RunKey))
+                registered &= key?.GetValue("QuadraTest") is string;
+            Check("A silent install (winget install) installs, adds its entries and exits with 0",
+                  code == 0 && File.Exists(installed) && File.Exists(shortcut) && registered, $"exit code {code}");
+            Check("A silent install doesn't open Quadra right away", TestCopyWindow() == IntPtr.Zero);
+
+            await UninstallAndCheck(root, installed, installFolder, shortcut);
         }
         catch (Exception e)
         {
@@ -515,6 +530,20 @@ internal static class SelfTest
         if (process.HasExited) return process.ExitCode;
         process.Kill();
         return -1;
+    }
+
+    /// <summary>Runs the quiet uninstall, as winget and Settings → Apps would, and checks that nothing is left.</summary>
+    private static async Task UninstallAndCheck(string root, string installed, string installFolder, string shortcut)
+    {
+        int code = await RunTestCopy(root, installed, "--uninstall --quiet");
+        await Wait(4000);
+        Check("Uninstall closes Quadra", TestCopyWindow() == IntPtr.Zero);
+        bool removed = !Directory.Exists(installFolder) && !File.Exists(shortcut) &&
+                       !Directory.Exists(Path.Combine(root, "Data"));
+        using (var key = Registry.CurrentUser.OpenSubKey(RunKey)) removed &= key?.GetValue("QuadraTest") == null;
+        using (var key = Registry.CurrentUser.OpenSubKey(TestUninstallKey)) removed &= key == null;
+        Check("Uninstall removes the app, its shortcut, its entries and its settings", code == 0 && removed,
+              $"exit code {code}, folder left: {Directory.Exists(installFolder)}");
     }
 
     /// <summary>Runs a copy of Quadra under the test names and waits (up to 30 s) for it to finish.</summary>

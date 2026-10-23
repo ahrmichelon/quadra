@@ -46,13 +46,26 @@ internal static class Installer
     /// <summary>The argument the installer gives the installed copy, so it doesn't repeat the news as a notification.</summary>
     public const string JustInstalledArgument = "--just-installed";
 
+    /// <summary>How an install was started.</summary>
+    public enum Mode
+    {
+        /// <summary>The user opened the downloaded Quadra.exe: a window says it was installed.</summary>
+        Normal,
+        /// <summary>Quadra's own update button: the installed copy shows a notification instead.</summary>
+        FromUpdateButton,
+        /// <summary>
+        /// Quadra.exe --install --silent, as package managers such as winget run it: no window at all, and the
+        /// result is the exit code. Quadra opens again if it was open; a new install opens with Windows.
+        /// </summary>
+        Silent,
+    }
+
     /// <summary>
-    /// Run when Quadra.exe is opened from anywhere but its install folder (Downloads, or an update in Temp).
-    /// Installs or updates Quadra and opens the installed copy, then says so in a window (not when the update
-    /// came from Quadra's own update button, which shows a notification instead). False when it couldn't
-    /// install, so this copy keeps running from where it is.
+    /// Run when Quadra.exe is opened from anywhere but its install folder (Downloads, an update in Temp,
+    /// or winget's download folder). Installs or updates Quadra and opens the installed copy (see <see cref="Mode"/>).
+    /// False when it couldn't install.
     /// </summary>
-    public static bool InstallAndOpen(bool fromUpdateButton)
+    public static bool InstallAndOpen(Mode mode)
     {
         string source = Environment.ProcessPath ?? "", target = AppPaths.InstalledExe;
         try
@@ -60,6 +73,7 @@ internal static class Installer
             var installed = InstalledVersion();
             bool firstInstall = installed == null;
             var running = RunningCopy();
+            bool wasOpen = running != null;
             if (installed == null || OwnVersion > installed)
             {
                 Log.Write($"Installing Quadra {OwnVersion.ToString(3)} from {source} to {target}" +
@@ -74,8 +88,8 @@ internal static class Installer
             else if (running is { } copy && SamePath(copy.Path, target))
             {
                 // The same or a newer version is installed and open: show its settings, as opening it again would.
-                HotKeyCenter.AskRunningCopyToShowSettings();
                 Register(firstInstall: false);
+                if (mode == Mode.Normal) HotKeyCenter.AskRunningCopyToShowSettings();
                 return true;
             }
             else
@@ -85,8 +99,13 @@ internal static class Installer
 
             Register(firstInstall);
             // The self-test only asks for the window when it is ready to look at it and close it.
-            bool tellHere = !fromUpdateButton &&
+            bool tellHere = mode == Mode.Normal &&
                             (!AppPaths.IsTest || Environment.GetEnvironmentVariable("QUADRA_TEST_SHOW_WINDOW") == "1");
+            if (mode == Mode.Silent && !wasOpen)
+            {
+                Log.Write("Installed silently; Quadra opens the next time Windows starts");
+                return true;
+            }
             Process.Start(new ProcessStartInfo(target, tellHere ? JustInstalledArgument : "")
             {
                 UseShellExecute = false,
@@ -126,6 +145,9 @@ internal static class Installer
         }
         MessageBox.Show(text, "Quadra", MessageBoxButton.OK, MessageBoxImage.Information);
     }
+
+    /// <summary>Quadra.exe --install run on the installed copy itself: refreshes its entries and shortcut.</summary>
+    public static void RegisterInstalledCopy() => Register(firstInstall: false);
 
     /// <summary>
     /// The Start menu shortcut, the entry in Settings → Apps and, on the first install, Start with Windows.
