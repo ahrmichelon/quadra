@@ -4,7 +4,9 @@ name: Windows release
 #   1. runs the tests,
 #   2. builds Quadra-x64.exe and Quadra-arm64.exe with that version,
 #   3. runs the self-test on Windows,
-#   4. publishes them as a GitHub release, with notes from Windows/CHANGELOG.md.
+#   4. publishes them as a GitHub release, with notes from Windows/CHANGELOG.md,
+#   5. makes the winget manifests (kept as an artifact, for the pull request to microsoft/winget-pkgs)
+#      and tries them: install through winget, check Settings → Apps, uninstall.
 # Windows releases are never marked as the repository's "latest" release: the Mac app's update
 # check reads the latest release, so it must stay the Mac one.
 # Running it by hand ("Run workflow") is a rehearsal: steps 1 to 3 only, nothing is published.
@@ -59,6 +61,9 @@ jobs:
           Get-Content (Join-Path $out report.txt)
           if ($process.ExitCode -ne 0) { throw "The self-test failed ($($process.ExitCode) check(s))" }
 
+      - name: Make the winget manifests
+        run: ./Tools/winget-manifests.ps1 $env:VERSION dist winget
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -66,6 +71,7 @@ jobs:
           path: |
             Windows/dist
             Windows/self-test
+            Windows/winget
 
       - name: Publish the release
         if: github.event_name == 'push'
@@ -76,3 +82,23 @@ jobs:
           ./Tools/release-notes.ps1 $env:VERSION dist | Out-File -Encoding utf8 $notes
           gh release create $env:GITHUB_REF_NAME dist/Quadra-x64.exe dist/Quadra-arm64.exe `
             --title "Quadra for Windows $env:VERSION" --notes-file $notes --latest=false
+
+      # Installs the version through winget with the manifests above, as people will, checks that Windows lists
+      # it in Settings → Apps with the right version, and uninstalls it. Only after publishing, because winget
+      # downloads Quadra.exe from the release.
+      - name: Try the winget manifests
+        if: github.event_name == 'push'
+        continue-on-error: true
+        run: |
+          if (-not (Get-Command winget -ErrorAction SilentlyContinue)) { Write-Output "winget isn't on this machine"; exit 0 }
+          winget --version
+          winget settings --enable LocalManifestFiles
+          $manifest = "winget/manifests/v/Vulpini/Quadra/$env:VERSION"
+          winget validate --manifest $manifest
+          winget install --manifest $manifest --silent --accept-package-agreements --accept-source-agreements --disable-interactivity
+          Write-Output "winget install: exit code $LASTEXITCODE"
+          $entry = Get-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\Quadra" -ErrorAction SilentlyContinue
+          if ($entry.DisplayVersion -ne $env:VERSION) { throw "Settings → Apps doesn't list Quadra $env:VERSION" }
+          Write-Output "Settings → Apps: $($entry.DisplayName) $($entry.DisplayVersion), $($entry.Publisher)"
+          winget uninstall --manifest $manifest --silent --disable-interactivity
+          Write-Output "winget uninstall: exit code $LASTEXITCODE"

@@ -17,10 +17,24 @@ internal static class Program
         // Uninstall in Settings → Apps runs Quadra.exe --uninstall.
         if (args.Contains("--uninstall")) return Installer.Uninstall(quiet: args.Contains("--quiet"));
 
+        // Package managers such as winget run Quadra.exe --install --silent: install or update without any
+        // window, and say whether it worked with the exit code (0 = installed).
+        if (args.Contains("--install"))
+        {
+            if (Installer.IsRunningInstalled)
+            {
+                Installer.RegisterInstalledCopy();
+                return 0;
+            }
+            var mode = args.Contains("--silent") ? Installer.Mode.Silent : Installer.Mode.Normal;
+            return Installer.InstallAndOpen(mode) ? 0 : 1;
+        }
+
         // Opened from Downloads (or an update downloaded to Temp): install or update Quadra, then open the
         // installed copy. --portable keeps it running from where it is (handy while working on the code).
         if (!args.Contains("--portable") && !Installer.IsRunningInstalled &&
-            Installer.InstallAndOpen(fromUpdateButton: args.Contains(QuadraApp.FromUpdateArgument)))
+            Installer.InstallAndOpen(args.Contains(QuadraApp.FromUpdateArgument)
+                ? Installer.Mode.FromUpdateButton : Installer.Mode.Normal))
             return 0;
 
         // Only one Quadra at a time. Opening Quadra.exe again shows the settings of the one already running

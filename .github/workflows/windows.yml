@@ -54,7 +54,21 @@ jobs:
           name: self-test
           path: Windows/self-test
 
+      - name: Make the winget manifests
+        run: |
+          $version = (Select-Xml -Path Directory.Build.props -XPath "//Version").Node.InnerText
+          ./Tools/winget-manifests.ps1 $version dist winget
+          if (Get-Command winget -ErrorAction SilentlyContinue) {
+            $result = winget validate --manifest "winget/manifests/v/Vulpini/Quadra/$version" | Out-String
+            Write-Output $result
+            if ($result -match "failed") { throw "winget validate found problems in the manifests" }
+          } else {
+            Write-Output "winget isn't on this machine; the manifests were not validated"
+          }
+
       - uses: actions/upload-artifact@v4
         with:
           name: Quadra-Windows
-          path: Windows/dist
+          path: |
+            Windows/dist
+            Windows/winget

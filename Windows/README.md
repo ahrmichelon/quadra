@@ -36,6 +36,19 @@ and you can see where the window will land before letting go.
 
 ## Install
 
+**With winget** (the Windows Package Manager, in Windows 10 and 11), once Microsoft has reviewed the
+package:
+
+```powershell
+winget install Vulpini.Quadra
+```
+
+Quadra installs itself for your user and opens by itself the next time Windows starts (or open it
+from the Start menu now). `winget upgrade Vulpini.Quadra` updates it, though Quadra also tells you
+about new versions itself.
+
+**Or download it:**
+
 1. Download Quadra from the [releases page](https://github.com/vulpini-br/quadra/releases?q=windows&expanded=true)
    (look for **Quadra for Windows**):
    - **Quadra-x64.exe** for most PCs (Intel and AMD).
@@ -51,6 +64,9 @@ and you can see where the window will land before letting go.
 
 Requires Windows 10 (version 1809 or later) or Windows 11, 64-bit. .NET is built into
 Quadra.exe, so there is nothing else to install.
+
+For package managers and scripts: `Quadra.exe --install --silent` installs or updates without any
+window (exit code 0 when it worked), and `Quadra.exe --uninstall --quiet` removes it.
 
 ## Use
 
