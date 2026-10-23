@@ -10,7 +10,7 @@ param(
 $ErrorActionPreference = "Stop"
 
 $id = "Vulpini.Quadra"
-$schema = "1.12.0"
+$schema = "1.10.0"  # understood by every winget from 1.10 on (the GitHub runner has 1.11)
 $repo = "https://github.com/vulpini-br/quadra"
 $tag = "windows-v$Version"
 $folder = Join-Path $Out "manifests" "v" "Vulpini" "Quadra" $Version
