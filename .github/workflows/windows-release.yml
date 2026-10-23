@@ -64,7 +64,7 @@ jobs:
       - name: Make the winget manifests
         run: ./Tools/winget-manifests.ps1 $env:VERSION dist winget
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: Quadra-Windows-${{ env.VERSION }}
