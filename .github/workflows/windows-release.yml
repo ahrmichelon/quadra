@@ -85,22 +85,44 @@ jobs:
 
       # Installs the version through winget with the manifests above, as people will, checks that Windows lists
       # it in Settings → Apps with the right version, and uninstalls it. Only after publishing, because winget
-      # downloads Quadra.exe from the release.
+      # downloads Quadra.exe from the release. Downloads aren't marked as coming from the internet on this
+      # machine: Quadra.exe isn't code-signed, and SmartScreen would otherwise wait for a click nobody can make.
       - name: Try the winget manifests
         if: github.event_name == 'push'
         continue-on-error: true
+        timeout-minutes: 15
         run: |
           if (-not (Get-Command winget -ErrorAction SilentlyContinue)) { Write-Output "winget isn't on this machine"; exit 0 }
+          $policy = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Attachments"
+          New-Item -Path $policy -Force | Out-Null
+          Set-ItemProperty -Path $policy -Name SaveZoneInformation -Value 1 -Type DWord
+
+          # Runs winget with a time limit; only its exit code comes back.
+          function Run-Winget([string[]] $arguments) {
+            $out = Join-Path $env:RUNNER_TEMP "winget-$([guid]::NewGuid()).txt"
+            $p = Start-Process winget -ArgumentList $arguments -PassThru -NoNewWindow -RedirectStandardOutput $out
+            $null = $p.Handle
+            $done = $p.WaitForExit(300000)
+            Get-Content $out | Where-Object { $_ -notmatch '^\s*[-\\|/]\s*$' -and $_ -notmatch '▒' } | ForEach-Object { Write-Host $_ }
+            if (-not $done) { Stop-Process $p -Force; throw "winget $($arguments[0]) took more than 5 minutes" }
+            return [int]$p.ExitCode
+          }
+
           winget --version
           winget settings --enable LocalManifestFiles
-          $manifest = "winget/manifests/v/Vulpini/Quadra/$env:VERSION"
-          winget validate --manifest $manifest
-          winget install --manifest $manifest --silent --accept-package-agreements --accept-source-agreements --disable-interactivity
-          Write-Output "winget install: exit code $LASTEXITCODE"
-          $entry = Get-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\Quadra" -ErrorAction SilentlyContinue
-          if ($entry.DisplayVersion -ne $env:VERSION) { throw "Settings → Apps doesn't list Quadra $env:VERSION" }
-          Write-Output "Settings → Apps: $($entry.DisplayName) $($entry.DisplayVersion), $($entry.Publisher)"
-          winget uninstall --manifest $manifest --silent --disable-interactivity
-          Write-Output "winget uninstall: exit code $LASTEXITCODE"
-          if (Test-Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\Quadra") { throw "Quadra is still in Settings → Apps after winget uninstall" }
+          $manifest = (Resolve-Path "winget/manifests/v/Vulpini/Quadra/$env:VERSION").Path
+          $key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\Quadra"
+
+          $code = Run-Winget @("validate", "--manifest", "`"$manifest`"")
+          $code = Run-Winget @("install", "--manifest", "`"$manifest`"", "--silent", "--accept-package-agreements",
+                               "--accept-source-agreements", "--disable-interactivity")
+          $entry = Get-ItemProperty $key -ErrorAction SilentlyContinue
+          Write-Output "winget install: exit code $code; Settings → Apps: $($entry.DisplayName) $($entry.DisplayVersion), $($entry.Publisher)"
+          if ($code -ne 0 -or $entry.DisplayVersion -ne $env:VERSION) { throw "winget didn't install Quadra $env:VERSION" }
+
+          $code = Run-Winget @("uninstall", "--manifest", "`"$manifest`"", "--silent", "--disable-interactivity")
+          Start-Sleep 5
+          Write-Output "winget uninstall: exit code $code"
+          if ($code -ne 0 -or (Test-Path $key)) { throw "winget didn't uninstall Quadra" }
+          Write-Output "winget installs and uninstalls Quadra $env:VERSION."
           exit 0
